@@ -19,3 +19,10 @@
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
+
+# User-defined
+*.obj
+*.obj.meta
+*.mtl
+*.mtl.meta
+*.DS_Store
