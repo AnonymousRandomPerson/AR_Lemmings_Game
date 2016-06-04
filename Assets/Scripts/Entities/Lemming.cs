@@ -115,6 +115,7 @@ namespace Lemmings.Entities {
         /// Handles the disappearing animation for the lemming.
         /// </summary>
         private void Disappear() {
+            body.velocity = Vector3.zero;
             Color playerColor = new Color();
             foreach (Renderer playerRenderer in renderers) {
                 playerColor = playerRenderer.material.color;
