@@ -9,6 +9,9 @@ namespace Lemmings.Entities {
     /// </summary>
     class Lemming : ResettableObject {
 
+        /// <summary> The game manager in the scene. </summary>
+        private GameManager gameManager;
+
         /// <summary> The movement speed of the lemming. </summary>
         [SerializeField]
         [Tooltip("The movement speed of the lemming.")]
@@ -62,7 +65,9 @@ namespace Lemmings.Entities {
 
             renderers = transform.FindChild("Model").GetComponentsInChildren<MeshRenderer>();
 
-            GameManager.instance.numLemmings++;
+            gameManager = GameManager.instance;
+            gameManager.activeLemmings++;
+            gameManager.numLemmings++;
         }
 
         /// <summary>
@@ -117,8 +122,11 @@ namespace Lemmings.Entities {
                 playerRenderer.material.color = playerColor;
             }
             if (playerColor.a <= Mathf.Epsilon) {
+                foreach (Renderer playerRenderer in renderers) {
+                    playerRenderer.enabled = false;
+                }
                 visible = false;
-                GameManager.instance.numLemmings--;
+                gameManager.activeLemmings--;
             }
         }
 
@@ -139,6 +147,8 @@ namespace Lemmings.Entities {
             won = true;
             mainCollider.enabled = false;
             body.useGravity = false;
+            animator.SetBool("moving", false);
+            gameManager.goalLemmings++;
         }
 
         /// <summary>
@@ -169,14 +179,17 @@ namespace Lemmings.Entities {
                 playerColor = playerRenderer.material.color;
                 playerColor.a = 1;
                 playerRenderer.material.color = playerColor;
+                playerRenderer.enabled = true;
             }
             animator.speed = 1;
+            animator.SetBool("moving", true);
+            animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, -1, 0);
 
             mainCollider.enabled = true;
             body.useGravity = true;
             body.velocity = Vector3.zero;
 
-            GameManager.instance.numLemmings++;
+            gameManager.activeLemmings++;
         }
     }
 }

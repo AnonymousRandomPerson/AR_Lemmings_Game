@@ -26,6 +26,15 @@ namespace Lemmings.Managers {
         [SerializeField]
         [Tooltip("The number of blocks in the factory.")]
         private int numBlocks;
+        /// <summary> The number of blocks in the factory. </summary>
+        public int NumBlocks {
+            get { return numBlocks; }
+        }
+        /// <summary> The number of blocks that have been placed on the field. </summary>
+        public int placedBlocks {
+            get { return numBlocks - inactiveBlocks.Count; }
+        }
+
         /// <summary> The unspawned blocks in the factory. </summary>
         private Queue<Block> inactiveBlocks;
         /// <summary> The blocks in the factory. </summary>
@@ -33,7 +42,6 @@ namespace Lemmings.Managers {
 
         /// <summary> The y offset to spawn a block at. </summary>
         private float blockOffset;
-
         /// <summary>
         /// Sets the singleton block manager instance.
         /// </summary>
