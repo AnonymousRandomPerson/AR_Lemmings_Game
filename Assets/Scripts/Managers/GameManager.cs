@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Lemmings.Entities;
+using Lemmings.UI;
 using Lemmings.Util;
 
 namespace Lemmings.Managers {
@@ -52,7 +53,7 @@ namespace Lemmings.Managers {
         /// </summary>
         private void Update() {
             _currentTime += Time.deltaTime;
-            if (activeLemmings <= 0 || InputUtil.GetKeyDown(KeyCode.R)) {
+            if (activeLemmings <= 0 || InputUtil.GetKeyDown(KeyCode.R) && !PauseHandler.instance.paused) {
                 ResetLevel();
             }
         }

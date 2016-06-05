@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Lemmings.Entities;
 using Lemmings.Entities.Blocks;
+using Lemmings.Entities.Player;
 using Lemmings.Managers;
 
 namespace Lemmings.UI {
@@ -24,14 +24,14 @@ namespace Lemmings.UI {
         /// <summary> The block manager in the scene. </summary>
         private BlockManager blockManager;
         /// <summary> The player in the scene. </summary>
-        private Player player;
+        private PlayerPlacer player;
 
         /// <summary>
         /// Finds needed objects in the scene.
         /// </summary>
         private void Start() {
             blockManager = BlockManager.instance;
-            player = Player.instance;
+            player = PlayerPlacer.instance;
             int numBlocks = blocks.Length;
             textCounters = new Text[numBlocks];
             for (int i = 0; i < numBlocks; i++) {

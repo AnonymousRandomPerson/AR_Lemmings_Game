@@ -24,3 +24,4 @@ sysinfo.txt
 *.obj
 *.DS_Store
 Assets/Logs*
+*Cube_Atlas*

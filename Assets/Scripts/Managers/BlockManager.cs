@@ -39,7 +39,7 @@ namespace Lemmings.Managers {
         private int _numTypes;
         /// <summary> The number of block types. </summary>
         public int numTypes {
-            get { return _numTypes; }
+            get { return blockPrefabs.Length; }
         }
 
         /// <summary>

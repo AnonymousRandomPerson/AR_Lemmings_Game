@@ -1,21 +1,12 @@
 ﻿using UnityEngine;
-using Lemmings.Entities.Blocks;
-using Lemmings.Managers;
-using Lemmings.UI;
+using Lemmings.Entities;
 using Lemmings.Util;
 
-namespace Lemmings.Entities {
+namespace Lemmings.Entities.Player {
     /// <summary>
-    /// The player controller.
+    /// Handles player movement.
     /// </summary>
-    class Player : ResettableObject {
-
-        /// <summary> The singleton player instance. </summary>
-        private static Player player;
-        /// <summary> The singleton player instance. </summary>
-        public static Player instance {
-            get { return player; }
-        }
+    class PlayerMover : ResettableObject {
 
         /// <summary> The direction that the player is moving in. </summary>
         private Vector3 moveDirection;
@@ -37,82 +28,11 @@ namespace Lemmings.Entities {
         [Tooltip("The turn speed of the camera.")]
         private float turnSpeed;
 
-        /// <summary> The block currently selected by the player. </summary>
-        private BlockType _selectedBlock;
-        /// <summary> The block currently selected by the player. </summary>
-        public BlockType selectedBlock {
-            get { return _selectedBlock; }
-        }
-
-        /// <summary>
-        /// Initializes the singleton player instance.
-        /// </summary>
-        private void Awake() {
-            player = this;
-        }
-
-        /// <summary>
-        /// Places blocks when the user clicks the left mouse button.
-        /// </summary>
-        private void Update() {
-            if (!PauseHandler.instance.paused) {
-                SwitchBlock();
-                if (InputUtil.GetLeftMouseDown()) {
-                    PlaceBlock();
-                } else if (InputUtil.GetRightMouseDown()) {
-                    RemoveBlock();
-                }
-            }
-        }
-
         /// <summary>
         /// Updates the player every physics tick.
         /// </summary>
         private void FixedUpdate() {
             Move();
-        }
-
-        /// <summary>
-        /// Places a block where the player is looking at.
-        /// </summary>
-        private void PlaceBlock() {
-            RaycastHit point;
-            if (Physics.Raycast(transform.position, transform.forward, out point, 10) && point.collider.tag != "Lemming") {
-                BlockManager.instance.SpawnBlock(point.point, transform.eulerAngles, point.normal, selectedBlock);
-            }
-        }
-
-        /// <summary>
-        /// Removes the block that the player is looking at.
-        /// </summary>
-        private void RemoveBlock() {
-            RaycastHit point;
-            if (Physics.Raycast(transform.position, transform.forward, out point, 10)) {
-                Block block = point.collider.GetComponent<Block>();
-                if (block != null) {
-                    block.Despawn();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Switches the selected block if the user scrolls.
-        /// </summary>
-        private void SwitchBlock() {
-            float scroll = InputUtil.GetScrollWheel();
-            if (scroll != 0) {
-                if (scroll < 0) {
-                    _selectedBlock++;
-                    if (selectedBlock >= BlockType.NumTypes) {
-                        _selectedBlock = 0;
-                    }
-                } else {
-                    _selectedBlock--;
-                    if (_selectedBlock < 0) {
-                        _selectedBlock = BlockType.NumTypes - 1;
-                    }
-                }
-            }
         }
 
         /// <summary>

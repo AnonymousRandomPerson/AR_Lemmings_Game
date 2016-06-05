@@ -12,16 +12,21 @@ namespace Lemmings.Entities.Blocks {
         [HideInInspector]
         public BlockType type;
 
+        /// <summary> The rigidbody on the block. </summary>
+        private Rigidbody body;
+
         /// <summary>
         /// Initializes the block upon creation.
         /// </summary>
         public virtual void Create() {
+            body = GetComponent<Rigidbody>();
         }
 
         /// <summary>
         /// Initializes the block upon being placed.
         /// </summary>
         public virtual void Init() {
+            body.velocity = Vector3.zero;
         }
 
         /// <summary>
