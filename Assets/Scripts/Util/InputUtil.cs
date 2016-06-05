@@ -58,5 +58,13 @@ namespace Lemmings.Util {
         public static bool GetRightMouseDown() {
             return Input.GetMouseButtonDown(1);
         }
+
+        /// <summary>
+        /// Gets the scroll wheel delta in this frame.
+        /// </summary>
+        /// <returns>The scroll wheel delta in this frame.</returns>
+        public static float GetScrollWheel() {
+            return Input.GetAxis("Mouse ScrollWheel");
+        }
     }
 }

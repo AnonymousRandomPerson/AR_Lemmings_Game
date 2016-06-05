@@ -5,7 +5,7 @@ namespace Lemmings.Entities {
     /// <summary>
     /// An object that can be reset when the level restarts.
     /// </summary>
-    class ResettableObject : MonoBehaviour {
+    public class ResettableObject : MonoBehaviour {
 
         /// <summary> The initial position of the object. </summary>
         private Vector3 initialPosition;

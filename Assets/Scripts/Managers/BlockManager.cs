@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using Lemmings.Entities;
+using Lemmings.Entities.Blocks;
 using Lemmings.Util;
 
 namespace Lemmings.Managers {
@@ -20,28 +20,28 @@ namespace Lemmings.Managers {
 
         /// <summary> The block prefab to initialize blocks with. </summary>
         [SerializeField]
-        [Tooltip("The block prefab to initialize blocks with.")]
-        private Block blockPrefab;
+        [Tooltip("The block prefabs to initialize object with.")]
+        private Block[] blockPrefabs;
         /// <summary> The number of blocks in the factory. </summary>
         [SerializeField]
-        [Tooltip("The number of blocks in the factory.")]
-        private int numBlocks;
-        /// <summary> The number of blocks in the factory. </summary>
-        public int NumBlocks {
-            get { return numBlocks; }
-        }
-        /// <summary> The number of blocks that have been placed on the field. </summary>
-        public int placedBlocks {
-            get { return numBlocks - inactiveBlocks.Count; }
-        }
+        [Tooltip("The number of blocks in the factory of each type.")]
+        private int[] numBlocks;
 
         /// <summary> The unspawned blocks in the factory. </summary>
-        private Queue<Block> inactiveBlocks;
+        private Queue<Block>[] inactiveBlocks;
         /// <summary> The blocks in the factory. </summary>
-        private List<Block> blocks;
+        private List<Block>[] blocks;
 
-        /// <summary> The y offset to spawn a block at. </summary>
-        private float blockOffset;
+        /// <summary> The y offsets to spawn blocks at. </summary>
+        private float[] blockOffsets;
+
+        /// <summary> The number of block types. </summary>
+        private int _numTypes;
+        /// <summary> The number of block types. </summary>
+        public int numTypes {
+            get { return _numTypes; }
+        }
+
         /// <summary>
         /// Sets the singleton block manager instance.
         /// </summary>
@@ -53,18 +53,25 @@ namespace Lemmings.Managers {
         /// Creates the blocks in the factory.
         /// </summary>
         private void Start() {
-            inactiveBlocks = new Queue<Block>();
-            blocks = new List<Block>(numBlocks);
-            for (int i = 0; i < numBlocks; i++) {
-                Block block = GameObject.Instantiate(blockPrefab);
-                block.gameObject.SetActive(false);
-                block.transform.parent = transform;
-                block.name = StringUtil.RemoveClone(block.name);
-                block.Create();
-                inactiveBlocks.Enqueue(block);
-                blocks.Add(block);
+            _numTypes = blockPrefabs.Length;
+            inactiveBlocks = new Queue<Block>[_numTypes];
+            blocks = new List<Block>[_numTypes];
+            blockOffsets = new float[_numTypes];
+            for (int i = 0; i < numTypes; i++) {
+                inactiveBlocks[i] = new Queue<Block>();
+                blocks[i] = new List<Block>(numBlocks[i]);
+                for (int j = 0; j < numBlocks[i]; j++) {
+                    Block block = GameObject.Instantiate(blockPrefabs[i]);
+                    block.gameObject.SetActive(false);
+                    block.transform.parent = transform;
+                    block.name = StringUtil.RemoveClone(block.name);
+                    block.type = (BlockType)i;
+                    block.Create();
+                    inactiveBlocks[i].Enqueue(block);
+                    blocks[i].Add(block);
+                }
+                blockOffsets[i] = blockPrefabs[i].transform.localScale.y / 2 * 1.1f;
             }
-            blockOffset = blockPrefab.transform.localScale.y / 2 * 1.1f;
         }
 
         /// <summary>
@@ -73,17 +80,18 @@ namespace Lemmings.Managers {
         /// <returns>The spawned block, or null if no blocks are available to spawn.</returns>
         /// <param name="position">The initial position of the block.</param>
         /// <param name="rotation">The initial rotation of the block.</param>
-        /// <param name="rotation">The normal of the surface to spawn the block on..</param>
-        public Block SpawnBlock(Vector3 position, Vector3 rotation, Vector3 normal) {
+        /// <param name="rotation">The normal of the surface to spawn the block on.</param>
+        /// <param name="type">The type of block to spawn.</param>
+        public Block SpawnBlock(Vector3 position, Vector3 rotation, Vector3 normal, BlockType type) {
             Block block = null;
-            if (inactiveBlocks.Count > 0) {
-                block = inactiveBlocks.Dequeue();
-                block.transform.position = position + normal * blockOffset;
-                rotation.x = 0;
-                rotation.z = 0;
+            int typeInt = (int)type;
+            if (inactiveBlocks[typeInt].Count > 0) {
+                block = inactiveBlocks[typeInt].Dequeue();
+                block.transform.position = position + normal * blockOffsets[typeInt];
+                rotation.x = blockPrefabs[typeInt].transform.eulerAngles.x;
+                rotation.z = blockPrefabs[typeInt].transform.eulerAngles.z;
                 block.transform.rotation = Quaternion.Euler(rotation);
                 block.Init();
-                block.body.velocity = Vector3.zero;
                 block.gameObject.SetActive(true);
             }
             return block;
@@ -95,18 +103,29 @@ namespace Lemmings.Managers {
         /// <param name="block">The block to despawn.</param>
         public void DespawnBlock(Block block) {
             block.gameObject.SetActive(false);
-            inactiveBlocks.Enqueue(block);
+            inactiveBlocks[(int)block.type].Enqueue(block);
         }
 
         /// <summary>
         /// Resets all blocks in the scene.
         /// </summary>
         public void Reset() {
-            foreach (Block block in blocks) {
-                if (block.gameObject.activeSelf) {
-                    DespawnBlock(block);
+            foreach (List<Block> blockList in blocks) {
+                foreach (Block block in blockList) {
+                    if (block.gameObject.activeSelf) {
+                        DespawnBlock(block);
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the number of available blocks of a certain type.
+        /// </summary>
+        /// <returns>The number of available blocks. of the specified type.</returns>
+        /// <param name="block">The block type to get the number of available blocks for.</param>
+        public int GetNumAvailable(BlockType block) {
+            return inactiveBlocks[(int)block].Count;
         }
     }
 }

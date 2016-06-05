@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Lemmings.Entities.Blocks;
 using Lemmings.Level;
 using Lemmings.Managers;
 using Lemmings.Util;
@@ -7,7 +8,7 @@ namespace Lemmings.Entities {
     /// <summary>
     /// Characters that must be guided to an exit.
     /// </summary>
-    class Lemming : ResettableObject {
+    public class Lemming : ResettableObject {
 
         /// <summary> The game manager in the scene. </summary>
         private GameManager gameManager;
@@ -30,7 +31,11 @@ namespace Lemmings.Entities {
         /// <summary> The collider on the lemming. </summary>
         private Collider mainCollider;
         /// <summary> The rigidbody on the lemming. </summary>
-        private Rigidbody body;
+        private Rigidbody _body;
+        /// <summary> The rigidbody on the lemming. </summary>
+        public Rigidbody body {
+            get { return _body; }
+        }
 
         /// <summary> Whether the lemming is dead. </summary>
         private bool dead;
@@ -58,7 +63,7 @@ namespace Lemmings.Entities {
             animator.SetBool("moving", true);
 
             mainCollider = GetComponent<Collider>();
-            body = GetComponent<Rigidbody>();
+            _body = GetComponent<Rigidbody>();
             forwardOffset = mainCollider.bounds.extents.x;
             sideOffset = mainCollider.bounds.extents.z;
             heightOffset = mainCollider.bounds.extents.y;
@@ -100,8 +105,12 @@ namespace Lemmings.Entities {
             } else if (Physics.Raycast(transform.position + sideOffset * transform.right, transform.forward, out blocking, forwardOffset * 1.5f, layerMask)) {
             } else if (Physics.Raycast(transform.position - sideOffset * transform.right, transform.forward, out blocking, forwardOffset * 1.5f, layerMask)) {
             }
+            Block block = null;
             if (blocking.collider != null) {
-                transform.forward = Vector3.Reflect(transform.forward, blocking.normal);
+                block = blocking.collider.GetComponent<Block>();
+            }
+            if (block != null) {
+                block.AffectLemming(this, blocking);
             }
 
             transform.Translate(Vector3.forward * moveSpeed, Space.Self);
@@ -115,7 +124,7 @@ namespace Lemmings.Entities {
         /// Handles the disappearing animation for the lemming.
         /// </summary>
         private void Disappear() {
-            body.velocity = Vector3.zero;
+            _body.velocity = Vector3.zero;
             Color playerColor = new Color();
             foreach (Renderer playerRenderer in renderers) {
                 playerColor = playerRenderer.material.color;
@@ -138,7 +147,7 @@ namespace Lemmings.Entities {
             dead = true;
             mainCollider.enabled = false;
             animator.speed = 0;
-            body.useGravity = false;
+            _body.useGravity = false;
         }
 
         /// <summary>
@@ -147,7 +156,7 @@ namespace Lemmings.Entities {
         private void Win() {
             won = true;
             mainCollider.enabled = false;
-            body.useGravity = false;
+            _body.useGravity = false;
             animator.SetBool("moving", false);
             gameManager.goalLemmings++;
         }
@@ -187,8 +196,8 @@ namespace Lemmings.Entities {
             animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, -1, 0);
 
             mainCollider.enabled = true;
-            body.useGravity = true;
-            body.velocity = Vector3.zero;
+            _body.useGravity = true;
+            _body.velocity = Vector3.zero;
 
             gameManager.activeLemmings++;
         }
