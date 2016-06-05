@@ -66,7 +66,6 @@ namespace Lemmings.Managers {
                     block.transform.parent = transform;
                     block.name = StringUtil.RemoveClone(block.name);
                     block.type = (BlockType)i;
-                    block.Create();
                     inactiveBlocks[i].Enqueue(block);
                     blocks[i].Add(block);
                 }

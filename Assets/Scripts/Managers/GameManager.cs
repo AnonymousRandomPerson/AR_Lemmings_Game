@@ -41,6 +41,15 @@ namespace Lemmings.Managers {
             get { return _currentTime; }
         }
 
+        /// <summary> Whether to freeze objects in place. </summary>
+        [SerializeField]
+        [Tooltip("Whether to freeze objects in place.")]
+        private bool PictureMode;
+        /// <summary> Whether to freeze objects in place. </summary>
+        public bool pictureMode {
+            get { return PictureMode; }
+        }
+
         /// <summary>
         /// Sets the singleton instance of the game manager.
         /// </summary>

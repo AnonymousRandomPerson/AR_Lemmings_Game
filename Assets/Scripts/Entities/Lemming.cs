@@ -73,6 +73,9 @@ namespace Lemmings.Entities {
             gameManager = GameManager.instance;
             gameManager.activeLemmings++;
             gameManager.numLemmings++;
+            if (gameManager.pictureMode) {
+                body.useGravity = false;
+            }
         }
 
         /// <summary>
@@ -90,7 +93,7 @@ namespace Lemmings.Entities {
         /// Updates the lemming every physics tick.
         /// </summary>
         private void FixedUpdate() {
-            if (!dead && !won) {
+            if (!dead && !won && !gameManager.pictureMode) {
                 Move();
             }
         }

@@ -16,10 +16,13 @@ namespace Lemmings.Entities.Blocks {
         private Rigidbody body;
 
         /// <summary>
-        /// Initializes the block upon creation.
+        /// Finds the block's rigidbody.
         /// </summary>
-        public virtual void Create() {
+        protected virtual void Start() {
             body = GetComponent<Rigidbody>();
+            if (GameManager.instance.pictureMode) {
+                body.useGravity = false;
+            }
         }
 
         /// <summary>
