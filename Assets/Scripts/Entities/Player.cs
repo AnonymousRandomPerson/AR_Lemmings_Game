@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Lemmings.Entities.Blocks;
 using Lemmings.Managers;
+using Lemmings.UI;
 using Lemmings.Util;
 
 namespace Lemmings.Entities {
@@ -54,11 +55,13 @@ namespace Lemmings.Entities {
         /// Places blocks when the user clicks the left mouse button.
         /// </summary>
         private void Update() {
-            SwitchBlock();
-            if (InputUtil.GetLeftMouseDown()) {
-                PlaceBlock();
-            } else if (InputUtil.GetRightMouseDown()) {
-                RemoveBlock();
+            if (!PauseHandler.instance.paused) {
+                SwitchBlock();
+                if (InputUtil.GetLeftMouseDown()) {
+                    PlaceBlock();
+                } else if (InputUtil.GetRightMouseDown()) {
+                    RemoveBlock();
+                }
             }
         }
 

@@ -8,14 +8,22 @@ namespace Lemmings.UI {
     /// Handles pausing the game.
     /// </summary>
     class PauseHandler : MonoBehaviour {
+
+        /// <summary> The singleton pause handler instance. </summary>
+        private static PauseHandler pauseHandler;
+        /// <summary> The singleton pause handler instance. </summary>
+        public static PauseHandler instance {
+            get { return pauseHandler; }
+        }
+
         /// <summary> Whether the game is paused. </summary>
         private bool _paused;
         /// <summary> Whether the game is paused. </summary>
-        private bool paused {
+        public bool paused {
             get {
                 return _paused;
             }
-            set {
+            private set {
                 _paused = value;
                 Cursor.visible = value;
                 gamePanel.SetActive(!_paused);
@@ -38,6 +46,13 @@ namespace Lemmings.UI {
         [SerializeField]
         [Tooltip("The in-game UI.")]
         private GameObject gamePanel;
+
+        /// <summary>
+        /// Initializes the singleton pause handler instance.
+        /// </summary>
+        private void Awake() {
+            pauseHandler = this;
+        }
 
         /// <summary>
         /// Sets up the UI.
