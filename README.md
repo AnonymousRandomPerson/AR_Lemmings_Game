@@ -9,8 +9,9 @@ Controls:
 *   Space/Page Up: Move up
 *   Shift/Page Down: Move down
 *   Mouse movement: Rotate camera
-*   Left click: Place block
-*   Right click: Remove block
+*   Right click: Place block
+*   Left click: Remove block
+*   Scroll wheel/Number keys: Switch selected block
 *   R: Reset level
 *   P: Pause
 *   Escape: Unlock mouse from game
