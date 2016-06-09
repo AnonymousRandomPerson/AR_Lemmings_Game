@@ -79,6 +79,7 @@ namespace Lemmings.Entities.Player {
         /// Resets the object.
         /// </summary>
         public override void Reset() {
+            GetComponent<PlayerPlacer>().Reset();
             base.Reset();
             moveDirection = Vector3.zero;
         }
