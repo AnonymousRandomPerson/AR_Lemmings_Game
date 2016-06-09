@@ -26,7 +26,9 @@ namespace Lemmings.UI {
             private set {
                 _paused = value;
                 Cursor.visible = value;
-                if (!GameManager.instance.pictureMode) {
+                if (GameManager.instance.pictureMode || GameManager.instance.disableUI) {
+                    gamePanel.SetActive(false);
+                } else {
                     gamePanel.SetActive(!_paused);
                 }
                 pausePanel.SetActive(_paused);

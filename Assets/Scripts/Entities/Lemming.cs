@@ -24,6 +24,8 @@ namespace Lemmings.Entities {
         private float sideOffset;
         /// <summary> Half of the lemming's height. </summary>
         private float heightOffset;
+        /// <summary> The distance from a block that will be considered blocking. </summary>
+        private float blockDistance;
         /// <summary> Layers that the lemming will collide with. </summary>
         [SerializeField]
         [Tooltip("Layers that the lemming will collide with.")]
@@ -67,6 +69,7 @@ namespace Lemmings.Entities {
             forwardOffset = mainCollider.bounds.extents.x;
             sideOffset = mainCollider.bounds.extents.z;
             heightOffset = mainCollider.bounds.extents.y;
+            blockDistance = forwardOffset * 1.5f;
 
             renderers = transform.FindChild("Model").GetComponentsInChildren<MeshRenderer>();
 
@@ -104,9 +107,10 @@ namespace Lemmings.Entities {
         private void Move() {
             // Check if an obstacle is blocking the lemming.
             RaycastHit blocking;
-            if (Physics.Raycast(transform.position, transform.forward, out blocking, forwardOffset * 1.5f, layerMask)) {
-            } else if (Physics.Raycast(transform.position + sideOffset * transform.right, transform.forward, out blocking, forwardOffset * 1.5f, layerMask)) {
-            } else if (Physics.Raycast(transform.position - sideOffset * transform.right, transform.forward, out blocking, forwardOffset * 1.5f, layerMask)) {
+            Vector3 castOrigin = transform.position - Vector3.up * heightOffset / 4;
+            if (Physics.Raycast(castOrigin, transform.forward, out blocking, blockDistance, layerMask)) {
+            } else if (Physics.Raycast(castOrigin + sideOffset * transform.right, transform.forward, out blocking, blockDistance, layerMask)) {
+            } else if (Physics.Raycast(castOrigin - sideOffset * transform.right, transform.forward, out blocking, blockDistance, layerMask)) {
             }
             Block block = null;
             if (blocking.collider != null) {
@@ -146,7 +150,7 @@ namespace Lemmings.Entities {
         /// <summary>
         /// Kills the lemming.
         /// </summary>
-        private void Die() {
+        public void Die() {
             dead = true;
             mainCollider.enabled = false;
             animator.speed = 0;

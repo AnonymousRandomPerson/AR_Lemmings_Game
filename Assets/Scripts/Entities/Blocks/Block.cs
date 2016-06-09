@@ -19,7 +19,9 @@ namespace Lemmings.Entities.Blocks {
         /// Finds the block's rigidbody.
         /// </summary>
         protected virtual void Start() {
-            body = GetComponent<Rigidbody>();
+            if (body == null) {
+                body = GetComponent<Rigidbody>();
+            }
             if (GameManager.instance.pictureMode) {
                 body.useGravity = false;
             }
@@ -29,6 +31,9 @@ namespace Lemmings.Entities.Blocks {
         /// Initializes the block upon being placed.
         /// </summary>
         public virtual void Init() {
+            if (body == null) {
+                body = GetComponent<Rigidbody>();
+            }
             body.velocity = Vector3.zero;
         }
 

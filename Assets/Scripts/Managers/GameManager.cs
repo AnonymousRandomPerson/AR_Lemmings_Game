@@ -50,6 +50,15 @@ namespace Lemmings.Managers {
             get { return PictureMode; }
         }
 
+        /// <summary> Whether to hide the in-game UI. </summary>
+        [SerializeField]
+        [Tooltip("Whether to hide the in-game UI.")]
+        private bool DisableUI;
+        /// <summary> Whether to hide the in-game UI. </summary>
+        public bool disableUI {
+            get { return DisableUI; }
+        }
+
         /// <summary>
         /// Sets the singleton instance of the game manager.
         /// </summary>
