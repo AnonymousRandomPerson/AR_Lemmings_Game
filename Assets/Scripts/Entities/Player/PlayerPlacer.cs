@@ -40,7 +40,8 @@ namespace Lemmings.Entities.Player {
         /// <summary>
         /// Determines the number of types of blocks.
         /// </summary>
-        private void Start() {
+        protected override void Start() {
+            base.Start();
             numBlockTypes = BlockManager.instance.numTypes;
             if (numBlockTypes >= 9) {
                 keyLimit = KeyCode.Alpha9;

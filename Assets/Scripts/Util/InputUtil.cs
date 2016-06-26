@@ -5,7 +5,7 @@ namespace Lemmings.Util {
     /// <summary>
     /// Utility methods for querying input.
     /// </summary>
-    class InputUtil : MonoBehaviour {
+    static class InputUtil {
 
         /// <summary>
         /// Checks if any of the given keys are pressed.

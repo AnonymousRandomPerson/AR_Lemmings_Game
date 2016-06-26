@@ -41,7 +41,7 @@ namespace Lemmings.Entities.Blocks {
         /// Checks if the block should be despawned from falling out of bounds.
         /// </summary>
         protected virtual void Update() {
-            if (transform.position.y < PhysicsUtil.DEATHHEIGHT) {
+            if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
                 Despawn();
             }
         }

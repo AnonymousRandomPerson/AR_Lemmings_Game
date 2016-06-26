@@ -61,10 +61,9 @@ namespace Lemmings.Managers {
                 inactiveBlocks[i] = new Queue<Block>();
                 blocks[i] = new List<Block>(numBlocks[i]);
                 for (int j = 0; j < numBlocks[i]; j++) {
-                    Block block = GameObject.Instantiate(blockPrefabs[i]);
+                    Block block = ObjectUtil.Instantiate(blockPrefabs[i]);
                     block.gameObject.SetActive(false);
                     block.transform.parent = transform;
-                    block.name = StringUtil.RemoveClone(block.name);
                     block.type = (BlockType)i;
                     inactiveBlocks[i].Enqueue(block);
                     blocks[i].Add(block);

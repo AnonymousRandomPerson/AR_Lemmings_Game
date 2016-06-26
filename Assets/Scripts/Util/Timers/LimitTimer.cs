@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Lemmings.Util {
+namespace Lemmings.Util.Timers {
     /// <summary> A function that can only execute once within a certain delay. </summary>
     public delegate void LimitCallback();
 

@@ -59,6 +59,10 @@ namespace Lemmings.Managers {
             get { return DisableUI; }
         }
 
+        /// <summary> The lemming spawner in the scene. </summary>
+        [HideInInspector]
+        public LemmingSpawner lemmingSpawner;
+
         /// <summary>
         /// Sets the singleton instance of the game manager.
         /// </summary>
@@ -71,7 +75,8 @@ namespace Lemmings.Managers {
         /// </summary>
         private void Update() {
             _currentTime += Time.deltaTime;
-            if (activeLemmings <= 0 || InputUtil.GetKeyDown(KeyCode.R) && !PauseHandler.instance.paused) {
+            if (activeLemmings <= 0 && lemmingSpawner.IsFinished() ||
+                InputUtil.GetKeyDown(KeyCode.R) && !PauseHandler.instance.paused) {
                 ResetLevel();
             }
         }
@@ -87,6 +92,7 @@ namespace Lemmings.Managers {
             }
             _currentTime = 0;
             BlockManager.instance.Reset();
+            SurfaceManager.instance.Reset();
         }
     }
 }

@@ -22,7 +22,9 @@ namespace Lemmings.UI {
             gameManager = GameManager.instance;
         }
     	
-    	// Update is called once per frame
+    	/// <summary>
+        /// Updates the counter.
+        /// </summary>
         private void Update() {
             int goalLemmings = gameManager.goalLemmings;
             int numLemmings = gameManager.numLemmings;

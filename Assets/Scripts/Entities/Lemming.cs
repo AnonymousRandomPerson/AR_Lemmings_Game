@@ -61,8 +61,6 @@ namespace Lemmings.Entities {
         /// </summary>
         protected override void Start() {
             base.Start();
-            animator = GetComponentInChildren<Animator>();
-            animator.SetBool("moving", true);
 
             mainCollider = GetComponent<Collider>();
             _body = GetComponent<Rigidbody>();
@@ -72,13 +70,23 @@ namespace Lemmings.Entities {
             blockDistance = forwardOffset * 1.5f;
 
             renderers = transform.FindChild("Model").GetComponentsInChildren<MeshRenderer>();
-
             gameManager = GameManager.instance;
-            gameManager.activeLemmings++;
-            gameManager.numLemmings++;
             if (gameManager.pictureMode) {
                 body.useGravity = false;
             }
+        }
+
+        /// <summary>
+        /// Initializes the lemming when spawning it.
+        /// </summary>
+        public void Spawn() {
+            visible = true;
+            if (animator == null) {
+                animator = GetComponentInChildren<Animator>();
+            }
+            animator.speed = 1;
+            animator.SetBool("moving", true);
+            animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, -1, 0);
         }
 
         /// <summary>
@@ -122,7 +130,7 @@ namespace Lemmings.Entities {
 
             transform.Translate(Vector3.forward * moveSpeed, Space.Self);
 
-            if (transform.position.y < PhysicsUtil.DEATHHEIGHT) {
+            if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
                 Die();
             }
         }
@@ -190,7 +198,6 @@ namespace Lemmings.Entities {
             dead = false;
             won = false;
 
-            visible = true;
             Color playerColor = new Color();
             foreach (Renderer playerRenderer in renderers) {
                 playerColor = playerRenderer.material.color;
@@ -198,15 +205,11 @@ namespace Lemmings.Entities {
                 playerRenderer.material.color = playerColor;
                 playerRenderer.enabled = true;
             }
-            animator.speed = 1;
-            animator.SetBool("moving", true);
-            animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, -1, 0);
 
             mainCollider.enabled = true;
             _body.useGravity = true;
             _body.velocity = Vector3.zero;
-
-            gameManager.activeLemmings++;
+            gameObject.SetActive(false);
         }
     }
 }
