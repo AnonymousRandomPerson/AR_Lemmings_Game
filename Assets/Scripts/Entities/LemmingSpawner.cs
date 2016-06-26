@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Lemmings.Graphics;
 using Lemmings.Managers;
 using Lemmings.Util;
 using Lemmings.Util.Timers;
@@ -16,7 +17,6 @@ namespace Lemmings.Entities {
 
         /// <summary> The lemmings in the spawner. </summary>
         private Lemming[] lemmings;
-
         /// <summary> The total number of lemmings to spawn. </summary>
         private int _totalLemmings;
         /// <summary> The total number of lemmings to spawn. </summary>
@@ -38,12 +38,13 @@ namespace Lemmings.Entities {
         [SerializeField]
         [Tooltip("The amount of time between lemming spawns.")]
         private float spawnInterval;
-
         /// <summary> Timer for spawning lemmings. </summary>
         private LimitTimer spawnTimer;
-
         /// <summary> The y offset to the spawn point. </summary>
         private float spawnOffset;
+
+        /// <summary> The visible portal of the spawner. </summary>
+        private Portal portal;
 
         /// <summary>
         /// Initializes the spawner.
@@ -51,16 +52,19 @@ namespace Lemmings.Entities {
         protected override void Start() {
             base.Start();
             spawnTimer = new LimitTimer(SpawnLemming, spawnInterval);
+            portal = transform.GetComponentInChildren<Portal>();
         }
-    	
-    	/// <summary>
+        
+        /// <summary>
         /// Periodically spawns lemmings up to the spawn limit.
         /// </summary>
-    	private void Update() {
-            if (!IsFinished()) {
+        private void Update() {
+            if (IsFinished()) {
+                portal.SetShrink();
+            } else {
                 spawnTimer.Run();
             }
-    	}
+        }
 
         /// <summary>
         /// Checks if the spawner has finished spawning lemmings.
@@ -90,6 +94,7 @@ namespace Lemmings.Entities {
         public override void Reset() {
             base.Reset();
             spawnedLemmings = 0;
+            spawnTimer.Reset();
         }
     }
 }

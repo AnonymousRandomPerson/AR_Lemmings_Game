@@ -21,15 +21,14 @@ namespace Lemmings.UI {
             text = GetComponent<Text>();
             gameManager = GameManager.instance;
         }
-    	
-    	/// <summary>
+        
+        /// <summary>
         /// Updates the counter.
         /// </summary>
         private void Update() {
-            int goalLemmings = gameManager.goalLemmings;
+            int activeLemmings = gameManager.activeLemmings;
             int numLemmings = gameManager.numLemmings;
-            text.text = goalLemmings + "/" + numLemmings;
-            text.color = goalLemmings == numLemmings ? Color.green : Color.black;
-    	}
+            text.text = activeLemmings + "/" + numLemmings;
+        }
     }
 }

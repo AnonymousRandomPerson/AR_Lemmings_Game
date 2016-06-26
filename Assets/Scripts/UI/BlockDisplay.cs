@@ -38,11 +38,11 @@ namespace Lemmings.UI {
                 textCounters[i] = blocks[i].GetComponentInChildren<Text>();
             }
         }
-    	
-    	/// <summary>
+        
+        /// <summary>
         /// Updates the block display.
         /// </summary>
-    	private void Update() {
+        private void Update() {
             selector.position = blocks[(int)player.selectedBlock].transform.position;
             int numAvailable = 0;
             for (int i = 0; i < textCounters.Length; i++) {
@@ -50,6 +50,6 @@ namespace Lemmings.UI {
                 textCounters[i].text = numAvailable.ToString();
                 textCounters[i].color = numAvailable == 0 ? Color.red : Color.black;
             }
-    	}
+        }
     }
 }

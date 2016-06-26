@@ -45,6 +45,8 @@ namespace Lemmings.Entities {
         private bool won;
         /// <summary> Whether the lemming is visible. </summary>
         private bool visible = true;
+        /// <summary> Whether the lemming has finished spawning. </summary>
+        private bool spawned;
 
         /// <summary> Renderers on the lemming. </summary>
         private Renderer[] renderers;
@@ -71,9 +73,8 @@ namespace Lemmings.Entities {
 
             renderers = transform.FindChild("Model").GetComponentsInChildren<MeshRenderer>();
             gameManager = GameManager.instance;
-            if (gameManager.pictureMode) {
-                body.useGravity = false;
-            }
+            Reset();
+            gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -84,9 +85,6 @@ namespace Lemmings.Entities {
             if (animator == null) {
                 animator = GetComponentInChildren<Animator>();
             }
-            animator.speed = 1;
-            animator.SetBool("moving", true);
-            animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, -1, 0);
         }
 
         /// <summary>
@@ -97,6 +95,8 @@ namespace Lemmings.Entities {
                 if (visible) {
                     Disappear();
                 }
+            } else if (!spawned) {
+                Appear();
             }
         }
 
@@ -104,7 +104,7 @@ namespace Lemmings.Entities {
         /// Updates the lemming every physics tick.
         /// </summary>
         private void FixedUpdate() {
-            if (!dead && !won && !gameManager.pictureMode) {
+            if (!dead && !won && spawned && !gameManager.pictureMode) {
                 Move();
             }
         }
@@ -136,23 +136,48 @@ namespace Lemmings.Entities {
         }
 
         /// <summary>
+        /// Appear this instance.
+        /// </summary>
+        private void Appear() {
+            _body.velocity = Vector3.zero;
+            if (AddAlpha(Time.deltaTime) >= 1) {
+                mainCollider.enabled = true;
+                _body.useGravity = true;
+                spawned = true;
+
+                animator.speed = 1;
+                animator.SetBool("moving", true);
+                animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, -1, 0);
+            }
+        }
+
+        /// <summary>
         /// Handles the disappearing animation for the lemming.
         /// </summary>
         private void Disappear() {
             _body.velocity = Vector3.zero;
-            Color playerColor = new Color();
-            foreach (Renderer playerRenderer in renderers) {
-                playerColor = playerRenderer.material.color;
-                playerColor.a -= Time.deltaTime;
-                playerRenderer.material.color = playerColor;
-            }
-            if (playerColor.a <= Mathf.Epsilon) {
+            if (AddAlpha(-Time.deltaTime) <= Mathf.Epsilon) {
                 foreach (Renderer playerRenderer in renderers) {
                     playerRenderer.enabled = false;
                 }
                 visible = false;
                 gameManager.activeLemmings--;
             }
+        }
+
+        /// <summary>
+        /// Adds an alpha value to the player renderers.
+        /// </summary>
+        /// <returns>The new alpha value of the player renderers.</returns>
+        /// <param name="amount">The alpha value to add.</param>
+        private float AddAlpha(float amount) {
+            Color playerColor = new Color();
+            foreach (Renderer playerRenderer in renderers) {
+                playerColor = playerRenderer.material.color;
+                playerColor.a += amount;
+                playerRenderer.material.color = playerColor;
+            }
+            return playerColor.a;
         }
 
         /// <summary>
@@ -197,17 +222,18 @@ namespace Lemmings.Entities {
 
             dead = false;
             won = false;
+            spawned = false;
 
             Color playerColor = new Color();
             foreach (Renderer playerRenderer in renderers) {
                 playerColor = playerRenderer.material.color;
-                playerColor.a = 1;
+                playerColor.a = 0;
                 playerRenderer.material.color = playerColor;
                 playerRenderer.enabled = true;
             }
 
-            mainCollider.enabled = true;
-            _body.useGravity = true;
+            mainCollider.enabled = false;
+            _body.useGravity = false;
             _body.velocity = Vector3.zero;
             gameObject.SetActive(false);
         }

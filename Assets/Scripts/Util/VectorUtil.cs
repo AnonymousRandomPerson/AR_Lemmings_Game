@@ -7,14 +7,40 @@ namespace Lemmings.Util {
     static class VectorUtil {
 
         /// <summary>
+        /// Sets the x and z components of a vector.
+        /// </summary>
+        /// <returns>The modified vector.</returns>
+        /// <param name="vector">The vector to modify.</param>.</param>
+        /// <param name="number">The number to set the x and z components to.</param>
+        public static Vector3 SetXZ(Vector3 vector, float number) {
+            Vector3 newVector = vector;
+            newVector.x = number;
+            newVector.z = number;
+            return newVector;
+        }
+
+        /// <summary>
         /// Sets the y component of a vector.
         /// </summary>
-        /// <returns>A new vector with a modified y component from the previous vector.</returns>
+        /// <returns>The modified vector.</returns>
         /// <param name="vector">The vector to set the y component of</param>
         /// <param name="height">The y component to set the vector to.</param>
         public static Vector3 SetY(Vector3 vector, float y) {
             Vector3 newVector = vector;
             newVector.y = y;
+            return newVector;
+        }
+
+        /// <summary>
+        /// Scales the x and z components of a vector.
+        /// </summary>
+        /// <returns>The scaled vector.</returns>
+        /// <param name="vector">The vector to scale.</param>
+        /// <param name="scale">The scale to modify the vector with.</param>
+        public static Vector3 ScaleXZ(Vector3 vector, float scale) {
+            Vector3 newVector = vector;
+            newVector.x += scale;
+            newVector.z += scale;
             return newVector;
         }
 

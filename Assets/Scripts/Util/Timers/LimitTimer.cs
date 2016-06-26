@@ -38,6 +38,13 @@ namespace Lemmings.Util.Timers {
                 lastTime = currentTime;
             }
         }
+
+        /// <summary>
+        /// Resets the timer.
+        /// </summary>
+        public void Reset() {
+            lastTime = Time.time;
+        }
     }
 }
 

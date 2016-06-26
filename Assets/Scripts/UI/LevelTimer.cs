@@ -17,11 +17,11 @@ namespace Lemmings.UI {
         /// <summary>
         /// Finds needed objects in the scene.
         /// </summary>
-    	private void Start() {
+        private void Start() {
             text = GetComponent<Text>();
             gameManager = GameManager.instance;
-    	}
-    	
+        }
+        
         /// <summary>
         /// Updates the time text.
         /// </summary>
@@ -34,6 +34,6 @@ namespace Lemmings.UI {
             string minutes = (currentTime / 60).ToString();
 
             text.text = minutes + ":" + seconds;
-    	}
+        }
     }
 }
