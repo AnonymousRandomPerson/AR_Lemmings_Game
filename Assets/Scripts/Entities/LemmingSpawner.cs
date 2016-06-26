@@ -61,7 +61,7 @@ namespace Lemmings.Entities {
         private void Update() {
             if (IsFinished()) {
                 portal.SetShrink();
-            } else {
+            } else if (portal.IsReady()) {
                 spawnTimer.Run();
             }
         }

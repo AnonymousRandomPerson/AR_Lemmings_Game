@@ -27,5 +27,15 @@ namespace Lemmings.Level {
                 SurfaceManager.instance.VisitSurface();
             }
         }
+
+        /// <summary>
+        /// Sets whether the surface is visible.
+        /// </summary>
+        /// <param name="visible">Whether the surface is visible.</param>
+        public void SetVisible(bool visible) {
+            foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>()) {
+                renderer.enabled = visible;
+            }
+        }
     }
 }

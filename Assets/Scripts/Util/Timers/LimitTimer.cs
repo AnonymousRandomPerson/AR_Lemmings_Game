@@ -23,7 +23,7 @@ namespace Lemmings.Util.Timers {
         /// <param name="callback">The function to limit calls to.</param>
         /// <param name="timeDelay">The time delay before the function can be called again.</param>
         public LimitTimer(LimitCallback callback, float timeDelay) {
-            lastTime = Mathf.NegativeInfinity;
+            lastTime = -timeDelay;
             this.timeDelay = timeDelay;
             this.callback = callback;
         }
@@ -43,7 +43,7 @@ namespace Lemmings.Util.Timers {
         /// Resets the timer.
         /// </summary>
         public void Reset() {
-            lastTime = Time.time;
+            lastTime = -timeDelay;
         }
     }
 }

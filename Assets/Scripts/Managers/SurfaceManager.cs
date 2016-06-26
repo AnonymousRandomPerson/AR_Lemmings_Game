@@ -55,5 +55,15 @@ namespace Lemmings.Managers {
                 surface.Reset();
             }
         }
+
+        /// <summary>
+        /// Sets whether the surfaces are visible.
+        /// </summary>
+        /// <param name="visible">Whether the surfaces are visible.</param>
+        public void SetVisible(bool visible) {
+            foreach (Surface surface in surfaces) {
+                surface.SetVisible(visible);
+            }
+        }
     }
 }

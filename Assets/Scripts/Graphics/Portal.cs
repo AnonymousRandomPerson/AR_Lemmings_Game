@@ -53,13 +53,10 @@ namespace Lemmings.Graphics {
         }
 
         /// <summary>
-        /// Resets the object.
+        /// Checks if the portal is ready to spawn lemmings.
         /// </summary>
-        public override void Reset() {
-            base.Reset();
-            transform.localScale = VectorUtil.SetXZ(transform.localScale, 0);
-            state = State.Expand;
-            gameObject.SetActive(true);
+        public bool IsReady() {
+            return state != State.Expand;
         }
 
         /// <summary>
@@ -67,6 +64,16 @@ namespace Lemmings.Graphics {
         /// </summary>
         public void SetShrink() {
             state = State.Shrink;
+        }
+
+        /// <summary>
+        /// Resets the object.
+        /// </summary>
+        public override void Reset() {
+            base.Reset();
+            transform.localScale = VectorUtil.SetXZ(transform.localScale, 0);
+            state = State.Expand;
+            gameObject.SetActive(true);
         }
     }
 }

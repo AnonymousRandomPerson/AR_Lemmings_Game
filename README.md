@@ -16,5 +16,6 @@ This project uses [Git Large File Storage](https://git-lfs.github.com/) to store
 *   Left click: Remove block
 *   Scroll wheel/Number keys: Switch selected block
 *   R: Reset level
+*   Tab: Toggle mesh/surface visiblity
 *   P: Pause
 *   Escape: Unlock mouse from game

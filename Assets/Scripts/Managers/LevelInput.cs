@@ -67,6 +67,8 @@ namespace Lemmings.Managers {
     struct PlatformInput {
         /// <summary> The positions of the corners of the platforms. </summary>
         internal List<Vector3> vertices;
+        /// <summary> A custom height for the platform. </summary>
+        internal float height;
 
         /// <summary>
         /// Initializes a platform.
@@ -74,6 +76,7 @@ namespace Lemmings.Managers {
         /// <param name="vertices">The positions of the corners of the platform.</param>
         internal PlatformInput(List<Vector3> vertices) {
             this.vertices = vertices;
+            height = 0;
         }
 
         /// <summary>
@@ -81,10 +84,15 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="json">JSON data for the platform.</param>
         internal PlatformInput(JSONObject json) {
-            List<JSONObject> jsonList = json.list;
+            List<JSONObject> jsonList = json.GetField("points").list;
             vertices = new List<Vector3>(jsonList.Count);
             foreach (JSONObject vertexJSON in jsonList) {
                 vertices.Add(JSONUtil.MakeVectorFromJSON(vertexJSON));
+            }
+            if (json.HasField("height")) {
+                height = json.GetField("height").f;
+            } else {
+                height = 0;
             }
         }
     }
@@ -103,7 +111,7 @@ namespace Lemmings.Managers {
         internal WallInput(JSONObject json) {
             endpoints = new Vector3[2];
             List<JSONObject> endpointList = json.list;
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < endpoints.Length; i++) {
                 endpoints[i] = JSONUtil.MakeVectorFromJSON(endpointList[i]);
             }
         }

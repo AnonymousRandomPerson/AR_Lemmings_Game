@@ -130,7 +130,7 @@ namespace Lemmings.Managers {
                 SurfaceManager.instance.AddSurface(surfaceComponent);
 
                 foreach (PlatformInput platform in surface.platforms) {
-                    GameObject platformObject = CreatePlatform(platform);
+                    GameObject platformObject = CreatePlatform(platform, platform.height);
                     platformObject.name = "Platform";
                     platformObject.GetComponent<Renderer>().material = surfaceMaterial;
                     platformObject.transform.parent = surfaceObject.transform;
@@ -149,10 +149,11 @@ namespace Lemmings.Managers {
                 Vector3 direction = wall.endpoints[1] - wall.endpoints[0];
                 Vector3 ortho = VectorUtil.GetOrthonormal(direction) * wallThickness / 2;
                 List<Vector3> wallPoints = new List<Vector3>(4);
-                wallPoints.Add(wall.endpoints[0] + ortho);
-                wallPoints.Add(wall.endpoints[0] - ortho);
-                wallPoints.Add(wall.endpoints[1] - ortho);
-                wallPoints.Add(wall.endpoints[1] + ortho);
+                Vector3 heightOffset = Vector3.up * wallHeight / 2;
+                wallPoints.Add(wall.endpoints[0] + ortho + heightOffset);
+                wallPoints.Add(wall.endpoints[0] - ortho + heightOffset);
+                wallPoints.Add(wall.endpoints[1] - ortho + heightOffset);
+                wallPoints.Add(wall.endpoints[1] + ortho + heightOffset);
                 PlatformInput wallSurface = new PlatformInput(wallPoints);
                 GameObject wallObject = CreatePlatform(wallSurface, wallHeight);
                 wallObject.name = "Wall";
