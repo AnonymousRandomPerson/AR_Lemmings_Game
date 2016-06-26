@@ -1,7 +1,10 @@
 # AR_Lemmings_Game
 Augmented reality Lemmings-esque game.
 
-Controls:
+## Installation notes
+This project uses [Git Large File Storage](https://git-lfs.github.com/) to store large .obj files.
+
+## Controls
 *   Right/D: Move right
 *   Left/A: Move left
 *   Up/W: Move forward
