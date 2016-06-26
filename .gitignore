@@ -21,7 +21,6 @@
 sysinfo.txt
 
 # User-defined
-*.obj
 *.DS_Store
 Assets/Logs*
 *Cube_Atlas*
