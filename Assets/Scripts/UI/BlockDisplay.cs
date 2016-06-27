@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Lemmings.Entities.Blocks;
 using Lemmings.Entities.Player;
+using Lemmings.Enums;
 using Lemmings.Managers;
 
 namespace Lemmings.UI {

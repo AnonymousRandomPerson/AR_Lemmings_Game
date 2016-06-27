@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Lemmings.Enums;
 using Lemmings.Managers;
 using Lemmings.Util;
 

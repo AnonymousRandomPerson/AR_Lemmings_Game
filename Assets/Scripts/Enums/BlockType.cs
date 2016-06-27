@@ -1,4 +1,4 @@
-﻿namespace Lemmings.Entities.Blocks {
+﻿namespace Lemmings.Enums {
     /// <summary>
     /// Types of blocks that the player can place.
     /// </summary>

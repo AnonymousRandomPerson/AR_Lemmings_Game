@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Lemmings.Entities.Blocks;
+using Lemmings.Enums;
 using Lemmings.Managers;
 using Lemmings.UI;
 using Lemmings.Util;
@@ -18,6 +19,9 @@ namespace Lemmings.Entities.Player {
             get { return playerPlacer; }
         }
 
+        /// <summary> The block manager to place blocks with. </summary>
+        private BlockManager blockManager;
+
         /// <summary> The block currently selected by the player. </summary>
         private BlockType _selectedBlock;
         /// <summary> The block currently selected by the player. </summary>
@@ -29,6 +33,16 @@ namespace Lemmings.Entities.Player {
         private int numBlockTypes;
         /// <summary> The number key of the last available block. </summary>
         private KeyCode keyLimit;
+
+        /// <summary> Layers to ignore when placing blocks. </summary>
+        [SerializeField]
+        [Tooltip("Layers to ignore when placing blocks.")]
+        private LayerMask layerMask;
+
+        /// <summary> The ranch at which blocks can be placed. </summary>
+        [SerializeField]
+        [Tooltip("The ranch at which blocks can be placed.")]
+        private float placeRange;
 
         /// <summary>
         /// Initializes the singleton player placer instance.
@@ -42,7 +56,8 @@ namespace Lemmings.Entities.Player {
         /// </summary>
         protected override void Start() {
             base.Start();
-            numBlockTypes = BlockManager.instance.numTypes;
+            blockManager = BlockManager.instance;
+            numBlockTypes = blockManager.numTypes;
             if (numBlockTypes >= 9) {
                 keyLimit = KeyCode.Alpha9;
             } else {
@@ -65,12 +80,27 @@ namespace Lemmings.Entities.Player {
         }
 
         /// <summary>
+        /// Gets the player's block placing status.
+        /// </summary>
+        /// <returns>The player's block placing status.</returns>
+        public PlaceStatus GetPlaceStatus() {
+            RaycastHit point;
+            if (!blockManager.HasBlock(selectedBlock)) {
+                return PlaceStatus.Out;
+            } else if (Physics.Raycast(transform.position, transform.forward, out point, placeRange, layerMask) && point.collider.tag != "Lemming") {
+                return PlaceStatus.Able;
+            } else {
+                return PlaceStatus.Range;
+            }
+        }
+
+        /// <summary>
         /// Places a block where the player is looking at.
         /// </summary>
         private void PlaceBlock() {
             RaycastHit point;
-            if (Physics.Raycast(transform.position, transform.forward, out point, 10) && point.collider.tag != "Lemming") {
-                BlockManager.instance.SpawnBlock(point.point, transform.eulerAngles, point.normal, selectedBlock);
+            if (Physics.Raycast(transform.position, transform.forward, out point, placeRange, layerMask) && point.collider.tag != "Lemming") {
+                blockManager.SpawnBlock(point.point, transform.eulerAngles, point.normal, selectedBlock);
             }
         }
 
@@ -79,7 +109,7 @@ namespace Lemmings.Entities.Player {
         /// </summary>
         private void RemoveBlock() {
             RaycastHit point;
-            if (Physics.Raycast(transform.position, transform.forward, out point, 10)) {
+            if (Physics.Raycast(transform.position, transform.forward, out point, placeRange, layerMask)) {
                 Block block = point.collider.GetComponent<Block>();
                 if (block != null) {
                     block.Despawn();

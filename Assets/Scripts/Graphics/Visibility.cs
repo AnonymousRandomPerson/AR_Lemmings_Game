@@ -17,7 +17,7 @@ namespace Lemmings.Graphics {
         private bool meshVisible;
 
         /// <summary> Timer to prevent input from occurring too fast. </summary>
-        private LimitTimer keyTimer;
+        private LimitTimerCallback keyTimer;
         /// <summary> The time to wait before the visibility key can be pressed again. </summary>
         [SerializeField]
         [Tooltip("The time to wait before the visibility key can be pressed again.")]
@@ -35,7 +35,7 @@ namespace Lemmings.Graphics {
         /// Initializes the key timer.
         /// </summary>
         private void Start() {
-            keyTimer = new LimitTimer(ChangeSetting, keyCooldown);
+            keyTimer = new LimitTimerCallback(ChangeSetting, keyCooldown);
             surfaceManager = SurfaceManager.instance;
         }
 

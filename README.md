@@ -9,8 +9,6 @@ This project uses [Git Large File Storage](https://git-lfs.github.com/) to store
 *   Left/A: Move left
 *   Up/W: Move forward
 *   Down/S: Move backward
-*   Space/Page Up: Move up
-*   Shift/Page Down: Move down
 *   Mouse movement: Rotate camera
 *   Right click: Place block
 *   Left click: Remove block

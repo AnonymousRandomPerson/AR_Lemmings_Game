@@ -156,6 +156,7 @@ namespace Lemmings.Managers {
                 wallPoints.Add(wall.endpoints[1] + ortho + heightOffset);
                 PlatformInput wallSurface = new PlatformInput(wallPoints);
                 GameObject wallObject = CreatePlatform(wallSurface, wallHeight);
+                wallObject.layer = LayerMask.NameToLayer("Wall");
                 wallObject.name = "Wall";
                 wallObject.GetComponent<Renderer>().material = wallMaterial;
                 wallObject.transform.parent = wallContainer.transform;
@@ -187,7 +188,7 @@ namespace Lemmings.Managers {
         /// <param name="bottom">The bottom vertices of the platform.</param>
         private GameObject CreatePlatform(PlatformInput top, PlatformInput bottom) {
             GameObject virtualPlatform = new GameObject();
-            virtualPlatform.layer = 7;
+            virtualPlatform.layer = LayerMask.NameToLayer("Platform");
             virtualPlatform.AddComponent<MeshFilter>();
             virtualPlatform.AddComponent<MeshRenderer>();
             Mesh mesh = virtualPlatform.GetComponent<MeshFilter>().mesh;

@@ -28,6 +28,17 @@ namespace Lemmings.Entities.Player {
         [Tooltip("The turn speed of the camera.")]
         private float turnSpeed;
 
+        /// <summary> The player controller. </summary>
+        private CharacterController controller;
+
+        /// <summary>
+        /// Initializes the player controller.
+        /// </summary>
+        protected override void Start() {
+            base.Start();
+            controller = GetComponent<CharacterController>();
+        }
+
         /// <summary>
         /// Updates the player every physics tick.
         /// </summary>
@@ -63,16 +74,9 @@ namespace Lemmings.Entities.Player {
             if (InputUtil.GetKey(KeyCode.S, KeyCode.DownArrow)) {
                 targetDirection += Vector3.back;
             }
-            if (InputUtil.GetKey(KeyCode.LeftShift, KeyCode.RightShift, KeyCode.PageDown)) {
-                targetDirection += Vector3.down;
-            }
-            if (InputUtil.GetKey(KeyCode.Space, KeyCode.PageUp)) {
-                targetDirection += Vector3.up;
-            }
-            targetDirection *= maxSpeed;
+            targetDirection = transform.rotation * targetDirection * maxSpeed;
             moveDirection = Vector3.MoveTowards(moveDirection, targetDirection, acceleration);
-            transform.Translate(moveDirection.x, 0, moveDirection.z, Space.Self);
-            transform.Translate(Vector3.up * moveDirection.y, Space.World);
+            controller.SimpleMove(moveDirection);
         }
 
         /// <summary>

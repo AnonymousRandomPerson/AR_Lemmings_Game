@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Lemmings.Entities.Blocks;
+using Lemmings.Enums;
 using Lemmings.Util;
 
 namespace Lemmings.Managers {
@@ -83,7 +84,7 @@ namespace Lemmings.Managers {
         public Block SpawnBlock(Vector3 position, Vector3 rotation, Vector3 normal, BlockType type) {
             Block block = null;
             int typeInt = (int)type;
-            if (inactiveBlocks[typeInt].Count > 0) {
+            if (HasBlock(type)) {
                 block = inactiveBlocks[typeInt].Dequeue();
                 block.transform.position = position + normal * blockOffsets[typeInt];
                 rotation.x = blockPrefabs[typeInt].transform.eulerAngles.x;
@@ -93,6 +94,15 @@ namespace Lemmings.Managers {
                 block.gameObject.SetActive(true);
             }
             return block;
+        }
+
+        /// <summary>
+        /// Checks if there are idle blocks of a certain type.
+        /// </summary>
+        /// <returns>Whether there are idle blocks of the specified type.</returns>
+        /// <param name="type">The type of block to check for.</param>
+        public bool HasBlock(BlockType type) {
+            return inactiveBlocks[(int)type].Count > 0;
         }
 
         /// <summary>

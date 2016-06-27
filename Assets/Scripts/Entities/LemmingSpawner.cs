@@ -39,7 +39,7 @@ namespace Lemmings.Entities {
         [Tooltip("The amount of time between lemming spawns.")]
         private float spawnInterval;
         /// <summary> Timer for spawning lemmings. </summary>
-        private LimitTimer spawnTimer;
+        private LimitTimerCallback spawnTimer;
         /// <summary> The y offset to the spawn point. </summary>
         private float spawnOffset;
 
@@ -51,7 +51,7 @@ namespace Lemmings.Entities {
         /// </summary>
         protected override void Start() {
             base.Start();
-            spawnTimer = new LimitTimer(SpawnLemming, spawnInterval);
+            spawnTimer = new LimitTimerCallback(SpawnLemming, spawnInterval);
             portal = transform.GetComponentInChildren<Portal>();
         }
         

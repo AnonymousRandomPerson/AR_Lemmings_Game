@@ -1,41 +1,36 @@
 ﻿using UnityEngine;
 
 namespace Lemmings.Util.Timers {
-    /// <summary> A function that can only execute once within a certain delay. </summary>
-    public delegate void LimitCallback();
-
     /// <summary>
-    /// Causes a function to only be executable once within a certain delay.
+    /// Keeps track of the last time that an action occurred.
     /// </summary>
     public class LimitTimer {
 
-        /// <summary> The function to limit calls to. </summary>
-        private LimitCallback callback;
-
         /// <summary> The time that the function was last called at. </summary>
-        private float lastTime;
+        protected float lastTime;
         /// <summary> The time delay before the function can be called again. </summary>
-        private float timeDelay;
+        protected float timeDelay;
 
         /// <summary>
-        /// Initializes a limit function.
+        /// Initializes a timer.
         /// </summary>
-        /// <param name="callback">The function to limit calls to.</param>
-        /// <param name="timeDelay">The time delay before the function can be called again.</param>
-        public LimitTimer(LimitCallback callback, float timeDelay) {
+        /// <param name="timeDelay">The time delay before the action can be called again.</param>
+        public LimitTimer(float timeDelay) {
             lastTime = -timeDelay;
             this.timeDelay = timeDelay;
-            this.callback = callback;
         }
 
         /// <summary>
-        /// Calls the function if the delay is over.
+        /// Checks if the action can occur.
         /// </summary>
-        public void Run() {
+        /// <returns>Whether the action can occur..</returns>
+        public bool CanRun() {
             float currentTime = Time.time;
             if (currentTime - lastTime >= timeDelay) {
-                callback();
                 lastTime = currentTime;
+                return true;
+            } else {
+                return false;
             }
         }
 

@@ -3,6 +3,7 @@ using Lemmings.Entities.Blocks;
 using Lemmings.Level;
 using Lemmings.Managers;
 using Lemmings.Util;
+using Lemmings.Util.Timers;
 
 namespace Lemmings.Entities {
     /// <summary>
@@ -58,6 +59,9 @@ namespace Lemmings.Entities {
         [Tooltip("The falling speed that will cause the lemming to die.")]
         private float fallDeathSpeed;
 
+        /// <summary> Timer for limiting jump pad effects. </summary>
+        private LimitTimer jumpTimer;
+
         /// <summary>
         /// Logs the initial conditions of the object.
         /// </summary>
@@ -73,6 +77,7 @@ namespace Lemmings.Entities {
 
             renderers = transform.FindChild("Model").GetComponentsInChildren<MeshRenderer>();
             gameManager = GameManager.instance;
+            jumpTimer = new LimitTimer(0.25f);
             Reset();
             gameObject.SetActive(true);
         }
@@ -215,6 +220,14 @@ namespace Lemmings.Entities {
         }
 
         /// <summary>
+        /// Checks if the lemming can be affected by a jump pad.
+        /// </summary>
+        /// <returns>Whether the lemming can be affected by a jump pad.</returns>
+        public bool CanJump() {
+            return jumpTimer.CanRun();
+        }
+
+        /// <summary>
         /// Resets the object.
         /// </summary>
         public override void Reset() {
@@ -235,6 +248,9 @@ namespace Lemmings.Entities {
             mainCollider.enabled = false;
             _body.useGravity = false;
             _body.velocity = Vector3.zero;
+
+            jumpTimer.Reset();
+
             gameObject.SetActive(false);
         }
     }

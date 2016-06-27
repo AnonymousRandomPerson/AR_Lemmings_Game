@@ -17,7 +17,9 @@ namespace Lemmings.Entities.Blocks {
         /// <param name="lemming">The lemming who triggered the block.</param>
         /// <param name="hit">Collision information.</param>
         public override void AffectLemming(Lemming lemming, RaycastHit hit = new RaycastHit()) {
-            lemming.body.AddForce((transform.forward + Vector3.up) * force);
+            if (lemming.CanJump()) {
+                lemming.body.AddForce((transform.forward + Vector3.up) * force);
+            }
         }
     }
 }
