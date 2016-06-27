@@ -62,6 +62,9 @@ namespace Lemmings.Entities {
         /// <summary> Timer for limiting jump pad effects. </summary>
         private LimitTimer jumpTimer;
 
+        /// <summary> The spawner that spawned the lemming. </summary>
+        private LemmingSpawner spawner;
+
         /// <summary>
         /// Logs the initial conditions of the object.
         /// </summary>
@@ -85,11 +88,12 @@ namespace Lemmings.Entities {
         /// <summary>
         /// Initializes the lemming when spawning it.
         /// </summary>
-        public void Spawn() {
+        internal void Spawn(LemmingSpawner spawner) {
             visible = true;
             if (animator == null) {
                 animator = GetComponentInChildren<Animator>();
             }
+            this.spawner = spawner;
         }
 
         /// <summary>
@@ -153,6 +157,8 @@ namespace Lemmings.Entities {
                 animator.speed = 1;
                 animator.SetBool("moving", true);
                 animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, -1, 0);
+
+                spawner.FinishSpawn();
             }
         }
 

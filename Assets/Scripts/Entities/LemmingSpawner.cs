@@ -33,6 +33,8 @@ namespace Lemmings.Entities {
         }
         /// <summary> The number of lemmings that have been spawned. </summary>
         private int spawnedLemmings;
+        /// <summary> The number of lemmings that have finished being spawned. </summary>
+        private int finishedSpawnedLemmings;
 
         /// <summary> The amount of time between lemming spawns. </summary>
         [SerializeField]
@@ -59,9 +61,7 @@ namespace Lemmings.Entities {
         /// Periodically spawns lemmings up to the spawn limit.
         /// </summary>
         private void Update() {
-            if (IsFinished()) {
-                portal.SetShrink();
-            } else if (portal.IsReady()) {
+            if (!IsFinished() && portal.IsReady()) {
                 spawnTimer.Run();
             }
         }
@@ -84,8 +84,17 @@ namespace Lemmings.Entities {
                 spawnOffset = currentLemming.GetComponent<Collider>().bounds.extents.y;
             }
             currentLemming.transform.position = transform.position + Vector3.up * spawnOffset * 1.5f;
-            currentLemming.Spawn();
+            currentLemming.Spawn(this);
             GameManager.instance.activeLemmings++;
+        }
+
+        /// <summary>
+        /// Marks a lemming as finished spawning.
+        /// </summary>
+        public void FinishSpawn() {
+            if (++finishedSpawnedLemmings >= _totalLemmings) {
+                portal.SetShrink();
+            }
         }
 
         /// <summary>
@@ -94,6 +103,7 @@ namespace Lemmings.Entities {
         public override void Reset() {
             base.Reset();
             spawnedLemmings = 0;
+            finishedSpawnedLemmings = 0;
             spawnTimer.Reset();
         }
     }

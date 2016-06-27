@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Lemmings.Entities;
+using Lemmings.Managers;
 using Lemmings.Util;
 
 namespace Lemmings.Entities.Player {
@@ -44,6 +45,10 @@ namespace Lemmings.Entities.Player {
         /// </summary>
         private void FixedUpdate() {
             Move();
+
+            if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
+                GameManager.instance.ResetLevel();
+            }
         }
 
         /// <summary>
@@ -74,7 +79,10 @@ namespace Lemmings.Entities.Player {
             if (InputUtil.GetKey(KeyCode.S, KeyCode.DownArrow)) {
                 targetDirection += Vector3.back;
             }
-            targetDirection = transform.rotation * targetDirection * maxSpeed;
+            targetDirection = transform.rotation * targetDirection;
+            targetDirection.y = 0;
+            targetDirection.Normalize();
+            targetDirection *= maxSpeed;
             moveDirection = Vector3.MoveTowards(moveDirection, targetDirection, acceleration);
             controller.SimpleMove(moveDirection);
         }

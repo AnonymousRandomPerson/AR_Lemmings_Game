@@ -8,7 +8,7 @@ namespace Lemmings.Level {
     class Goal : ResettableObject {
 
         /// <summary> The particles emitted from the goal. </summary>
-        private GameObject particles;
+        private ParticleSystem particles;
         /// <summary> The amount of time that particles will be emitted for. </summary>
         [SerializeField]
         [Tooltip("The amount of time that particles will be emitted for.")]
@@ -21,7 +21,7 @@ namespace Lemmings.Level {
         /// </summary>
         protected override void Start() {
             base.Start();
-            particles = transform.FindChild("Particles").gameObject;
+            particles = transform.GetComponentInChildren<ParticleSystem>();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Lemmings.Level {
             if (particleTimer > 0) {
                 particleTimer -= Time.deltaTime;
                 if (particleTimer <= 0) {
-                    particles.SetActive(false);
+                    particles.Stop();
                 }
             }
         }
@@ -41,7 +41,7 @@ namespace Lemmings.Level {
         /// </summary>
         public void Win() {
             particleTimer = particleTime;
-            particles.SetActive(true);
+            particles.Play();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Lemmings.Level {
         /// </summary>
         public override void Reset() {
             particleTimer = 0;
-            particles.SetActive(false);
+            particles.Stop();
         }
     }
 }

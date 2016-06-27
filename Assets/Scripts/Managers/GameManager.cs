@@ -84,7 +84,7 @@ namespace Lemmings.Managers {
         /// <summary>
         /// Resets the level.
         /// </summary>
-        private void ResetLevel() {
+        public void ResetLevel() {
             activeLemmings = 0;
             goalLemmings = 0;
             foreach (ResettableObject resetObject in resetObjects) {
