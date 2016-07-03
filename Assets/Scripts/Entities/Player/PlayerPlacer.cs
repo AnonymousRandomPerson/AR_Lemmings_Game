@@ -88,7 +88,7 @@ namespace Lemmings.Entities.Player {
             if (!blockManager.HasBlock(selectedBlock)) {
                 return PlaceStatus.Out;
             } else if (Physics.Raycast(transform.position, transform.forward, out point, placeRange, layerMask) && point.collider.tag != "Lemming") {
-                return PlaceStatus.Able;
+                return point.collider.tag == "Block" ? PlaceStatus.Rotate : PlaceStatus.Able;
             } else {
                 return PlaceStatus.Range;
             }
@@ -100,7 +100,12 @@ namespace Lemmings.Entities.Player {
         private void PlaceBlock() {
             RaycastHit point;
             if (Physics.Raycast(transform.position, transform.forward, out point, placeRange, layerMask) && point.collider.tag != "Lemming") {
-                blockManager.SpawnBlock(point.point, transform.eulerAngles, point.normal, selectedBlock);
+                if (point.collider.tag == "Block") {
+                    Block block = point.collider.GetComponent<Block>();
+                    block.Rotate();
+                } else {
+                    blockManager.SpawnBlock(point.point, transform.eulerAngles, point.normal, selectedBlock);
+                }
             }
         }
 

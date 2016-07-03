@@ -48,6 +48,13 @@ namespace Lemmings.Entities.Blocks {
         }
 
         /// <summary>
+        /// Stops the block from moving horizontally.
+        /// </summary>
+        private void FixedUpdate() {
+            body.velocity = VectorUtil.SetXZ(body.velocity, 0);
+        }
+
+        /// <summary>
         /// Affects lemmings that collide with the block.
         /// </summary>
         /// <param name="collider">The object that collided with the block.</param>
@@ -63,6 +70,13 @@ namespace Lemmings.Entities.Blocks {
         /// <param name="lemming">The lemming who triggered the block.</param>
         /// <param name="hit">Collision information.</param>
         public virtual void AffectLemming(Lemming lemming, RaycastHit hit = new RaycastHit()) {
+        }
+
+        /// <summary>
+        /// Rotates the block 90 degrees clockwise.
+        /// </summary>
+        public void Rotate() {
+            transform.RotateAround(transform.position, transform.up, 90);
         }
 
         /// <summary>
