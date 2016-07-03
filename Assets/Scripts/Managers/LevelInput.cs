@@ -47,17 +47,20 @@ namespace Lemmings.Managers {
     struct SurfaceInput {
         /// <summary> The platforms that make up the surface. </summary>
         internal List<PlatformInput> platforms;
+        /// <summary> Whether the surface is part of the floor. </summary>
+        internal bool isFloor;
 
         /// <summary>
         /// Initializes a surface.
         /// </summary>
         /// <param name="json">Json.</param>
-        internal SurfaceInput(JSONObject json) {
+        internal SurfaceInput(JSONObject json, bool isFloor = false) {
             List<JSONObject> jsonList = json.list;
             platforms = new List<PlatformInput>(jsonList.Count);
             foreach (JSONObject platform in jsonList) {
                 platforms.Add(new PlatformInput(platform));
             }
+            this.isFloor = isFloor;
         }
     }
 

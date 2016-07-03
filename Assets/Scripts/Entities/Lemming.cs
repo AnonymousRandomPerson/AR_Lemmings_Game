@@ -65,6 +65,20 @@ namespace Lemmings.Entities {
         /// <summary> The spawner that spawned the lemming. </summary>
         private LemmingSpawner spawner;
 
+        /// <summary> The unique index of the lemming. </summary>
+        private int _index;
+        /// <summary> The unique index of the lemming. </summary>
+        public int index {
+            get { return _index; }
+        }
+
+        /// <summary> The height of a lemming. </summary>
+        private static float _height;
+        /// <summary> The height of a lemming. </summary>
+        public static float height {
+            get { return _height; }
+        }
+
         /// <summary>
         /// Logs the initial conditions of the object.
         /// </summary>
@@ -76,24 +90,25 @@ namespace Lemmings.Entities {
             forwardOffset = mainCollider.bounds.extents.x;
             sideOffset = mainCollider.bounds.extents.z;
             heightOffset = mainCollider.bounds.extents.y;
+            _height = heightOffset * 2;
             blockDistance = forwardOffset * 1.5f;
 
+            animator = GetComponentInChildren<Animator>();
             renderers = transform.FindChild("Model").GetComponentsInChildren<MeshRenderer>();
-            gameManager = GameManager.instance;
+
             jumpTimer = new LimitTimer(0.25f);
-            Reset();
-            gameObject.SetActive(true);
+            ResetFields();
         }
 
         /// <summary>
         /// Initializes the lemming when spawning it.
         /// </summary>
-        internal void Spawn(LemmingSpawner spawner) {
+        internal void Spawn(LemmingSpawner spawner, int index) {
             visible = true;
-            if (animator == null) {
-                animator = GetComponentInChildren<Animator>();
-            }
             this.spawner = spawner;
+            _index = index;
+            gameManager = GameManager.instance;
+            gameManager.AddLemming(this);
         }
 
         /// <summary>
@@ -115,6 +130,7 @@ namespace Lemmings.Entities {
         private void FixedUpdate() {
             if (!dead && !won && spawned && !gameManager.pictureMode) {
                 Move();
+                CheckSurface();
             }
         }
 
@@ -141,6 +157,20 @@ namespace Lemmings.Entities {
 
             if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
                 Die();
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the surface underneath has been visited.
+        /// </summary>
+        private void CheckSurface() {
+            RaycastHit surfaceHit;
+            LayerMask surfaceMask = 1 << LayerMask.NameToLayer("Platform");
+            if (Physics.Raycast(transform.position, Vector3.down, out surfaceHit, heightOffset * 2, surfaceMask)) {
+                Surface surface = surfaceHit.collider.GetComponentInParent<Surface>();
+                if (surface != null) {
+                    surface.VisitSurface();
+                }
             }
         }
 
@@ -172,7 +202,7 @@ namespace Lemmings.Entities {
                     playerRenderer.enabled = false;
                 }
                 visible = false;
-                gameManager.activeLemmings--;
+                gameManager.RemoveLemming(this);
             }
         }
 
@@ -239,6 +269,16 @@ namespace Lemmings.Entities {
         public override void Reset() {
             base.Reset();
 
+            ResetFields();
+            jumpTimer.Reset();
+
+            gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Resets the fields present on the lemming.
+        /// </summary>
+        private void ResetFields() {
             dead = false;
             won = false;
             spawned = false;
@@ -254,10 +294,6 @@ namespace Lemmings.Entities {
             mainCollider.enabled = false;
             _body.useGravity = false;
             _body.velocity = Vector3.zero;
-
-            jumpTimer.Reset();
-
-            gameObject.SetActive(false);
         }
     }
 }

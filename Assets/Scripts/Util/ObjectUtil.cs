@@ -7,6 +7,21 @@ namespace Lemmings.Util {
     static class ObjectUtil {
 
         /// <summary>
+        /// Creates a new empty game object.
+        /// </summary>
+        /// <returns>The new empty game object.</returns>
+        /// <param name="name">The name of the game object.</param>
+        /// <param name="parent">The parent object of the game object, or null to place the game object at the root level.</param>
+        public static GameObject CreateNewObject(string name, GameObject parent = null) {
+            GameObject newObject = new GameObject();
+            newObject.name = name;
+            if (parent != null) {
+                newObject.transform.parent = parent.transform;
+            }
+            return newObject;
+        }
+
+        /// <summary>
         /// Instantiates a game object, removing "(Clone)" from its name.
         /// </summary>
         /// <param name="original">The game object to instantiate.</param>

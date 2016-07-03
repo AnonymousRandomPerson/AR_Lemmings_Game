@@ -54,6 +54,15 @@ namespace Lemmings.Util {
             newVector = new Vector3(-newVector.z, newVector.y, newVector.x);
             return newVector;
         }
+
+        /// <summary>
+        /// Gets the string form of a vector with higher precision than Vector3.ToString().
+        /// </summary>
+        /// <returns>The string form of the given vector.</returns>
+        /// <param name="vector">The vector to get a string for.</param>
+        public static string GetPreciseString(Vector3 vector) {
+            return "(" + vector.x + "," + vector.y + "," + vector.z + ")";
+        }
     }
 }
 

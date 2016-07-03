@@ -78,14 +78,14 @@ namespace Lemmings.Entities {
         /// Spawns a lemming.
         /// </summary>
         private void SpawnLemming() {
-            Lemming currentLemming = lemmings[spawnedLemmings++];
+            int lemmingIndex = spawnedLemmings++;
+            Lemming currentLemming = lemmings[lemmingIndex];
             currentLemming.gameObject.SetActive(true);
             if (spawnOffset == 0) {
                 spawnOffset = currentLemming.GetComponent<Collider>().bounds.extents.y;
             }
             currentLemming.transform.position = transform.position + Vector3.up * spawnOffset * 1.5f;
-            currentLemming.Spawn(this);
-            GameManager.instance.activeLemmings++;
+            currentLemming.Spawn(this, lemmingIndex);
         }
 
         /// <summary>

@@ -11,6 +11,10 @@ namespace Lemmings.Level {
         [HideInInspector]
         public bool visited;
 
+        /// <summary> Whether the surface is part of the floor. </summary>
+        [HideInInspector]
+        public bool isFloor;
+
         /// <summary>
         /// Marks the surface as unvisited.
         /// </summary>
@@ -22,7 +26,7 @@ namespace Lemmings.Level {
         /// Marks the surface as visited.
         /// </summary>
         public void VisitSurface() {
-            if (!visited) {
+            if (!visited && !isFloor) {
                 visited = true;
                 SurfaceManager.instance.VisitSurface();
             }

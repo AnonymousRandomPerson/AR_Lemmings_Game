@@ -54,7 +54,7 @@ namespace Lemmings.Managers {
         /// </summary>
         private void Start() {
             if (json == null) {
-                // Connect to the server to get JSON file.
+                // Connect to the server to get a JSON file.
                 NetworkingManager.instance.ProcessStringFromURL((jsonText) =>
                     {
                         CreateLevel(jsonText);
@@ -83,6 +83,10 @@ namespace Lemmings.Managers {
             foreach (JSONObject surfaceJSON in surfaceJSONList.list) {
                 surfaceInput.Add(new SurfaceInput(surfaceJSON));
             }
+            JSONObject floorJSONList = input.GetField("floor");
+            foreach (JSONObject floorJSON in floorJSONList.list) {
+                surfaceInput.Add(new SurfaceInput(floorJSON, true));
+            }
 
             JSONObject wallJSONList = input.GetField("walls");
             List<WallInput> wallInput = new List<WallInput>(wallJSONList.Count);
@@ -94,6 +98,8 @@ namespace Lemmings.Managers {
             CreateGoal(goalInput);
             CreateSurfaces(surfaceInput);
             CreateWalls(wallInput);
+
+            LevelLogger.instance.json = jsonText;
         }
 
         /// <summary>
@@ -119,13 +125,10 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="surfaceInput">JSON data for the surface bounding boxes.</param>
         private void CreateSurfaces(List<SurfaceInput> surfaceInput) {
-            GameObject surfaceContainer = new GameObject();
-            surfaceContainer.name = "Surfaces";
+            GameObject surfaceContainer = ObjectUtil.CreateNewObject("Surfaces");
 
             foreach (SurfaceInput surface in surfaceInput) {
-                GameObject surfaceObject = new GameObject();
-                surfaceObject.name = "Surface";
-                surfaceObject.transform.parent = surfaceContainer.transform;
+                GameObject surfaceObject = ObjectUtil.CreateNewObject("Surface", surfaceContainer);
                 Surface surfaceComponent = surfaceObject.AddComponent<Surface>();
                 SurfaceManager.instance.AddSurface(surfaceComponent);
 
@@ -134,7 +137,12 @@ namespace Lemmings.Managers {
                     platformObject.name = "Platform";
                     platformObject.GetComponent<Renderer>().material = surfaceMaterial;
                     platformObject.transform.parent = surfaceObject.transform;
+
+                    if (surface.isFloor) {
+                        platformObject.AddComponent<Lava>();
+                    }
                 }
+                surfaceComponent.isFloor = surface.isFloor;
             }
         }
 
@@ -143,8 +151,7 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="wallInput">JSON data for the walls in the level.</param>
         private void CreateWalls(List<WallInput> wallInput) {
-            GameObject wallContainer = new GameObject();
-            wallContainer.name = "Walls";
+            GameObject wallContainer = ObjectUtil.CreateNewObject("Walls");
             foreach (WallInput wall in wallInput) {
                 Vector3 direction = wall.endpoints[1] - wall.endpoints[0];
                 Vector3 ortho = VectorUtil.GetOrthonormal(direction) * wallThickness / 2;

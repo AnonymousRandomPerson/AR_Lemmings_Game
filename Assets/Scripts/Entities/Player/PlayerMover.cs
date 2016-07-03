@@ -9,6 +9,13 @@ namespace Lemmings.Entities.Player {
     /// </summary>
     class PlayerMover : ResettableObject {
 
+        /// <summary> The singleton player instance. </summary>
+        private static PlayerMover _instance;
+        /// <summary> The singleton player instance. </summary>
+        public static PlayerMover instance {
+            get { return _instance; }
+        }
+
         /// <summary> The direction that the player is moving in. </summary>
         private Vector3 moveDirection;
         /// <summary> The maximum movement speed of the player. </summary>
@@ -29,8 +36,26 @@ namespace Lemmings.Entities.Player {
         [Tooltip("The turn speed of the camera.")]
         private float turnSpeed;
 
+        /// <summary> Whether the player can fly and pass through obstacles. </summary>
+        [Tooltip("Whether the player can fly and pass through obstacles.")]
+        public bool noClip;
+
+        /// <summary> The height of the player. </summary>
+        public float height {
+            get {
+                return controller.height;
+            }
+        }
+
         /// <summary> The player controller. </summary>
         private CharacterController controller;
+
+        /// <summary>
+        /// Initializes the singleton player instance.
+        /// </summary>
+        private void Awake() {
+            _instance = this;
+        }
 
         /// <summary>
         /// Initializes the player controller.
@@ -44,6 +69,7 @@ namespace Lemmings.Entities.Player {
         /// Updates the player every physics tick.
         /// </summary>
         private void FixedUpdate() {
+            controller.detectCollisions = !noClip;
             Move();
 
             if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
@@ -79,12 +105,29 @@ namespace Lemmings.Entities.Player {
             if (InputUtil.GetKey(KeyCode.S, KeyCode.DownArrow)) {
                 targetDirection += Vector3.back;
             }
+
             targetDirection = transform.rotation * targetDirection;
             targetDirection.y = 0;
             targetDirection.Normalize();
+
+            if (noClip) {
+                if (InputUtil.GetKey(KeyCode.LeftShift, KeyCode.RightShift, KeyCode.PageDown)) {
+                    targetDirection += Vector3.down;
+                }
+                if (InputUtil.GetKey(KeyCode.Space, KeyCode.PageUp)) {
+                    targetDirection += Vector3.up;
+                }
+                targetDirection.Normalize();
+            }
+
             targetDirection *= maxSpeed;
             moveDirection = Vector3.MoveTowards(moveDirection, targetDirection, acceleration);
-            controller.SimpleMove(moveDirection);
+
+            if (noClip) {
+                controller.Move(moveDirection * Time.fixedDeltaTime);
+            } else {
+                controller.SimpleMove(moveDirection);
+            }
         }
 
         /// <summary>

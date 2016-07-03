@@ -19,6 +19,9 @@ namespace Lemmings.Managers {
             }
         }
 
+        /// <summary> The game object that holds the blocks. </summary>
+        private GameObject blockContainer;
+
         /// <summary> The block prefab to initialize blocks with. </summary>
         [SerializeField]
         [Tooltip("The block prefabs to initialize object with.")]
@@ -54,6 +57,7 @@ namespace Lemmings.Managers {
         /// Creates the blocks in the factory.
         /// </summary>
         private void Start() {
+            blockContainer = ObjectUtil.CreateNewObject("Blocks");
             _numTypes = blockPrefabs.Length;
             inactiveBlocks = new Queue<Block>[_numTypes];
             blocks = new List<Block>[_numTypes];
@@ -64,7 +68,7 @@ namespace Lemmings.Managers {
                 for (int j = 0; j < numBlocks[i]; j++) {
                     Block block = ObjectUtil.Instantiate(blockPrefabs[i]);
                     block.gameObject.SetActive(false);
-                    block.transform.parent = transform;
+                    block.transform.parent = blockContainer.transform;
                     block.type = (BlockType)i;
                     inactiveBlocks[i].Enqueue(block);
                     blocks[i].Add(block);

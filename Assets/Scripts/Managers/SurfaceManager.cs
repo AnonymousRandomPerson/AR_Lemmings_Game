@@ -21,7 +21,11 @@ namespace Lemmings.Managers {
         private List<Surface> surfaces;
 
         /// <summary> The number of surfaces that have been visited. </summary>
-        private int numVisitedSurfaces;
+        private int _numVisitedSurfaces;
+        /// <summary> The number of surfaces that have been visited. </summary>
+        public int numVisitedSurfaces {
+            get { return _numVisitedSurfaces; }
+        }
 
         /// <summary>
         /// Sets the singleton instance of the game manager.
@@ -43,14 +47,14 @@ namespace Lemmings.Managers {
         /// Registers a visited surface.
         /// </summary>
         public void VisitSurface() {
-            numVisitedSurfaces++;
+            _numVisitedSurfaces++;
         }
 
         /// <summary>
         /// Resets the visited surfaces.
         /// </summary>
         internal void Reset() {
-            numVisitedSurfaces = 0;
+            _numVisitedSurfaces = 0;
             foreach (Surface surface in surfaces) {
                 surface.Reset();
             }

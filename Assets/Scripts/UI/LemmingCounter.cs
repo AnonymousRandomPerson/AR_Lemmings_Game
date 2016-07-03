@@ -26,7 +26,7 @@ namespace Lemmings.UI {
         /// Updates the counter.
         /// </summary>
         private void Update() {
-            int activeLemmings = gameManager.activeLemmings;
+            int activeLemmings = gameManager.CountLemmings();
             int numLemmings = gameManager.numLemmings;
             text.text = activeLemmings + "/" + numLemmings;
         }

@@ -4,6 +4,7 @@
     /// </summary>
     public enum PlaceStatus {
         Able,
+        Rotate,
         Range,
         Out
     }

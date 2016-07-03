@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 namespace Lemmings.Util {
@@ -65,6 +66,54 @@ namespace Lemmings.Util {
         /// <returns>The scroll wheel delta in this frame.</returns>
         public static float GetScrollWheel() {
             return Input.GetAxis("Mouse ScrollWheel");
+        }
+
+        /// <summary>
+        /// Gets the index after a certain search text.
+        /// </summary>
+        /// <returns>The index after the search text.</returns>
+        /// <param name="text">The text to search through.</param>
+        /// <param name="find">The text to find the index after.</param>
+        public static int GetIndexAfter(string text, string find) {
+            int index = text.IndexOf(find);
+            if (index >= 0) {
+                index += find.Length;
+            }
+            return index;
+        }
+
+        /// <summary>
+        /// Parses a list of vectors from text.
+        /// </summary>
+        /// <returns>The vector list parsed from the text.</returns>
+        /// <param name="text">The text to parse.</param>
+        /// <param name="startIndex">The text index to start parsing from.</param>
+        public static List<Vector3> ParseVectorList(string text, ref int currentIndex) {
+            List<Vector3> vectorList = new List<Vector3>();
+            while (currentIndex < text.Length && text[currentIndex] == '(') {
+                currentIndex++;
+                float x = GetVectorNumber(text, ref currentIndex, ',');
+                float y = GetVectorNumber(text, ref currentIndex, ',');
+                float z = GetVectorNumber(text, ref currentIndex, ')');
+                Vector3 newVector = new Vector3(x, y, z);
+                vectorList.Add(newVector);
+                currentIndex++;
+            }
+            return vectorList;
+        }
+
+        /// <summary>
+        /// Parses a number for a vector.
+        /// </summary>
+        /// <returns>The vector number.</returns>
+        /// <param name="text">The text to parse.</param>
+        /// <param name="currentIndex">The current parsing index of the text.</param>
+        /// <param name="endChar">The character after the number.</param>
+        private static float GetVectorNumber(string text, ref int currentIndex, char endChar) {
+            int endCharIndex = text.IndexOf(endChar, currentIndex);
+            string numberText = text.Substring(currentIndex, endCharIndex - currentIndex);
+            currentIndex = endCharIndex + 1;
+            return (float)Convert.ToDouble(numberText);
         }
     }
 }
