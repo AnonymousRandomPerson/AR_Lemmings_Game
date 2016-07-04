@@ -27,13 +27,14 @@ namespace Lemmings.UI {
         /// </summary>
         private void Update() {
             int currentTime = (int)gameManager.currentTime;
-            string seconds = (currentTime % 60).ToString();
-            if (currentTime < 10) {
-                seconds = "0" + seconds;
+            int seconds = (currentTime % 60);
+            string secondsText = seconds.ToString();
+            if (seconds < 10) {
+                secondsText = "0" + secondsText;
             }
-            string minutes = (currentTime / 60).ToString();
+            string minutesText = (currentTime / 60).ToString();
 
-            text.text = minutes + ":" + seconds;
+            text.text = minutesText + ":" + secondsText;
         }
     }
 }

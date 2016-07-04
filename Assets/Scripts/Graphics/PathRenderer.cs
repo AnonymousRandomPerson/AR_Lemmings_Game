@@ -140,7 +140,7 @@ namespace Lemmings.Graphics {
                             } else {
                                 heightOffset = Lemming.height;
                             }
-                            linePositions[j] += Vector3.down * (heightOffset / 2 - pathWidth);
+                            linePositions[j] += Vector3.down * (heightOffset / 2 - pathWidth * 2);
                             line.SetPosition(j, linePositions[j]);
                         }
                         line.material = pathMaterial;

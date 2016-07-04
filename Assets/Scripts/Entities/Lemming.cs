@@ -148,12 +148,16 @@ namespace Lemmings.Entities {
             Block block = null;
             if (blocking.collider != null) {
                 block = blocking.collider.GetComponent<Block>();
-            }
-            if (block != null) {
-                block.AffectLemming(this, blocking);
+                if (block != null) {
+                    block.AffectLemming(this, blocking);
+                } else {
+                    transform.RotateAround(transform.position, transform.up, 180);
+                }
             }
 
-            transform.Translate(Vector3.forward * moveSpeed, Space.Self);
+            if (block == null) {
+                transform.Translate(Vector3.forward * moveSpeed, Space.Self);
+            }
 
             if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
                 Die();

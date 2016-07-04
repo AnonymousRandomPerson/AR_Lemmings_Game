@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Net;
 using Lemmings.Entities;
+using Lemmings.Entities.Player;
 using Lemmings.Level;
 using Lemmings.Util;
+using Lemmings.Util.Timers;
 
 namespace Lemmings.Managers {
     /// <summary>
-    /// Creates a ribbon path from input.
+    /// Creates a level from server JSON input.
     /// </summary>
     class LevelCreator : MonoBehaviour {
+
+        /// <summary> The game manager in the scene. </summary>
+        private GameManager gameManager;
+        /// <summary> The networking manager in the scene. </summary>
+        private NetworkingManager networkingManager;
         
         /// <summary> Goal resource to be instantiated from. </summary>
         [SerializeField]
@@ -38,27 +45,37 @@ namespace Lemmings.Managers {
         [SerializeField]
         [Tooltip("The height of surface platforms.")]
         private float surfaceHeight;
-
         /// <summary> The height of walls. </summary>
         [SerializeField]
         [Tooltip("The height of walls.")]
         private float wallHeight;
-
         /// <summary> The thickness of walls. </summary>
         [SerializeField]
         [Tooltip("The thickness of walls.")]
         private float wallThickness;
 
+        /// <summary> The object that holds surfaces. </summary>
+        private GameObject surfaceContainer;
+        /// <summary> The object that holds walls. </summary>
+        private GameObject wallContainer;
+
+        /// <summary> The delay before checking if the level needs to be refreshed. </summary>
+        [SerializeField]
+        [Tooltip("The delay before checking if the level needs to be refreshed.")]
+        private float checkDirtyTime;
+        /// <summary> Timer for checking if the level needs to be refreshed. </summary>
+        private LimitTimerCallback dirtyTimer;
+
         /// <summary>
         /// Creates the level from either the level AI server or a local JSON.
         /// </summary>
         private void Start() {
+            gameManager = GameManager.instance;
+            networkingManager = NetworkingManager.instance;
+            dirtyTimer = new LimitTimerCallback(CheckDirty, checkDirtyTime);
             if (json == null) {
                 // Connect to the server to get a JSON file.
-                NetworkingManager.instance.ProcessStringFromURL((jsonText) =>
-                    {
-                        CreateLevel(jsonText);
-                    });
+                networkingManager.GetLevel(CreateLevel);
             } else {
                 // Hard-coded JSON resource for testing.
                 CreateLevel(json.text);
@@ -78,6 +95,20 @@ namespace Lemmings.Managers {
             JSONObject goalJSON = input.GetField("goal");
             GoalInput goalInput = new GoalInput(goalJSON);
 
+            CreateLemmings(lemmingsInput);
+            CreateGoal(goalInput);
+
+            CreateBoundingBoxes(input);
+
+            LevelLogger.instance.json = jsonText;
+            gameManager.isPlaying = true;
+        }
+
+        /// <summary>
+        /// Creates surfaces and walls from JSON
+        /// </summary>
+        /// <param name="input">The JSON to create surfaces and walls from.</param>
+        private void CreateBoundingBoxes(JSONObject input) {
             JSONObject surfaceJSONList = input.GetField("surfaces");
             List<SurfaceInput> surfaceInput = new List<SurfaceInput>(surfaceJSONList.Count);
             foreach (JSONObject surfaceJSON in surfaceJSONList.list) {
@@ -94,12 +125,8 @@ namespace Lemmings.Managers {
                 wallInput.Add(new WallInput(wallJSON));
             }
 
-            CreateLemmings(lemmingsInput);
-            CreateGoal(goalInput);
             CreateSurfaces(surfaceInput);
             CreateWalls(wallInput);
-
-            LevelLogger.instance.json = jsonText;
         }
 
         /// <summary>
@@ -125,7 +152,7 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="surfaceInput">JSON data for the surface bounding boxes.</param>
         private void CreateSurfaces(List<SurfaceInput> surfaceInput) {
-            GameObject surfaceContainer = ObjectUtil.CreateNewObject("Surfaces");
+            surfaceContainer = ObjectUtil.CreateNewObject("Surfaces");
 
             foreach (SurfaceInput surface in surfaceInput) {
                 GameObject surfaceObject = ObjectUtil.CreateNewObject("Surface", surfaceContainer);
@@ -151,7 +178,7 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="wallInput">JSON data for the walls in the level.</param>
         private void CreateWalls(List<WallInput> wallInput) {
-            GameObject wallContainer = ObjectUtil.CreateNewObject("Walls");
+            wallContainer = ObjectUtil.CreateNewObject("Walls");
             foreach (WallInput wall in wallInput) {
                 Vector3 direction = wall.endpoints[1] - wall.endpoints[0];
                 Vector3 ortho = VectorUtil.GetOrthonormal(direction) * wallThickness / 2;
@@ -267,6 +294,64 @@ namespace Lemmings.Managers {
             virtualPlatform.transform.parent = transform;
 
             return virtualPlatform;
+        }
+
+        /// <summary>
+        /// Checks if the level needs to be refreshed.
+        /// </summary>
+        private void Update() {
+            if (json == null && gameManager.isPlaying) {
+                dirtyTimer.Run();
+            }
+        }
+
+        /// <summary>
+        /// Checks if the level needs to be refreshed.
+        /// </summary>
+        private void CheckDirty() {
+            networkingManager.CheckDirty(ReceiveDirtyMessage);
+        }
+
+        /// <summary>
+        /// Refreshes the level if necessary.
+        /// </summary>
+        /// <param name="jsonText">The JSON text response for the dirty check.</param>
+        private void ReceiveDirtyMessage(string jsonText) {
+            JSONObject input = new JSONObject(jsonText);
+
+            if (input.GetField("dirty").b) {
+                string playerInfo = VectorUtil.GetPreciseString(PlayerMover.instance.transform.position);
+                string lemmingsInfo = "";
+                bool first = true;
+                foreach (Lemming lemming in gameManager.activeLemmings) {
+                    if (!first) {
+                        lemmingsInfo += ",";
+                    }
+                    lemmingsInfo += VectorUtil.GetPreciseString(lemming.transform.position);
+                }
+
+                WWWForm form = new WWWForm();
+                form.AddField("player", playerInfo);
+                form.AddField("lemmings", lemmingsInfo);
+                networkingManager.RefreshLevel(RefreshBoundingBoxes, form);
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the surfaces and walls in the level.
+        /// </summary>
+        /// <param name="jsonText">The JSON text response to recreate surfaces and walls with.</param>
+        private void RefreshBoundingBoxes(string jsonText) {
+            JSONObject input = new JSONObject(jsonText);
+
+            foreach (Transform surface in surfaceContainer.transform) {
+                Destroy(surface.gameObject);
+            }
+            foreach (Transform surface in wallContainer.transform) {
+                Destroy(surface.gameObject);
+            }
+
+            CreateBoundingBoxes(input);
         }
     }
 }

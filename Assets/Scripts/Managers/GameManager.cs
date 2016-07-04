@@ -72,6 +72,9 @@ namespace Lemmings.Managers {
         [HideInInspector]
         public LemmingSpawner lemmingSpawner;
 
+        /// <summary> Whether the level is currently being played.</summary>
+        internal bool isPlaying;
+
         /// <summary>
         /// Sets the singleton instance of the game manager.
         /// </summary>
@@ -97,6 +100,7 @@ namespace Lemmings.Managers {
                 if (showPath) {
                     pathRenderer.visible = true;
                     PlayerMover.instance.noClip = true;
+                    isPlaying = false;
                 } else {
                     ResetLevel();
                 }
@@ -141,6 +145,7 @@ namespace Lemmings.Managers {
             SurfaceManager.instance.Reset();
             LevelLogger.instance.Reset();
             pathRenderer.Reset();
+            isPlaying = true;
         }
     }
 }

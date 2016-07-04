@@ -69,7 +69,7 @@ namespace Lemmings.Entities.Player {
         /// Updates the player every physics tick.
         /// </summary>
         private void FixedUpdate() {
-            controller.detectCollisions = !noClip;
+            gameObject.layer = LayerMask.NameToLayer(noClip ? "Player NoClip" : "Player");
             Move();
 
             if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
@@ -137,6 +137,7 @@ namespace Lemmings.Entities.Player {
             GetComponent<PlayerPlacer>().Reset();
             base.Reset();
             moveDirection = Vector3.zero;
+            noClip = false;
         }
     }
 }

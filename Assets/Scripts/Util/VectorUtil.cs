@@ -6,6 +6,9 @@ namespace Lemmings.Util {
     /// </summary>
     static class VectorUtil {
 
+        /// <summary> The tolerance for checking vector equality. </summary>
+        private const float tolerance = 0.01f;
+
         /// <summary>
         /// Sets the x and z components of a vector.
         /// </summary>
@@ -62,6 +65,26 @@ namespace Lemmings.Util {
         /// <param name="vector">The vector to get a string for.</param>
         public static string GetPreciseString(Vector3 vector) {
             return "(" + vector.x + "," + vector.y + "," + vector.z + ")";
+        }
+
+        /// <summary>
+        /// Checks if two vectors are approximately equal to each other.
+        /// </summary>
+        /// <returns>Whether the two vectors are approximately equal to each other.</returns>
+        /// <param name="vector1">One vector to check equality for.</param>
+        /// <param name="vector2">The other vector to check equality for.</param>
+        public static bool ApproximatelyEqual(Vector3 vector1, Vector3 vector2) {
+            return ApproximatelyEqual(vector1.x, vector2.x) && ApproximatelyEqual(vector1.y, vector2.y) && ApproximatelyEqual(vector1.z, vector2.z);
+        }
+
+        /// <summary>
+        /// Checks if two floats are approximately equal to each other.
+        /// </summary>
+        /// <returns>Whether the two floats are approximately equal to each other.</returns>
+        /// <param name="number1">One floats to check equality for.</param>
+        /// <param name="number2">The other floats to check equality for.</param>
+        public static bool ApproximatelyEqual(float number1, float number2) {
+            return Mathf.Abs(number1 - number2) <= tolerance;
         }
     }
 }
