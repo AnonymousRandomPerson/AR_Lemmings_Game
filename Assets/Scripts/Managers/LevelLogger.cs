@@ -56,7 +56,7 @@ namespace Lemmings.Managers {
         internal List<Vector3>[] lemmingPositions;
 
         /// <summary>
-        /// Sets the tracker instance.
+        /// Sets the logger instance.
         /// </summary>
         private void Awake() {
             _instance = this;

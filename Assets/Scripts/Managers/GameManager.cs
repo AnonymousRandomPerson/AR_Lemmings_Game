@@ -93,16 +93,18 @@ namespace Lemmings.Managers {
         /// Checks for the user resetting the level.
         /// </summary>
         private void Update() {
-            _currentTime += Time.deltaTime;
-            if (InputUtil.GetKeyDown(KeyCode.R) && !PauseHandler.instance.paused) {
-                ResetLevel();
-            } else if (CountLemmings() == 0 && lemmingSpawner.IsFinished() && !pathRenderer.visible) {
-                if (showPath) {
-                    pathRenderer.visible = true;
-                    PlayerMover.instance.noClip = true;
-                    isPlaying = false;
-                } else {
+            if (isPlaying) {
+                _currentTime += Time.deltaTime;
+                if (InputUtil.GetKeyDown(KeyCode.R) && !PauseHandler.instance.paused) {
                     ResetLevel();
+                } else if (CountLemmings() == 0 && lemmingSpawner.IsFinished() && !pathRenderer.visible) {
+                    if (showPath) {
+                        pathRenderer.visible = true;
+                        PlayerMover.instance.noClip = true;
+                        isPlaying = false;
+                    } else {
+                        ResetLevel();
+                    }
                 }
             }
         }

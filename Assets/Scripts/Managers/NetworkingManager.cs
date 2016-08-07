@@ -57,7 +57,15 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="OnGet">The process to run on the level JSON.</param>
         public void GetLevel(HandleResponse OnGet) {
-            ProcessStringFromURL(levelURL, OnGet);
+            Settings settings = Settings.instance;
+            settings.LoadSettings();
+
+            WWWForm settingsForm = new WWWForm();
+            settingsForm.AddField(Settings.PATH_KEY, settings.pathSetting.ToString());
+            settingsForm.AddField(Settings.MOVEMENT_KEY, settings.movementSetting.ToString());
+            settingsForm.AddField(Settings.DIFFICULTY_KEY, settings.difficultySetting.ToString());
+
+            ProcessStringFromURL(levelURL, OnGet, settingsForm);
         }
 
         /// <summary>
