@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Net;
+using Lemmings.Entities.Player;
+using Lemmings.Util;
 using Lemmings.Util.Timers;
 
 namespace Lemmings.Managers {
@@ -59,11 +61,13 @@ namespace Lemmings.Managers {
         public void GetLevel(HandleResponse OnGet) {
             Settings settings = Settings.instance;
             settings.LoadSettings();
+            PlayerMover player = PlayerMover.instance;
 
             WWWForm settingsForm = new WWWForm();
             settingsForm.AddField(Settings.PATH_KEY, settings.pathSetting.ToString());
             settingsForm.AddField(Settings.MOVEMENT_KEY, settings.movementSetting.ToString());
             settingsForm.AddField(Settings.DIFFICULTY_KEY, settings.difficultySetting.ToString());
+            settingsForm.AddField(PlayerMover.POSITION_KEY, InputUtil.ConvertVectorToPOST(player.transform.position));
 
             ProcessStringFromURL(levelURL, OnGet, settingsForm);
         }

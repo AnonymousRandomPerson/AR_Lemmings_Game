@@ -152,8 +152,10 @@ namespace Lemmings.Managers {
             WriteToFile();
             stopped = false;
             playerPositions.Clear();
-            for (int i = 0; i < lemmingPositions.Length; i++) {
-                lemmingPositions[i].Clear();
+            if (lemmingPositions != null) {
+                for (int i = 0; i < lemmingPositions.Length; i++) {
+                    lemmingPositions[i].Clear();
+                }
             }
             logTimer.Reset();
         }

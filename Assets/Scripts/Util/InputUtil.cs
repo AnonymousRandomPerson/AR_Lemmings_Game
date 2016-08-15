@@ -115,5 +115,14 @@ namespace Lemmings.Util {
             currentIndex = endCharIndex + 1;
             return (float)Convert.ToDouble(numberText);
         }
+
+        /// <summary>
+        /// Converts a vector to an array to send in a POST request.
+        /// </summary>
+        /// <returns>The string to send in the POST request.</returns>
+        /// <param name="vector">The vector to convert.</param>
+        public static string ConvertVectorToPOST(Vector3 vector) {
+            return "[" + vector.x + "," + vector.y + "," + vector.z + "]";
+        }
     }
 }

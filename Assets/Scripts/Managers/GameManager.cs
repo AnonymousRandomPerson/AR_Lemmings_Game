@@ -97,7 +97,9 @@ namespace Lemmings.Managers {
                 _currentTime += Time.deltaTime;
                 if (InputUtil.GetKeyDown(KeyCode.R) && !PauseHandler.instance.paused) {
                     ResetLevel();
-                } else if (CountLemmings() == 0 && lemmingSpawner.IsFinished() && !pathRenderer.visible) {
+                } else if (CountLemmings() == 0 &&
+                    (lemmingSpawner == null || lemmingSpawner.IsFinished()) &&
+                    !pathRenderer.visible) {
                     if (showPath) {
                         pathRenderer.visible = true;
                         PlayerMover.instance.noClip = true;

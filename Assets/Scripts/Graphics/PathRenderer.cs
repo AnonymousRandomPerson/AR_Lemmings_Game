@@ -112,8 +112,10 @@ namespace Lemmings.Graphics {
             }
 
             DrawLine(playerPositions, playerPathColor, true);
-            foreach (List<Vector3> lemmingPath in lemmingPositions) {
-                DrawLine(lemmingPath, lemmingPathColor);
+            if (lemmingPositions != null) {
+                foreach (List<Vector3> lemmingPath in lemmingPositions) {
+                    DrawLine(lemmingPath, lemmingPathColor);
+                }
             }
         }
 

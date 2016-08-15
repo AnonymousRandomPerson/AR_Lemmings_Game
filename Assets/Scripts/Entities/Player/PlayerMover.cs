@@ -16,6 +16,8 @@ namespace Lemmings.Entities.Player {
             get { return _instance; }
         }
 
+        public static string POSITION_KEY = "user_location";
+
         /// <summary> The direction that the player is moving in. </summary>
         private Vector3 moveDirection;
         /// <summary> The maximum movement speed of the player. </summary>
