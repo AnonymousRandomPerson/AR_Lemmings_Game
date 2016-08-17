@@ -15,7 +15,11 @@ namespace Lemmings.Managers {
     /// Handles sending and receiving from the internet.
     /// </summary>
     class NetworkingManager : MonoBehaviour {
-
+        
+        /// <summary> The host of the level generation service. </summary>
+        [SerializeField]
+        [Tooltip("The host of the level generation service.")]
+        private string host;
         /// <summary> The base URL of the server. </summary>
         [SerializeField]
         [Tooltip("The base URL of the server.")]
@@ -98,12 +102,13 @@ namespace Lemmings.Managers {
             if (form == null) {
                 form = new WWWForm();
             }
-            WWW www = new WWW(baseURL + url, form);
+            WWW www = new WWW(host + baseURL + url, form);
             yield return www;
 
             if (www.error == null) {
                 OnGet(www.text);
             } else {
+                Debug.Log("Error getting URL: " + www.url);
                 Debug.Log(www.error);
             }
         }

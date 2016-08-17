@@ -72,10 +72,12 @@ namespace Lemmings.Entities.Player {
         /// </summary>
         private void FixedUpdate() {
             gameObject.layer = LayerMask.NameToLayer(noClip ? "Player NoClip" : "Player");
-            Move();
+            if (GameManager.instance.isPlaying) {
+                Move();
 
-            if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
-                GameManager.instance.ResetLevel();
+                if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
+                    GameManager.instance.ResetLevel();
+                }
             }
         }
 

@@ -114,9 +114,12 @@ namespace Lemmings.Managers {
             foreach (JSONObject surfaceJSON in surfaceJSONList.list) {
                 surfaceInput.Add(new SurfaceInput(surfaceJSON));
             }
+
             JSONObject floorJSONList = input.GetField("floor");
-            foreach (JSONObject floorJSON in floorJSONList.list) {
-                surfaceInput.Add(new SurfaceInput(floorJSON, true));
+            if (floorJSONList != null) {
+                foreach (JSONObject floorJSON in floorJSONList.list) {
+                    surfaceInput.Add(new SurfaceInput(floorJSON, true));
+                }
             }
 
             JSONObject wallJSONList = input.GetField("walls");
@@ -134,9 +137,11 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="lemmingsInput">JSON data for the starting points of the lemmings.</param>
         private void CreateLemmings(LemmingsInput lemmingsInput) {
-            LemmingSpawner spawner = ObjectUtil.Instantiate(lemmingSpawnerPrefab, lemmingsInput.position, lemmingsInput.rotation) as LemmingSpawner;
-            spawner.totalLemmings = lemmingsInput.amount;
-            GameManager.instance.lemmingSpawner = spawner;
+            if (lemmingsInput.amount > 0) {
+                LemmingSpawner spawner = ObjectUtil.Instantiate(lemmingSpawnerPrefab, lemmingsInput.position, lemmingsInput.rotation) as LemmingSpawner;
+                spawner.totalLemmings = lemmingsInput.amount;
+                GameManager.instance.lemmingSpawner = spawner;
+            }
         }
 
         /// <summary>

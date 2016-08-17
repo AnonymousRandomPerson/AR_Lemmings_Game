@@ -98,7 +98,8 @@ namespace Lemmings.Managers {
                 if (InputUtil.GetKeyDown(KeyCode.R) && !PauseHandler.instance.paused) {
                     ResetLevel();
                 } else if (CountLemmings() == 0 &&
-                    (lemmingSpawner == null || lemmingSpawner.IsFinished()) &&
+                    lemmingSpawner != null &&
+                    lemmingSpawner.IsFinished() &&
                     !pathRenderer.visible) {
                     if (showPath) {
                         pathRenderer.visible = true;

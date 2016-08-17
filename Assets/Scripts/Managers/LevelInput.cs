@@ -19,9 +19,15 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="json">JSON data for the lemming spawn point.</param>
         internal LemmingsInput(JSONObject json) {
-            position = JSONUtil.MakeVectorFromJSON(json.GetField("position"));
-            rotation = JSONUtil.MakeVectorFromJSON(json.GetField("rotation"));
-            amount = (int)json.GetField("amount").i;
+            if (json == null) {
+                position = Vector3.zero;
+                rotation = Vector3.zero;
+                amount = 0;
+            } else {
+                position = JSONUtil.MakeVectorFromJSON(json.GetField("position"));
+                rotation = JSONUtil.MakeVectorFromJSON(json.GetField("rotation"));
+                amount = (int)json.GetField("amount").i;
+            }
         }
     }
 
@@ -37,7 +43,11 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="json">JSON data for the goal./param>
         internal GoalInput(JSONObject json) {
-            position = JSONUtil.MakeVectorFromJSON(json);
+            if (json == null) {
+                position = Vector3.zero;
+            } else {
+                position = JSONUtil.MakeVectorFromJSON(json);
+            }
         }
     }
 
@@ -57,8 +67,13 @@ namespace Lemmings.Managers {
         internal SurfaceInput(JSONObject json, bool isFloor = false) {
             List<JSONObject> jsonList = json.list;
             platforms = new List<PlatformInput>(jsonList.Count);
-            foreach (JSONObject platform in jsonList) {
-                platforms.Add(new PlatformInput(platform));
+            JSONObject jsonTest = jsonList[0];
+            if (jsonTest.HasField("points")) {
+                foreach (JSONObject platform in jsonList) {
+                    platforms.Add(new PlatformInput(platform));
+                }
+            } else {
+                platforms.Add(new PlatformInput(json));
             }
             this.isFloor = isFloor;
         }
@@ -87,10 +102,22 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="json">JSON data for the platform.</param>
         internal PlatformInput(JSONObject json) {
-            List<JSONObject> jsonList = json.GetField("points").list;
+            JSONObject pointObject = json.GetField("points");
+            if (pointObject == null) {
+                pointObject = json;
+            }
+            List<JSONObject> jsonList = pointObject.list;
             vertices = new List<Vector3>(jsonList.Count);
-            foreach (JSONObject vertexJSON in jsonList) {
-                vertices.Add(JSONUtil.MakeVectorFromJSON(vertexJSON));
+            Vector3 startVertex = Vector3.zero;
+            for (int i = 0; i < jsonList.Count; i++) {
+                JSONObject vertexJSON = jsonList[i];
+                Vector3 vertex = JSONUtil.MakeVectorFromJSON(vertexJSON);
+                if (i == 0) {
+                    startVertex = vertex;
+                }
+                if (i < jsonList.Count - 1 || startVertex != vertex) {
+                    vertices.Add(vertex);
+                }
             }
             if (json.HasField("height")) {
                 height = json.GetField("height").f;
@@ -120,4 +147,3 @@ namespace Lemmings.Managers {
         }
     }
 }
-
