@@ -81,7 +81,7 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="OnGet">The process to run on the dirty response.</param>
         public void CheckDirty(HandleResponse OnGet) {
-            ProcessStringFromURL(dirtyURL, OnGet);
+            //ProcessStringFromURL(dirtyURL, OnGet);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="OnGet">The process to run on the level refresh JSON.</param>
         public void RefreshLevel(HandleResponse OnGet, WWWForm form) {
-            ProcessStringFromURL(refreshURL, OnGet, form);
+            //ProcessStringFromURL(refreshURL, OnGet, form);
         }
 
         /// <summary>
