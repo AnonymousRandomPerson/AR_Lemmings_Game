@@ -10,7 +10,7 @@ namespace Lemmings.Managers {
         /// <summary> The starting position of the lemmings. </summary>
         internal Vector3 position;
         /// <summary> The starting rotation of the lemmings. </summary>
-        internal Vector3 rotation;
+        internal float rotation;
         /// <summary> The number of lemmings to spawn.</summary>
         internal int amount;
 
@@ -21,11 +21,11 @@ namespace Lemmings.Managers {
         internal LemmingsInput(JSONObject json) {
             if (json == null) {
                 position = Vector3.zero;
-                rotation = Vector3.zero;
+                rotation = 0;
                 amount = 0;
             } else {
                 position = JSONUtil.MakeVectorFromJSON(json.GetField("position"));
-                rotation = JSONUtil.MakeVectorFromJSON(json.GetField("rotation"));
+                rotation = JSONUtil.GetIfExists(json, "rotation", 0);
                 amount = (int)json.GetField("amount").i;
             }
         }
@@ -119,11 +119,7 @@ namespace Lemmings.Managers {
                     vertices.Add(vertex);
                 }
             }
-            if (json.HasField("height")) {
-                height = json.GetField("height").f;
-            } else {
-                height = 0;
-            }
+            height = JSONUtil.GetIfExists(json, "height", 0);
         }
     }
 

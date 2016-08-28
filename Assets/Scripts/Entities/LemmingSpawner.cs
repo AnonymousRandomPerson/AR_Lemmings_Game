@@ -85,6 +85,7 @@ namespace Lemmings.Entities {
                 spawnOffset = currentLemming.GetComponent<Collider>().bounds.extents.y;
             }
             currentLemming.transform.position = transform.position + Vector3.up * spawnOffset * 1.5f;
+            currentLemming.transform.rotation = transform.rotation;
             currentLemming.Spawn(this, lemmingIndex);
         }
 

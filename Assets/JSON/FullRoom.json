@@ -1,7 +1,7 @@
 {  
     "lemmings":{
         "position":[0.6827446,-0.306,-2.06],
-        "rotation":[0,0,0],
+        "rotation":30,
         "amount":5
     },
     "goal":[0.851,-0.467,-2.723],
