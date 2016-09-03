@@ -102,6 +102,7 @@ namespace Lemmings.Managers {
 
             LevelLogger.instance.json = jsonText;
             gameManager.isPlaying = true;
+            gameManager.isLoading = false;
         }
 
         /// <summary>

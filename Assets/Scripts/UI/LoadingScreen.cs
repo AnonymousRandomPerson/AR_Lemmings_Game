@@ -24,7 +24,7 @@ namespace Lemmings.UI {
         /// Updates the object.
         /// </summary>
         private void Update() {
-            loadingPanel.SetActive(!gameManager.isPlaying);
+            loadingPanel.SetActive(gameManager.isLoading);
         }
     }
 }

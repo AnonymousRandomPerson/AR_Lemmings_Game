@@ -74,6 +74,8 @@ namespace Lemmings.Managers {
 
         /// <summary> Whether the level is currently being played.</summary>
         internal bool isPlaying;
+        /// <summary> Whether the level is loading. </summary>
+        internal bool isLoading;
 
         /// <summary>
         /// Sets the singleton instance of the game manager.
@@ -86,6 +88,7 @@ namespace Lemmings.Managers {
         /// Initializes manager references.
         /// </summary>
         private void Start() {
+            isLoading = true;
             pathRenderer = GetComponent<PathRenderer>();
         }
 
