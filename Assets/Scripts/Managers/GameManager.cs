@@ -23,7 +23,7 @@ namespace Lemmings.Managers {
         }
 
         /// <summary> The renderer for path histories. </summary>
-        private PathRenderer pathRenderer;
+        private TravelHistoryRenderer pathRenderer;
 
         /// <summary> The resettable objects in the scene. </summary>
         [HideInInspector]
@@ -77,6 +77,9 @@ namespace Lemmings.Managers {
         /// <summary> Whether the level is loading. </summary>
         internal bool isLoading;
 
+        /// <summary> The number of times all lemmings have died. </summary>
+        public static int numDeaths;
+
         /// <summary>
         /// Sets the singleton instance of the game manager.
         /// </summary>
@@ -89,7 +92,7 @@ namespace Lemmings.Managers {
         /// </summary>
         private void Start() {
             isLoading = true;
-            pathRenderer = GetComponent<PathRenderer>();
+            pathRenderer = GetComponent<TravelHistoryRenderer>();
         }
 
         /// <summary>
@@ -104,6 +107,7 @@ namespace Lemmings.Managers {
                     lemmingSpawner != null &&
                     lemmingSpawner.IsFinished() &&
                     !pathRenderer.visible) {
+                    numDeaths++;
                     if (showPath) {
                         pathRenderer.visible = true;
                         PlayerMover.instance.noClip = true;

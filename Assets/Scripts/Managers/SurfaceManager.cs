@@ -8,9 +8,9 @@ namespace Lemmings.Managers {
     /// </summary>
     class SurfaceManager : MonoBehaviour {
         
-        /// <summary> The singleton instance of the game manager. </summary>
+        /// <summary> The singleton instance of the surface manager. </summary>
         private static SurfaceManager _instance;
-        /// <summary> The singleton instance of the game manager. </summary>
+        /// <summary> The singleton instance of the surface manager. </summary>
         public static SurfaceManager instance {
             get {
                 return _instance;
@@ -28,7 +28,7 @@ namespace Lemmings.Managers {
         }
 
         /// <summary>
-        /// Sets the singleton instance of the game manager.
+        /// Sets the singleton instance of the surface manager.
         /// </summary>
         private void Awake() {
             _instance = this;
@@ -68,6 +68,15 @@ namespace Lemmings.Managers {
             foreach (Surface surface in surfaces) {
                 surface.SetVisible(visible);
             }
+        }
+
+        /// <summary>
+        /// Gets the surface with a certain index.
+        /// </summary>
+        /// <returns>The surface with the specified index.</returns>
+        /// <param name="index">The index of the surface to get.</param>
+        public Surface GetSurface(int index) {
+            return surfaces[index];
         }
     }
 }

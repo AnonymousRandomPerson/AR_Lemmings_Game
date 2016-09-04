@@ -15,6 +15,10 @@ namespace Lemmings.Level {
         [HideInInspector]
         public bool isFloor;
 
+        /// <summary> The center of the surface. </summary>
+        [HideInInspector]
+        public Vector3 center;
+
         /// <summary>
         /// Marks the surface as unvisited.
         /// </summary>

@@ -9,7 +9,7 @@ namespace Lemmings.Graphics {
     /// <summary>
     /// Renders paths following entity movement.
     /// </summary>
-    class PathRenderer : MonoBehaviour {
+    class TravelHistoryRenderer : MonoBehaviour {
 
         /// <summary> The logger in the scene. </summary>
         private LevelLogger logger;

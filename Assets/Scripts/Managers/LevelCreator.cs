@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using Lemmings.Entities;
 using Lemmings.Entities.Player;
+using Lemmings.Graphics;
 using Lemmings.Level;
 using Lemmings.Util;
 using Lemmings.Util.Timers;
@@ -87,6 +88,8 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="jsonText">The JSON text to create the level with.</param>
         private void CreateLevel(string jsonText) {
+            Debug.Log(jsonText);
+
             JSONObject input = new JSONObject(jsonText);
 
             JSONObject lemmingsJSON = input.GetField("lemmings");
@@ -100,9 +103,16 @@ namespace Lemmings.Managers {
 
             CreateBoundingBoxes(input);
 
+            JSONObject routeJSON = input.GetField("route");
+            if (routeJSON != null) {
+                RouteInput routeInput = new RouteInput(routeJSON);
+                RouteRenderer.instance.DrawRoute(lemmingsInput.position, routeInput.route, goalInput.position);
+            }
+
             LevelLogger.instance.json = jsonText;
             gameManager.isPlaying = true;
             gameManager.isLoading = false;
+            GameManager.numDeaths = 0;
         }
 
         /// <summary>
@@ -166,6 +176,8 @@ namespace Lemmings.Managers {
                 Surface surfaceComponent = surfaceObject.AddComponent<Surface>();
                 SurfaceManager.instance.AddSurface(surfaceComponent);
 
+                Vector3 center = Vector3.zero;
+                int numVertices = 0;
                 foreach (PlatformInput platform in surface.platforms) {
                     GameObject platformObject = CreatePlatform(platform, platform.height);
                     platformObject.name = "Platform";
@@ -175,7 +187,18 @@ namespace Lemmings.Managers {
                     if (surface.isFloor) {
                         platformObject.AddComponent<Lava>();
                     }
+
+                    foreach (Vector3 vertex in platform.vertices) {
+                        center += vertex;
+                        numVertices++;
+                    }
                 }
+
+                if (numVertices > 0) {
+                    center /= numVertices;
+                }
+                surfaceComponent.center = center;
+
                 surfaceComponent.isFloor = surface.isFloor;
             }
         }

@@ -72,6 +72,7 @@ namespace Lemmings.Managers {
             settingsForm.AddField(Settings.MOVEMENT_KEY, settings.movementSetting.ToString());
             settingsForm.AddField(Settings.DIFFICULTY_KEY, settings.difficultySetting.ToString());
             settingsForm.AddField(PlayerMover.POSITION_KEY, InputUtil.ConvertVectorToPOST(player.transform.position));
+            settingsForm.AddField("numDeaths", GameManager.numDeaths);
 
             ProcessStringFromURL(levelURL, OnGet, settingsForm);
         }

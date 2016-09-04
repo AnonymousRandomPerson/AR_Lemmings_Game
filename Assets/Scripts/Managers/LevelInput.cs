@@ -142,4 +142,24 @@ namespace Lemmings.Managers {
             }
         }
     }
+
+    /// <summary>
+    /// Holds JSON data about the level route.
+    /// </summary>
+    struct RouteInput {
+        /// <summary> The intended route in the level. </summary>
+        internal int[] route;
+
+        /// <summary>
+        /// Initializes the route.
+        /// </summary>
+        /// <param name="json">JSON data for the route.</param>
+        internal RouteInput(JSONObject json) {
+            List<JSONObject> routeList = json.list;
+            route = new int[routeList.Count];
+            for (int i = 0; i < routeList.Count; i++) {
+                route[i] = (int) routeList[i].i;
+            }
+        }
+    }
 }
