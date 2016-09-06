@@ -8,6 +8,8 @@ namespace Lemmings.UI {
     class LoadingScreen : MonoBehaviour {
 
         /// <summary> The panel that displays the loading screen. </summary>
+        [SerializeField]
+        [Tooltip("The panel that displays the loading screen.")]
         private GameObject loadingPanel;
         /// <summary> The game manager in the scene. </summary>
         private GameManager gameManager;
@@ -16,7 +18,6 @@ namespace Lemmings.UI {
         /// Initializes the object.
         /// </summary>
         private void Start() {
-            loadingPanel = transform.FindChild("Loading Panel").gameObject;
             gameManager = GameManager.instance;
         }
 

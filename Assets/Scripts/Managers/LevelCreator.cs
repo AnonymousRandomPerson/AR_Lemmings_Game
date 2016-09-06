@@ -110,9 +110,9 @@ namespace Lemmings.Managers {
             }
 
             LevelLogger.instance.json = jsonText;
-            gameManager.isPlaying = true;
             gameManager.isLoading = false;
             GameManager.numDeaths = 0;
+            gameManager.CountDownStart();
         }
 
         /// <summary>

@@ -41,6 +41,8 @@ namespace Lemmings.Entities.Player {
         /// <summary> Whether the player can fly and pass through obstacles. </summary>
         [Tooltip("Whether the player can fly and pass through obstacles.")]
         public bool noClip;
+        /// <summary> Whether the player started out in no-clip mode. </summary>
+        private bool startNoClip;
 
         /// <summary> The height of the player. </summary>
         public float height {
@@ -65,6 +67,7 @@ namespace Lemmings.Entities.Player {
         protected override void Start() {
             base.Start();
             controller = GetComponent<CharacterController>();
+            startNoClip = noClip;
         }
 
         /// <summary>
@@ -141,7 +144,7 @@ namespace Lemmings.Entities.Player {
             GetComponent<PlayerPlacer>().Reset();
             base.Reset();
             moveDirection = Vector3.zero;
-            noClip = false;
+            noClip = startNoClip;
         }
     }
 }

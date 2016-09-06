@@ -42,6 +42,15 @@ namespace Lemmings.Graphics {
         }
 
         /// <summary>
+        /// Sets the route as visible or invisible depending on the setting.
+        /// </summary>
+        private void Update() {
+            if (routeContainer != null) {
+                routeContainer.SetActive(visible);
+            }
+        }
+
+        /// <summary>
         /// Draws the surface route.
         /// </summary>
         /// <param name="goalPosition">The position of the lemming spawn point.</param>

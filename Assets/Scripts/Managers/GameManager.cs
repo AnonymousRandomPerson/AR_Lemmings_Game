@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using Lemmings.Entities;
 using Lemmings.Entities.Player;
@@ -76,6 +77,12 @@ namespace Lemmings.Managers {
         internal bool isPlaying;
         /// <summary> Whether the level is loading. </summary>
         internal bool isLoading;
+        /// <summary> Whether the start countdown is occurring. </summary>
+        private bool _isCountingDown;
+        /// <summary> Whether the start countdown is occurring. </summary>
+        public bool isCountingDown {
+            get { return _isCountingDown; }
+        }
 
         /// <summary> The number of times all lemmings have died. </summary>
         public static int numDeaths;
@@ -100,9 +107,15 @@ namespace Lemmings.Managers {
         /// </summary>
         private void Update() {
             if (isPlaying) {
-                _currentTime += Time.deltaTime;
+                if (!_isCountingDown) {
+                    _currentTime += Time.deltaTime;
+                }
                 if (InputUtil.GetKeyDown(KeyCode.R) && !PauseHandler.instance.paused) {
-                    ResetLevel();
+                    if (InputUtil.GetKeyDown(KeyCode.LeftShift)) {
+                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    } else {
+                        ResetLevel();
+                    }
                 } else if (CountLemmings() == 0 &&
                     lemmingSpawner != null &&
                     lemmingSpawner.IsFinished() &&
@@ -157,7 +170,24 @@ namespace Lemmings.Managers {
             SurfaceManager.instance.Reset();
             LevelLogger.instance.Reset();
             pathRenderer.Reset();
+
+            CountDownStart();
+        }
+
+        /// <summary>
+        /// Starts the countdown for the level start.
+        /// </summary>
+        internal void CountDownStart() {
+            _isCountingDown = true;
+            CountdownScreen.instance.StartCountdown();
             isPlaying = true;
+        }
+
+        /// <summary>
+        /// Starts spawning lemmings after the countdown ends.
+        /// </summary>
+        public void StartLevel() {
+            _isCountingDown = false;
         }
     }
 }
