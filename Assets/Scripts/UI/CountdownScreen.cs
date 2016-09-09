@@ -54,7 +54,6 @@ namespace Lemmings.UI {
             text.text = secondsLeft.ToString();
             Color textColor = text.color;
             textColor.a = timeLeft - (float) secondsLeft + 1;
-            Debug.Log(textColor.a);
             text.color = textColor;
             timeLeft -= Time.deltaTime;
             if (timeLeft <= 0) {
