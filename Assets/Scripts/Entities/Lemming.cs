@@ -128,7 +128,7 @@ namespace Lemmings.Entities {
         /// Updates the lemming every physics tick.
         /// </summary>
         private void FixedUpdate() {
-            if (!dead && !won && spawned && !gameManager.pictureMode) {
+            if (!dead && !won && spawned && !gameManager.pictureMode && !gameManager.freezeLemmings) {
                 Move();
                 CheckSurface();
             }
@@ -151,6 +151,7 @@ namespace Lemmings.Entities {
                 if (block != null) {
                     block.AffectLemming(this, blocking);
                 } else {
+                    Debug.Log(blocking.collider.gameObject);
                     transform.RotateAround(transform.position, transform.up, 180);
                 }
             }

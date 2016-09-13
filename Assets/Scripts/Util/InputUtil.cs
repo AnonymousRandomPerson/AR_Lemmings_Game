@@ -57,7 +57,7 @@ namespace Lemmings.Util {
         /// </summary>
         /// <returns>Whether the right mouse button was pressed.</returns>
         public static bool GetRightMouseDown() {
-            return Input.GetMouseButtonDown(1);
+            return Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0) && GetKey(KeyCode.LeftControl, KeyCode.RightControl);
         }
 
         /// <summary>

@@ -87,6 +87,13 @@ namespace Lemmings.Managers {
         /// <summary> The number of times all lemmings have died. </summary>
         public static int numDeaths;
 
+        /// <summary> Whether to freeze lemming movement. </summary>
+        private bool _freezeLemmings;
+        /// <summary> Whether to freeze lemming movement. </summary>
+        public bool freezeLemmings {
+            get { return _freezeLemmings; }
+        }
+
         /// <summary>
         /// Sets the singleton instance of the game manager.
         /// </summary>
@@ -106,11 +113,12 @@ namespace Lemmings.Managers {
         /// Checks for the user resetting the level.
         /// </summary>
         private void Update() {
-            if (isPlaying) {
+            if (isPlaying && !PauseHandler.instance.paused) {
                 if (!_isCountingDown) {
                     _currentTime += Time.deltaTime;
                 }
-                if (InputUtil.GetKeyDown(KeyCode.R) && !PauseHandler.instance.paused) {
+
+                if (InputUtil.GetKeyDown(KeyCode.R)) {
                     if (InputUtil.GetKeyDown(KeyCode.LeftShift)) {
                         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                     } else {
@@ -128,6 +136,10 @@ namespace Lemmings.Managers {
                     } else {
                         ResetLevel();
                     }
+                }
+
+                if (InputUtil.GetKeyDown(KeyCode.O)) {
+                    _freezeLemmings = !freezeLemmings;
                 }
             }
         }
