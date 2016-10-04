@@ -94,6 +94,18 @@ namespace Lemmings.Managers {
             get { return _freezeLemmings; }
         }
 
+        /// <summary> Whether a level has been requested from the service. </summary>
+        internal bool _levelRequested;
+        /// <summary> Whether a level has been requested from the service. </summary>
+        public bool LevelRequested {
+            get { return _levelRequested; }
+        }
+
+        /// <summary> Whether the game UI should be hidden outside of pause mode. </summary>
+        public bool HideGameUI {
+            get { return pictureMode || disableUI || !_levelRequested; }
+        }
+
         /// <summary>
         /// Sets the singleton instance of the game manager.
         /// </summary>
@@ -105,8 +117,9 @@ namespace Lemmings.Managers {
         /// Initializes manager references.
         /// </summary>
         private void Start() {
-            isLoading = true;
             pathRenderer = GetComponent<TravelHistoryRenderer>();
+            PlayerPlacer.instance.enabled = false;
+            CountdownScreen.instance.gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -120,7 +133,7 @@ namespace Lemmings.Managers {
 
                 if (InputUtil.GetKeyDown(KeyCode.R)) {
                     if (InputUtil.GetKeyDown(KeyCode.LeftShift)) {
-                        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                        RestartScene();
                     } else {
                         ResetLevel();
                     }
@@ -187,11 +200,20 @@ namespace Lemmings.Managers {
         }
 
         /// <summary>
+        /// Restarts the entire scene, requiring a level to be generated again.
+        /// </summary>
+        public void RestartScene() {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        /// <summary>
         /// Starts the countdown for the level start.
         /// </summary>
         internal void CountDownStart() {
             _isCountingDown = true;
+
             CountdownScreen.instance.StartCountdown();
+            PlayerPlacer.instance.enabled = true;
             isPlaying = true;
         }
 

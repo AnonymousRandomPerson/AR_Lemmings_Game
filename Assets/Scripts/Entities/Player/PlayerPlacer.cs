@@ -69,7 +69,7 @@ namespace Lemmings.Entities.Player {
         /// Takes user input to manipulate blocks.
         /// </summary>
         private void Update() {
-            if (!PauseHandler.instance.paused) {
+            if (!PauseHandler.instance.paused && !GameManager.instance.isCountingDown) {
                 SwitchBlock();
                 if (InputUtil.GetRightMouseDown()) {
                     PlaceBlock();
@@ -85,7 +85,7 @@ namespace Lemmings.Entities.Player {
         /// <returns>The player's block placing status.</returns>
         public PlaceStatus GetPlaceStatus() {
             RaycastHit point;
-            if (!blockManager.HasBlock(selectedBlock)) {
+            if (blockManager == null || !blockManager.HasBlock(selectedBlock)) {
                 return PlaceStatus.Out;
             } else if (Physics.Raycast(transform.position, transform.forward, out point, placeRange, layerMask) && point.collider.tag != "Lemming") {
                 return point.collider.tag == "Block" ? PlaceStatus.Rotate : PlaceStatus.Able;

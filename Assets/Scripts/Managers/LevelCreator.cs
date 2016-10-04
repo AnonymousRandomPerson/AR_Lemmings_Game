@@ -68,14 +68,22 @@ namespace Lemmings.Managers {
         private LimitTimerCallback dirtyTimer;
 
         /// <summary>
-        /// Creates the level from either the level AI server or a local JSON.
+        /// Finds the managers needed by the level creator.
         /// </summary>
         private void Start() {
             gameManager = GameManager.instance;
             networkingManager = NetworkingManager.instance;
+        }
+
+        /// <summary>
+        /// Creates the level from either the level AI server or a local JSON.
+        /// </summary>
+        public void RequestLevel() {
             dirtyTimer = new LimitTimerCallback(CheckDirty, checkDirtyTime);
             if (json == null) {
                 // Connect to the server to get a JSON file.
+                gameManager.isLoading = true;
+                gameManager._levelRequested = true;
                 networkingManager.GetLevel(CreateLevel);
             } else {
                 // Hard-coded JSON resource for testing.

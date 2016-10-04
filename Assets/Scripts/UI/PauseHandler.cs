@@ -23,10 +23,10 @@ namespace Lemmings.UI {
             get {
                 return _paused;
             }
-            private set {
+            internal set {
                 _paused = value;
                 Cursor.visible = value;
-                if (GameManager.instance.pictureMode || GameManager.instance.disableUI) {
+                if (GameManager.instance.HideGameUI) {
                     gamePanel.SetActive(false);
                 } else {
                     gamePanel.SetActive(!_paused);
