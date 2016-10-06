@@ -45,7 +45,6 @@ namespace Lemmings.Managers {
         /// </summary>
         private void Awake() {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
         /// <summary>
