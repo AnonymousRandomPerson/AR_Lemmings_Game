@@ -151,7 +151,6 @@ namespace Lemmings.Entities {
                 if (block != null) {
                     block.AffectLemming(this, blocking);
                 } else {
-                    Debug.Log(blocking.collider.gameObject);
                     transform.RotateAround(transform.position, transform.up, 180);
                 }
             }

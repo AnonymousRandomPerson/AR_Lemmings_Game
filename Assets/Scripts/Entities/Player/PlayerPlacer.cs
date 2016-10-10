@@ -90,7 +90,7 @@ namespace Lemmings.Entities.Player {
         private void Update() {
             if (!PauseHandler.instance.paused && !GameManager.instance.isCountingDown) {
                 SwitchBlock();
-                if (InputUtil.GetRightMouseDown()) {
+                if (InputUtil.GetRightMouse()) {
                     PlaceBlock();
                 } else if (InputUtil.GetLeftMouseDown()) {
                     RemoveBlock();
@@ -199,6 +199,7 @@ namespace Lemmings.Entities.Player {
         /// </summary>
         public override void Reset() {
             base.Reset();
+            SetGhostBlockVisibility(false);
             _selectedBlock = 0;
         }
     }

@@ -61,6 +61,14 @@ namespace Lemmings.Util {
         }
 
         /// <summary>
+        /// Checks if the right mouse button is held down.
+        /// </summary>
+        /// <returns>Whether the right mouse button is held down.</returns>
+        public static bool GetRightMouse() {
+            return Input.GetMouseButton(1) || Input.GetMouseButton(0) && GetKey(KeyCode.LeftControl, KeyCode.RightControl);
+        }
+
+        /// <summary>
         /// Gets the scroll wheel delta in this frame.
         /// </summary>
         /// <returns>The scroll wheel delta in this frame.</returns>

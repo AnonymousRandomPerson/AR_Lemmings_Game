@@ -16,6 +16,9 @@ namespace Lemmings.Entities.Blocks {
         /// <summary> The rigidbody on the block. </summary>
         private Rigidbody body;
 
+        /// <summary> The speed that a block is rotated at. </summary>
+        private const float ROTATE_SPEED = 180;
+
         /// <summary>
         /// Finds the block's rigidbody.
         /// </summary>
@@ -76,7 +79,7 @@ namespace Lemmings.Entities.Blocks {
         /// Rotates the block 90 degrees clockwise.
         /// </summary>
         public void Rotate() {
-            transform.RotateAround(transform.position, transform.up, 90);
+            transform.RotateAround(transform.position, transform.up, ROTATE_SPEED * Time.deltaTime);
         }
 
         /// <summary>
