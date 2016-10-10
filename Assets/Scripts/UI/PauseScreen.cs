@@ -61,5 +61,12 @@ namespace Lemmings.UI {
             }
             enabled = false;
         }
+
+        /// <summary>
+        /// Quits the game.
+        /// </summary>
+        public void Quit() {
+            Application.Quit();
+        }
     }
 }

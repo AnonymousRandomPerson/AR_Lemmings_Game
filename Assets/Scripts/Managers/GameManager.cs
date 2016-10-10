@@ -126,13 +126,17 @@ namespace Lemmings.Managers {
         /// Checks for the user resetting the level.
         /// </summary>
         private void Update() {
+            if (!_levelRequested && InputUtil.GetKeyDown(KeyCode.G) && Input.GetKey(KeyCode.LeftShift)) {
+                GetComponent<LevelCreator>().RequestLevel();
+            }
+
             if (isPlaying && !PauseHandler.instance.paused) {
                 if (!_isCountingDown) {
                     _currentTime += Time.deltaTime;
                 }
 
                 if (InputUtil.GetKeyDown(KeyCode.R)) {
-                    if (InputUtil.GetKeyDown(KeyCode.LeftShift)) {
+                    if (InputUtil.GetKey(KeyCode.LeftShift)) {
                         RestartScene();
                     } else {
                         ResetLevel();
@@ -215,6 +219,9 @@ namespace Lemmings.Managers {
             CountdownScreen.instance.StartCountdown();
             PlayerPlacer.instance.enabled = true;
             isPlaying = true;
+            GetComponent<Visibility>().ApplySetting();
+
+            PauseHandler.instance.SetGamePanelVisibility(false);
         }
 
         /// <summary>
@@ -222,6 +229,7 @@ namespace Lemmings.Managers {
         /// </summary>
         public void StartLevel() {
             _isCountingDown = false;
+            PauseHandler.instance.SetGamePanelVisibility(true);
         }
     }
 }

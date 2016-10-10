@@ -80,10 +80,10 @@ namespace Lemmings.Managers {
         /// </summary>
         public void RequestLevel() {
             dirtyTimer = new LimitTimerCallback(CheckDirty, checkDirtyTime);
+            gameManager._levelRequested = true;
             if (json == null) {
                 // Connect to the server to get a JSON file.
                 gameManager.isLoading = true;
-                gameManager._levelRequested = true;
                 networkingManager.GetLevel(CreateLevel);
             } else {
                 // Hard-coded JSON resource for testing.

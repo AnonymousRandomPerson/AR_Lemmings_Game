@@ -44,6 +44,13 @@ namespace Lemmings.Entities.Player {
         [Tooltip("The ranch at which blocks can be placed.")]
         private float placeRange;
 
+        /// <summary> Block outlines to indicate where blocks are placed. </summary>
+        private GameObject[] ghostBlocks;
+        /// <summary> The material for ghost outline blocks. </summary>
+        [SerializeField]
+        [Tooltip("The material for ghost outline blocks.")]
+        private Material ghostMaterial;
+
         /// <summary>
         /// Initializes the singleton player placer instance.
         /// </summary>
@@ -63,6 +70,18 @@ namespace Lemmings.Entities.Player {
             } else {
                 keyLimit = KeyCode.Alpha1 + numBlockTypes - 1;
             }
+
+            ghostBlocks = new GameObject[numBlockTypes];
+            for (int i = 0; i < numBlockTypes; i++) {
+                Block block = blockManager.blockObjects[i];
+                GameObject ghostBlock = ObjectUtil.Instantiate(block).gameObject;
+                Destroy(ghostBlock.GetComponent<Rigidbody>());
+                Destroy(ghostBlock.GetComponent<BoxCollider>());
+                Destroy(ghostBlock.GetComponent<Block>());
+                ghostBlock.GetComponent<Renderer>().material = ghostMaterial;
+                ghostBlock.SetActive(false);
+                ghostBlocks[i] = ghostBlock;
+            }
         }
 
         /// <summary>
@@ -80,17 +99,42 @@ namespace Lemmings.Entities.Player {
         }
 
         /// <summary>
+        /// Gets the point that the player is looking at.
+        /// </summary>
+        /// <returns>Whether there is an object at the point the player is looking at.</returns>
+        /// <param name="hit">The point that the player is looking at.</param>
+        private bool GetTarget(out RaycastHit hit) {
+            return Physics.Raycast(transform.position, PlayerMover.instance.RotateFacing(Vector3.forward), out hit, placeRange, layerMask);
+        }
+
+        /// <summary>
+        /// Sets whether the ghost block is visible or not.
+        /// </summary>
+        /// <param name="visibility">Whether the ghost block is visible or not.</param>
+        private void SetGhostBlockVisibility(bool visibility) {
+            ghostBlocks[(int)selectedBlock].SetActive(visibility);
+        }
+
+        /// <summary>
         /// Gets the player's block placing status.
         /// </summary>
         /// <returns>The player's block placing status.</returns>
         public PlaceStatus GetPlaceStatus() {
+            SetGhostBlockVisibility(false);
             RaycastHit point;
-            if (blockManager == null || !blockManager.HasBlock(selectedBlock)) {
-                return PlaceStatus.Out;
-            } else if (Physics.Raycast(transform.position, transform.forward, out point, placeRange, layerMask) && point.collider.tag != "Lemming") {
-                return point.collider.tag == "Block" ? PlaceStatus.Rotate : PlaceStatus.Able;
+            bool depleted = blockManager == null || !blockManager.HasBlock(selectedBlock);
+            if (GetTarget(out point) && point.collider.tag != "Lemming") {
+                if (point.collider.tag == "Block") {
+                    return PlaceStatus.Rotate;
+                } else if (depleted) {
+                    return PlaceStatus.Out;
+                } else {
+                    SetGhostBlockVisibility(true);
+                    blockManager.MoveBlock(ghostBlocks[(int)selectedBlock], point.point, transform.eulerAngles, point.normal, selectedBlock);
+                    return PlaceStatus.Able;
+                }
             } else {
-                return PlaceStatus.Range;
+                return depleted ? PlaceStatus.Out : PlaceStatus.Range;
             }
         }
 
@@ -99,7 +143,7 @@ namespace Lemmings.Entities.Player {
         /// </summary>
         private void PlaceBlock() {
             RaycastHit point;
-            if (Physics.Raycast(transform.position, transform.forward, out point, placeRange, layerMask) && point.collider.tag != "Lemming") {
+            if (GetTarget(out point) && point.collider.tag != "Lemming") {
                 if (point.collider.tag == "Block") {
                     Block block = point.collider.GetComponent<Block>();
                     block.Rotate();
@@ -114,7 +158,7 @@ namespace Lemmings.Entities.Player {
         /// </summary>
         private void RemoveBlock() {
             RaycastHit point;
-            if (Physics.Raycast(transform.position, transform.forward, out point, placeRange, layerMask)) {
+            if (GetTarget(out point)) {
                 Block block = point.collider.GetComponent<Block>();
                 if (block != null) {
                     block.Despawn();
@@ -126,6 +170,8 @@ namespace Lemmings.Entities.Player {
         /// Switches the selected block if the user scrolls.
         /// </summary>
         private void SwitchBlock() {
+            SetGhostBlockVisibility(false);
+
             float scroll = InputUtil.GetScrollWheel();
             if (scroll != 0) {
                 if (scroll < 0) {

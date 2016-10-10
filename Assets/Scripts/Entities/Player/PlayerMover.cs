@@ -44,6 +44,14 @@ namespace Lemmings.Entities.Player {
         /// <summary> Whether the player started out in no-clip mode. </summary>
         private bool startNoClip;
 
+        /// <summary> Whether to use the Oculus camera controls. </summary>
+        private bool vrCamera;
+
+        /// <summary> The first-person camera attached to the player. </summary>
+        [SerializeField]
+        [Tooltip("The first-person camera attached to the player.")]
+        private Camera playerCamera;
+
         /// <summary> The height of the player. </summary>
         public float height {
             get {
@@ -68,6 +76,10 @@ namespace Lemmings.Entities.Player {
             base.Start();
             controller = GetComponent<CharacterController>();
             startNoClip = noClip;
+            if (playerCamera == null) {
+                playerCamera = GetComponentInChildren<Camera>();
+            }
+            vrCamera = GameManager.instance.GetComponent<VRSwitcher>().vrEnabled;
         }
 
         /// <summary>
@@ -88,16 +100,18 @@ namespace Lemmings.Entities.Player {
         /// Moves the player around when keys are pressed.
         /// </summary>
         private void Move() {
-            Vector2 mouseMovement = InputUtil.GetMouseMovement() * turnSpeed;
-            transform.Rotate(-mouseMovement.y, mouseMovement.x, 0);
-            Vector3 rotation = transform.eulerAngles;
-            rotation.z = 0;
-            if (rotation.x > 180) {
-                rotation.x = Mathf.Max(rotation.x, 360 - maxPitch);
-            } else {
-                rotation.x = Mathf.Min(rotation.x, maxPitch);
+            if (!vrCamera) {
+                Vector2 mouseMovement = InputUtil.GetMouseMovement() * turnSpeed;
+                transform.Rotate(-mouseMovement.y, mouseMovement.x, 0);
+                Vector3 rotation = transform.eulerAngles;
+                rotation.z = 0;
+                if (rotation.x > 180) {
+                    rotation.x = Mathf.Max(rotation.x, 360 - maxPitch);
+                } else {
+                    rotation.x = Mathf.Min(rotation.x, maxPitch);
+                }
+                transform.eulerAngles = rotation;
             }
-            transform.eulerAngles = rotation;
 
             Vector3 targetDirection = Vector3.zero;
             if (InputUtil.GetKey(KeyCode.D, KeyCode.RightArrow)) {
@@ -113,7 +127,7 @@ namespace Lemmings.Entities.Player {
                 targetDirection += Vector3.back;
             }
 
-            targetDirection = transform.rotation * targetDirection;
+            targetDirection = RotateFacing(targetDirection);
             targetDirection.y = 0;
             targetDirection.Normalize();
 
@@ -135,6 +149,15 @@ namespace Lemmings.Entities.Player {
             } else {
                 controller.SimpleMove(moveDirection);
             }
+        }
+
+        /// <summary>
+        /// Rotates a vector by the direction the player is facing.
+        /// </summary>
+        /// <returns>The rotated vector.</returns>
+        /// <param name="vector">The vector to rotate.</param>
+        internal Vector3 RotateFacing(Vector3 vector) {
+            return transform.rotation * playerCamera.transform.localRotation * vector;
         }
 
         /// <summary>

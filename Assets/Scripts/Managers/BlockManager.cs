@@ -22,10 +22,14 @@ namespace Lemmings.Managers {
         /// <summary> The game object that holds the blocks. </summary>
         private GameObject blockContainer;
 
-        /// <summary> The block prefab to initialize blocks with. </summary>
+        /// <summary> The block prefabs to initialize blocks with. </summary>
         [SerializeField]
-        [Tooltip("The block prefabs to initialize object with.")]
+        [Tooltip("The block prefabs to initialize blocks with.")]
         private Block[] blockPrefabs;
+        /// <summary> The block prefabs to initialize blocks with. </summary>
+        public Block[] blockObjects {
+            get { return blockPrefabs; }
+        }
         /// <summary> The number of blocks in the factory. </summary>
         [SerializeField]
         [Tooltip("The number of blocks in the factory of each type.")]
@@ -90,14 +94,27 @@ namespace Lemmings.Managers {
             int typeInt = (int)type;
             if (HasBlock(type)) {
                 block = inactiveBlocks[typeInt].Dequeue();
-                block.transform.position = position + normal * blockOffsets[typeInt];
-                rotation.x = blockPrefabs[typeInt].transform.eulerAngles.x;
-                rotation.z = blockPrefabs[typeInt].transform.eulerAngles.z;
-                block.transform.rotation = Quaternion.Euler(rotation);
+                MoveBlock(block.gameObject, position, rotation, normal, type);
                 block.Init();
                 block.gameObject.SetActive(true);
             }
             return block;
+        }
+
+        /// <summary>
+        /// Moves a block to a position in the world.
+        /// </summary>
+        /// <param name="block">The block to move.</param>
+        /// <param name="position">The new position of the block.</param>
+        /// <param name="rotation">The new rotation of the block.</param>
+        /// <param name="normal">The normal of the surface that block is on.</param>
+        /// <param name="type">The type of block to spawn.</param>
+        public void MoveBlock(GameObject block, Vector3 position, Vector3 rotation, Vector3 normal, BlockType type) {
+            int typeInt = (int)type;
+            block.transform.position = position + normal * blockOffsets[typeInt];
+            rotation.x = blockPrefabs[typeInt].transform.eulerAngles.x;
+            rotation.z = blockPrefabs[typeInt].transform.eulerAngles.z;
+            block.transform.rotation = Quaternion.Euler(rotation);
         }
 
         /// <summary>

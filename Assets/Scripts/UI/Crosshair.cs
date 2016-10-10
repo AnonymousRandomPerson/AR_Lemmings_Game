@@ -34,6 +34,7 @@ namespace Lemmings.UI {
             case PlaceStatus.Range: crosshairColor = Color.black; break;
             case PlaceStatus.Rotate: crosshairColor = Color.yellow; break;
             }
+
             crosshair.color = crosshairColor;
         }
     }

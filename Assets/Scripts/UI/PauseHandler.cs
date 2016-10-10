@@ -26,11 +26,7 @@ namespace Lemmings.UI {
             internal set {
                 _paused = value;
                 Cursor.visible = value;
-                if (GameManager.instance.HideGameUI) {
-                    gamePanel.SetActive(false);
-                } else {
-                    gamePanel.SetActive(!_paused);
-                }
+                SetGamePanelVisibility(!_paused);
                 pausePanel.SetActive(_paused);
                 if (_paused) {
                     Time.timeScale = 0;
@@ -69,7 +65,7 @@ namespace Lemmings.UI {
         /// Checks for the pause hotkey.
         /// </summary>
         private void Update() {
-            if (InputUtil.GetKeyDown(KeyCode.P)) {
+            if (!GameManager.instance.isCountingDown && InputUtil.GetKeyDown(KeyCode.P)) {
                 paused = !paused;
             }
         }
@@ -79,6 +75,18 @@ namespace Lemmings.UI {
         /// </summary>
         public void Unpause() {
             paused = false;
+        }
+
+        /// <summary>
+        /// Sets whether the game panel is visible.
+        /// </summary>
+        /// <param name="visible">Whether the game panel is visible.</param>
+        public void SetGamePanelVisibility(bool visible) {
+            if (GameManager.instance.HideGameUI) {
+                gamePanel.SetActive(false);
+            } else {
+                gamePanel.SetActive(visible);
+            }
         }
     }
 }

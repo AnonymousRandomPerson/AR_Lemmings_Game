@@ -42,8 +42,9 @@ namespace Lemmings.UI {
         /// Starts the countdown at the start of the level.
         /// </summary>
         public void StartCountdown() {
-            gameObject.SetActive(true);
             timeLeft = (float) countDownTime;
+            gameObject.SetActive(true);
+            Update();
         }
 
         /// <summary>

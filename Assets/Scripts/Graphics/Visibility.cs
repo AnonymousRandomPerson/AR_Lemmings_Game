@@ -26,7 +26,7 @@ namespace Lemmings.Graphics {
         /// <summary> Possible visibility settings. </summary>
         private enum Settings {Mesh = 1, Surface, Both};
         /// <summary> The current visibility setting. </summary>
-        private Settings currentSetting = Settings.Both;
+        private Settings currentSetting = Settings.Mesh;
 
         /// <summary> The surface manager in the scene. </summary>
         private SurfaceManager surfaceManager;
@@ -58,6 +58,13 @@ namespace Lemmings.Graphics {
             }
             currentSetting = (Settings)newSetting;
 
+            ApplySetting();
+        }
+
+        /// <summary>
+        /// Changes the visibility of the mesh to the current setting.
+        /// </summary>
+        internal void ApplySetting() {
             int settingInt = (int)currentSetting;
             if (mesh != null) {
                 mesh.SetActive((settingInt & 1) > 0);
