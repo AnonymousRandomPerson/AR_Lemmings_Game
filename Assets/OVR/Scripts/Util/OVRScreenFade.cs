@@ -59,14 +59,6 @@ public class OVRScreenFade : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Starts a fade in when a new level is loaded
-	/// </summary>
-	void OnLevelWasLoaded(int level)
-	{
-		StartCoroutine(FadeIn());
-	}
-
-	/// <summary>
 	/// Cleans up the fade material
 	/// </summary>
 	void OnDestroy()

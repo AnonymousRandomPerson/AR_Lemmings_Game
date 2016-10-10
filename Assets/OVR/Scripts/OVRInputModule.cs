@@ -94,7 +94,7 @@ namespace UnityEngine.EventSystems
         protected OVRInputModule()
         {}
 
-        void Reset()
+        new void Reset()
         {
             allowActivationOnMobileDevice = true;
         }
@@ -507,7 +507,7 @@ namespace UnityEngine.EventSystems
         /// </summary>
         /// <param name="from">Copy this value</param>
         /// <param name="to">to this object</param>
-        protected void CopyFromTo(PointerEventData @from, PointerEventData @to)
+        new protected void CopyFromTo(PointerEventData @from, PointerEventData @to)
         {
             @to.position = @from.position;
             @to.delta = @from.delta;
