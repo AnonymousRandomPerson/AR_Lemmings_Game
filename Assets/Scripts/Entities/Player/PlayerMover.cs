@@ -157,7 +157,7 @@ namespace Lemmings.Entities.Player {
         /// <returns>The rotated vector.</returns>
         /// <param name="vector">The vector to rotate.</param>
         internal Vector3 RotateFacing(Vector3 vector) {
-            return transform.rotation * playerCamera.transform.localRotation * vector;
+            return playerCamera.transform.rotation * vector;
         }
 
         /// <summary>

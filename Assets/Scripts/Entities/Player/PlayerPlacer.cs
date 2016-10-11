@@ -51,6 +51,16 @@ namespace Lemmings.Entities.Player {
         [Tooltip("The material for ghost outline blocks.")]
         private Material ghostMaterial;
 
+        /// <summary> The first-person player camera. </summary>
+        private Transform playerCamera;
+
+        /// <summary> The time after placing a block before it can be rotated. </summary>
+        [SerializeField]
+        [Tooltip("The time after placing a block before it can be rotated.")]
+        private float placeCooldown;
+        /// <summary> Timer for delaying block rotation. </summary>
+        private float placeTimer;
+
         /// <summary>
         /// Initializes the singleton player placer instance.
         /// </summary>
@@ -64,6 +74,7 @@ namespace Lemmings.Entities.Player {
         protected override void Start() {
             base.Start();
             blockManager = BlockManager.instance;
+            playerCamera = transform.FindChild("Main Camera");
             numBlockTypes = blockManager.numTypes;
             if (numBlockTypes >= 9) {
                 keyLimit = KeyCode.Alpha9;
@@ -88,11 +99,12 @@ namespace Lemmings.Entities.Player {
         /// Takes user input to manipulate blocks.
         /// </summary>
         private void Update() {
+            placeTimer -= Time.deltaTime;
             if (!PauseHandler.instance.paused && !GameManager.instance.isCountingDown) {
                 SwitchBlock();
-                if (InputUtil.GetRightMouse()) {
+                if (InputUtil.GetLeftMouse()) {
                     PlaceBlock();
-                } else if (InputUtil.GetLeftMouseDown()) {
+                } else if (InputUtil.GetRightMouseDown()) {
                     RemoveBlock();
                 }
             }
@@ -104,7 +116,7 @@ namespace Lemmings.Entities.Player {
         /// <returns>Whether there is an object at the point the player is looking at.</returns>
         /// <param name="hit">The point that the player is looking at.</param>
         private bool GetTarget(out RaycastHit hit) {
-            return Physics.Raycast(transform.position, PlayerMover.instance.RotateFacing(Vector3.forward), out hit, placeRange, layerMask);
+            return Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, placeRange, layerMask);
         }
 
         /// <summary>
@@ -130,7 +142,7 @@ namespace Lemmings.Entities.Player {
                     return PlaceStatus.Out;
                 } else {
                     SetGhostBlockVisibility(true);
-                    blockManager.MoveBlock(ghostBlocks[(int)selectedBlock], point.point, transform.eulerAngles, point.normal, selectedBlock);
+                    blockManager.MoveBlock(ghostBlocks[(int)selectedBlock], point.point, playerCamera.eulerAngles, point.normal, selectedBlock);
                     return PlaceStatus.Able;
                 }
             } else {
@@ -145,10 +157,13 @@ namespace Lemmings.Entities.Player {
             RaycastHit point;
             if (GetTarget(out point) && point.collider.tag != "Lemming") {
                 if (point.collider.tag == "Block") {
-                    Block block = point.collider.GetComponent<Block>();
-                    block.Rotate();
+                    if (placeTimer <= 0) {
+                        Block block = point.collider.GetComponent<Block>();
+                        block.Rotate();
+                    }
                 } else {
-                    blockManager.SpawnBlock(point.point, transform.eulerAngles, point.normal, selectedBlock);
+                    blockManager.SpawnBlock(point.point, playerCamera.eulerAngles, point.normal, selectedBlock);
+                    placeTimer = placeCooldown;
                 }
             }
         }

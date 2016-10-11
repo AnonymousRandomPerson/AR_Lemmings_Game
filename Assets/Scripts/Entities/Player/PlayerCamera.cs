@@ -8,10 +8,11 @@ namespace Lemmings.Entities.Player {
     class PlayerCamera : MonoBehaviour {
 
         /// <summary>
-        /// Makes the camera follow the player.
+        /// Makes the UI follow the player.
         /// </summary>
-        private void FixedUpdate() {
-            //transform.position = PlayerMover.instance.transform.position;
+        private void Update() {
+            //Debug.Log(transform.FindChild("Game UI VR").localPosition);
+            //transform.FindChild("Game UI VR").localPosition = Vector3.zero;
         }
     }
 }

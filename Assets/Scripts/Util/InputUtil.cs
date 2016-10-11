@@ -53,6 +53,14 @@ namespace Lemmings.Util {
         }
 
         /// <summary>
+        /// Checks if the left mouse button is held down.
+        /// </summary>
+        /// <returns>Whether the left mouse button is held down.</returns>
+        public static bool GetLeftMouse() {
+            return Input.GetMouseButton(0);
+        }
+
+        /// <summary>
         /// Checks if the right mouse button was pressed.
         /// </summary>
         /// <returns>Whether the right mouse button was pressed.</returns>
