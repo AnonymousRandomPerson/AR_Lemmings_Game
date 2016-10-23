@@ -49,7 +49,7 @@ namespace Lemmings.Util {
         /// </summary>
         /// <returns>Whether the left mouse button was pressed.</returns>
         public static bool GetLeftMouseDown() {
-            return Input.GetMouseButtonDown(0);
+            return Input.GetButtonDown("Fire1");
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Lemmings.Util {
         /// </summary>
         /// <returns>Whether the left mouse button is held down.</returns>
         public static bool GetLeftMouse() {
-            return Input.GetMouseButton(0);
+            return Input.GetButton("Fire1");
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Lemmings.Util {
         /// </summary>
         /// <returns>Whether the right mouse button was pressed.</returns>
         public static bool GetRightMouseDown() {
-            return Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0) && GetKey(KeyCode.LeftControl, KeyCode.RightControl);
+            return Input.GetButtonDown("Fire2") || Input.GetMouseButtonDown(0) && GetKey(KeyCode.LeftControl, KeyCode.RightControl);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Lemmings.Util {
         /// </summary>
         /// <returns>Whether the right mouse button is held down.</returns>
         public static bool GetRightMouse() {
-            return Input.GetMouseButton(1) || Input.GetMouseButton(0) && GetKey(KeyCode.LeftControl, KeyCode.RightControl);
+            return Input.GetButton("Fire2") || Input.GetMouseButton(0) && GetKey(KeyCode.LeftControl, KeyCode.RightControl);
         }
 
         /// <summary>

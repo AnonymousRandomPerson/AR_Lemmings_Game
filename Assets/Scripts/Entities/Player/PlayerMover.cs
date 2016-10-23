@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.VR;
 using Lemmings.Entities;
 using Lemmings.Managers;
 using Lemmings.Util;
@@ -79,13 +80,13 @@ namespace Lemmings.Entities.Player {
             if (playerCamera == null) {
                 playerCamera = GetComponentInChildren<Camera>();
             }
-            vrCamera = GameManager.instance.GetComponent<VRSwitcher>().vrEnabled;
         }
 
         /// <summary>
         /// Updates the player every physics tick.
         /// </summary>
         private void FixedUpdate() {
+            vrCamera = VRDevice.isPresent;
             gameObject.layer = LayerMask.NameToLayer(noClip ? "Player NoClip" : "Player");
             if (!GameManager.instance.isLoading) {
                 Move();
@@ -114,22 +115,16 @@ namespace Lemmings.Entities.Player {
             }
 
             Vector3 targetDirection = Vector3.zero;
-            if (InputUtil.GetKey(KeyCode.D, KeyCode.RightArrow)) {
-                targetDirection += Vector3.right;
-            }
-            if (InputUtil.GetKey(KeyCode.A, KeyCode.LeftArrow)) {
-                targetDirection += Vector3.left;
-            }
-            if (InputUtil.GetKey(KeyCode.W, KeyCode.UpArrow)) {
-                targetDirection += Vector3.forward;
-            }
-            if (InputUtil.GetKey(KeyCode.S, KeyCode.DownArrow)) {
-                targetDirection += Vector3.back;
-            }
+
+            targetDirection += Vector3.right * Input.GetAxis("Horizontal");
+            targetDirection += Vector3.forward * Input.GetAxis("Vertical");
+
+            float speedScale = Mathf.Min(1, Vector3.Magnitude(targetDirection));
 
             targetDirection = RotateFacing(targetDirection);
             targetDirection.y = 0;
             targetDirection.Normalize();
+            targetDirection *= speedScale;
 
             if (noClip) {
                 if (InputUtil.GetKey(KeyCode.LeftShift, KeyCode.RightShift, KeyCode.PageDown)) {

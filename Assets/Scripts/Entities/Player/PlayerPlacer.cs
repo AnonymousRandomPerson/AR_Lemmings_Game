@@ -192,13 +192,18 @@ namespace Lemmings.Entities.Player {
                 if (scroll < 0) {
                     _selectedBlock++;
                     if ((int)_selectedBlock >= numBlockTypes) {
-                        _selectedBlock = 0;
+                        _selectedBlock--;
                     }
                 } else {
                     _selectedBlock--;
                     if (_selectedBlock < 0) {
-                        _selectedBlock = (BlockType)(numBlockTypes - 1);
+                        _selectedBlock = 0;
                     }
+                }
+            } else if (Input.GetButtonDown("Fire3")) {
+                _selectedBlock++;
+                if ((int)_selectedBlock >= numBlockTypes) {
+                    _selectedBlock = 0;
                 }
             } else {
                 for (KeyCode key = KeyCode.Alpha1; key <= keyLimit; key++) {
