@@ -135,7 +135,7 @@ namespace Lemmings.Managers {
                     _currentTime += Time.deltaTime;
                 }
 
-                if (InputUtil.GetKeyDown(KeyCode.R)) {
+                if (Input.GetButton("Reset")) {
                     if (InputUtil.GetKey(KeyCode.LeftShift)) {
                         RestartScene();
                     } else {

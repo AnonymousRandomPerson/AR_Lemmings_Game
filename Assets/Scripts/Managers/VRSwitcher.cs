@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.VR;
+using Lemmings.Entities.Player;
 using Lemmings.Graphics;
 
 namespace Lemmings.Managers {

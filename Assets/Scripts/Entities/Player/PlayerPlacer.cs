@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.VR;
 using Lemmings.Entities.Blocks;
 using Lemmings.Enums;
 using Lemmings.Managers;
@@ -74,7 +75,11 @@ namespace Lemmings.Entities.Player {
         protected override void Start() {
             base.Start();
             blockManager = BlockManager.instance;
-            playerCamera = transform.FindChild("Main Camera");
+            if (VRDevice.isPresent) {
+                playerCamera = transform.FindChild("TrackingSpace").FindChild("CenterEyeAnchor");
+            } else {
+                playerCamera = transform.FindChild("Main Camera");
+            }
             numBlockTypes = blockManager.numTypes;
             if (numBlockTypes >= 9) {
                 keyLimit = KeyCode.Alpha9;
