@@ -5,6 +5,7 @@ Augmented reality Lemmings-esque game.
 This project uses [Git Large File Storage](https://git-lfs.github.com/) to store large .obj files.
 
 ## Controls
+Keyboard
 *   Right/D: Move right
 *   Left/A: Move left
 *   Up/W: Move forward
@@ -14,8 +15,15 @@ This project uses [Git Large File Storage](https://git-lfs.github.com/) to store
 *   Left click: Remove block
 *   Scroll wheel/Number keys: Switch selected block
 *   R: Reset level
-*   Shift+R: Regenerate level from PCG service
+*   Shift+R: Reset scene (allows generation of new level)
+*   Shift+G: Generate level
 *   Tab: Toggle mesh/surface visiblity
 *   P: Pause/Unpause
 *   O: Freeze/Unfreeze lemmings
 *   Escape: Unlock mouse from game
+Controller
+*   Left analog stick/DPad: Move
+*   X: Place block
+*   Circle: Remove block
+*   Square: Switch selected block
+*   R1: Reset level
