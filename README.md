@@ -21,6 +21,7 @@ Keyboard
 *   P: Pause/Unpause
 *   O: Freeze/Unfreeze lemmings
 *   Escape: Unlock mouse from game
+
 Controller
 *   Left analog stick/DPad: Move
 *   X: Place block
