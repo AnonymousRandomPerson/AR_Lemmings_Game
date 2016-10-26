@@ -24,6 +24,7 @@ Keyboard
 
 Controller
 *   Left analog stick/DPad: Move
+*   Oculus rotate: Rotate camera
 *   X: Place block
 *   Circle: Remove block
 *   Square: Switch selected block
