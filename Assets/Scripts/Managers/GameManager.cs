@@ -119,7 +119,6 @@ namespace Lemmings.Managers {
         private void Start() {
             pathRenderer = GetComponent<TravelHistoryRenderer>();
             PlayerPlacer.instance.enabled = false;
-            CountdownScreen.instance.gameObject.SetActive(false);
         }
 
         /// <summary>

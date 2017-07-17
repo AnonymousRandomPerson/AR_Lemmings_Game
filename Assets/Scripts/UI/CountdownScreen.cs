@@ -29,7 +29,9 @@ namespace Lemmings.UI {
         private Text text;
 
         /// <summary> The amount of time remaining in the countdown. </summary>
-        private float timeLeft;
+        private float timeLeft = 1;
+        /// <summary> Whether to show the starting key combination prompt. </summary>
+        private bool showStart = true;
 
         /// <summary>
         /// Sets the singleton instance of the countdown screen.
@@ -44,6 +46,7 @@ namespace Lemmings.UI {
         public void StartCountdown() {
             timeLeft = (float) countDownTime;
             gameObject.SetActive(true);
+            showStart = false;
             Update();
         }
 
@@ -51,15 +54,17 @@ namespace Lemmings.UI {
         /// Updates the countdown.
         /// </summary>
         private void Update() {
-            int secondsLeft = (int) timeLeft + 1;
-            text.text = secondsLeft.ToString();
-            Color textColor = text.color;
-            textColor.a = timeLeft - (float) secondsLeft + 1;
-            text.color = textColor;
-            timeLeft -= Time.deltaTime;
-            if (timeLeft <= 0) {
-                gameObject.SetActive(false);
-                GameManager.instance.StartLevel();
+            if (!showStart) {
+                int secondsLeft = (int) timeLeft + 1;
+                text.text = secondsLeft.ToString();
+                Color textColor = text.color;
+                textColor.a = timeLeft - (float) secondsLeft + 1;
+                text.color = textColor;
+                timeLeft -= Time.deltaTime;
+                if (timeLeft <= 0) {
+                    gameObject.SetActive(false);
+                    GameManager.instance.StartLevel();
+                }
             }
         }
     }

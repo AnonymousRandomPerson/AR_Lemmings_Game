@@ -70,10 +70,10 @@ namespace Lemmings.Graphics {
                     for (int j = 0; j < linePositions.Length; j++) {
                         line.SetPosition(j, linePositions[j]);
                     }
-                    line.SetVertexCount(linePositions.Length);
+                    line.positionCount = linePositions.Length;
 
                     line.material = routeMaterial;
-                    line.SetWidth(routeWidth, routeWidth);
+                    line.startWidth = line.endWidth = routeWidth;
                 }
             }
         }

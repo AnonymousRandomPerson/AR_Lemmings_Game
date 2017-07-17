@@ -76,9 +76,9 @@ namespace Lemmings.Entities.Player {
             base.Start();
             blockManager = BlockManager.instance;
             if (VRDevice.isPresent) {
-                playerCamera = transform.FindChild("TrackingSpace").FindChild("CenterEyeAnchor");
+                playerCamera = transform.Find("TrackingSpace").Find("CenterEyeAnchor");
             } else {
-                playerCamera = transform.FindChild("Main Camera");
+                playerCamera = transform.Find("Main Camera");
             }
             numBlockTypes = blockManager.numTypes;
             if (numBlockTypes >= 9) {

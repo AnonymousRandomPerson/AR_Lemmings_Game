@@ -18,6 +18,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ************************************************************************************/
+#pragma warning disable 0618
 
 using UnityEngine;
 using UnityEditor;
@@ -37,7 +38,7 @@ partial class OculusBuildApp
 		UnityEditorInternal.VR.VREditor.SetVREnabled(BuildTargetGroup.Standalone, true);
 #endif
 		PlayerSettings.virtualRealitySupported = true;
-		EditorApplication.SaveAssets();
+		AssetDatabase.SaveAssets();
 	}
 
 	static void SetAndroidTarget()
@@ -52,6 +53,6 @@ partial class OculusBuildApp
 		UnityEditorInternal.VR.VREditor.SetVREnabled(BuildTargetGroup.Android, true);
 #endif
 		PlayerSettings.virtualRealitySupported = true;
-		EditorApplication.SaveAssets();
+		AssetDatabase.SaveAssets();
 	}
 }

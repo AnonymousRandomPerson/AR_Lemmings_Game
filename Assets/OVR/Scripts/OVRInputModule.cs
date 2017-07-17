@@ -18,6 +18,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ************************************************************************************/
+#pragma warning disable 0109
+#pragma warning disable 0114
 
 using System;
 using System.Collections.Generic;
@@ -94,7 +96,7 @@ namespace UnityEngine.EventSystems
         protected OVRInputModule()
         {}
 
-        new void Reset()
+        void Reset()
         {
             allowActivationOnMobileDevice = true;
         }

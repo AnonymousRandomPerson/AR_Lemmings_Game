@@ -146,8 +146,8 @@ namespace Lemmings.Graphics {
                             line.SetPosition(j, linePositions[j]);
                         }
                         line.material = pathMaterial;
-                        line.SetColors(color, color);
-                        line.SetWidth(pathWidth, pathWidth);
+                        line.startColor = line.endColor = color;
+                        line.startWidth = line.endWidth = pathWidth;
 
                         lastPosition = path[i];
                     }

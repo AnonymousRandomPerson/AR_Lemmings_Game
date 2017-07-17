@@ -94,7 +94,7 @@ namespace Lemmings.Entities {
             blockDistance = forwardOffset * 1.5f;
 
             animator = GetComponentInChildren<Animator>();
-            renderers = transform.FindChild("Model").GetComponentsInChildren<MeshRenderer>();
+            renderers = transform.Find("Model").GetComponentsInChildren<MeshRenderer>();
 
             jumpTimer = new LimitTimer(0.25f);
             ResetFields();
