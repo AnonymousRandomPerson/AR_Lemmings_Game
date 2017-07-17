@@ -96,8 +96,6 @@ namespace Lemmings.Managers {
         /// </summary>
         /// <param name="jsonText">The JSON text to create the level with.</param>
         private void CreateLevel(string jsonText) {
-            Debug.Log(jsonText);
-
             JSONObject input = new JSONObject(jsonText);
 
             JSONObject lemmingsJSON = input.GetField("lemmings");

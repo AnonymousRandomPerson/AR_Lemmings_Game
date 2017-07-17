@@ -59,10 +59,6 @@ namespace Lemmings.Graphics {
             logger = LevelLogger.instance;
             pathContainer = ObjectUtil.CreateNewObject("Paths");
             pathMaterial = new Material(Shader.Find("Particles/Additive"));
-
-            if (logFile != null) {
-                visible = true;
-            }
         }
 
         /// <summary>
