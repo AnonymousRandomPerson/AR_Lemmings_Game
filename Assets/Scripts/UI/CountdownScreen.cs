@@ -28,6 +28,11 @@ namespace Lemmings.UI {
         [Tooltip("The text displaying the countdown.")]
         private Text text;
 
+        /// <summary> The text displaying any level loading errors that occur. </summary>
+        [SerializeField]
+        [Tooltip("The text displaying any level loading errors that occur.")]
+        private Text errorText;
+
         /// <summary> The amount of time remaining in the countdown. </summary>
         private float timeLeft = 1;
         /// <summary> Whether to show the starting key combination prompt. </summary>
@@ -41,12 +46,29 @@ namespace Lemmings.UI {
         }
 
         /// <summary>
+        /// Sets the message on the countdown screen.
+        /// </summary>
+        /// <param name="message">The message on the countdown screen.</param>
+        public void SetText(string message) {
+            text.text = message;
+        }
+
+        /// <summary>
+        /// Sets the error message on the countdown screen.
+        /// </summary>
+        /// <param name="message">The error message on the countdown screen.</param>
+        public void SetError(string error) {
+            errorText.text = error;
+        }
+
+        /// <summary>
         /// Starts the countdown at the start of the level.
         /// </summary>
         public void StartCountdown() {
             timeLeft = (float) countDownTime;
             gameObject.SetActive(true);
             showStart = false;
+            SetError("");
             Update();
         }
 

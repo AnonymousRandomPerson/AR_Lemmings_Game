@@ -6,6 +6,7 @@ using Lemmings.Entities.Player;
 using Lemmings.Graphics;
 using Lemmings.UI;
 using Lemmings.Util;
+using System.Net;
 
 namespace Lemmings.Managers {
 
@@ -127,6 +128,7 @@ namespace Lemmings.Managers {
         private void Update() {
             if (!_levelRequested && InputUtil.GetKeyDown(KeyCode.G) && Input.GetKey(KeyCode.LeftShift)) {
                 GetComponent<LevelCreator>().RequestLevel();
+                CountdownScreen.instance.SetText("");
             }
 
             if (isPlaying && !PauseHandler.instance.paused) {
@@ -229,6 +231,16 @@ namespace Lemmings.Managers {
         public void StartLevel() {
             _isCountingDown = false;
             PauseHandler.instance.SetGamePanelVisibility(true);
+        }
+
+        /// <summary>
+        /// Invokes error handling when level loading from the server fails.
+        /// </summary>
+        /// <param name="errorMessage">The error message produced when the error occurred.</param>
+        public void FailLevelLoad(string errorMessage) {
+            isLoading = false;
+            CountdownScreen.instance.SetText("Error loading level.");
+            CountdownScreen.instance.SetError(errorMessage);
         }
     }
 }

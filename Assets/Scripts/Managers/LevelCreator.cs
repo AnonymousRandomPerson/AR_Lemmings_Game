@@ -84,11 +84,19 @@ namespace Lemmings.Managers {
             if (json == null) {
                 // Connect to the server to get a JSON file.
                 gameManager.isLoading = true;
-                networkingManager.GetLevel(CreateLevel);
+                networkingManager.GetLevel(CreateLevel, FailLevelLoad);
             } else {
                 // Hard-coded JSON resource for testing.
                 CreateLevel(json.text);
             }
+        }
+
+        /// <summary>
+        /// Invokes error handling when level loading from the server fails.
+        /// </summary>
+        /// <param name="errorMessage">The error message produced when the error occurred.</param>
+        private void FailLevelLoad(string errorMessage) {
+            gameManager.FailLevelLoad(errorMessage);
         }
 
         /// <summary>
@@ -345,7 +353,7 @@ namespace Lemmings.Managers {
         /// Checks if the level needs to be refreshed.
         /// </summary>
         private void CheckDirty() {
-            networkingManager.CheckDirty(ReceiveDirtyMessage);
+            networkingManager.CheckDirty(ReceiveDirtyMessage, null);
         }
 
         /// <summary>
@@ -369,7 +377,7 @@ namespace Lemmings.Managers {
                 WWWForm form = new WWWForm();
                 form.AddField("player", playerInfo);
                 form.AddField("lemmings", lemmingsInfo);
-                networkingManager.RefreshLevel(RefreshBoundingBoxes, form);
+                networkingManager.RefreshLevel(RefreshBoundingBoxes, null, form);
             }
         }
 
