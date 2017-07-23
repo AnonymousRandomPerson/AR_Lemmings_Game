@@ -129,6 +129,7 @@ namespace Lemmings.Managers {
             if (!_levelRequested && InputUtil.GetKeyDown(KeyCode.G) && Input.GetKey(KeyCode.LeftShift)) {
                 GetComponent<LevelCreator>().RequestLevel();
                 CountdownScreen.instance.SetText("");
+                CountdownScreen.instance.SetError("");
             }
 
             if (isPlaying && !PauseHandler.instance.paused) {
@@ -239,7 +240,8 @@ namespace Lemmings.Managers {
         /// <param name="errorMessage">The error message produced when the error occurred.</param>
         public void FailLevelLoad(string errorMessage) {
             isLoading = false;
-            CountdownScreen.instance.SetText("Error loading level.");
+            _levelRequested = false;
+            CountdownScreen.instance.SetText("Error loading level; retry with Left Shift + G.");
             CountdownScreen.instance.SetError(errorMessage);
         }
     }
