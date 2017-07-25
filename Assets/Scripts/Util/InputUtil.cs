@@ -9,6 +9,47 @@ namespace Lemmings.Util {
     static class InputUtil {
 
         /// <summary>
+        /// Checks if a button was just pressed.
+        /// </summary>
+        /// <returns>Whether the button was just pressed.</returns>
+        /// <param name="code">The ID of the button to check.</param>
+        public static bool GetButtonDown(InputCode code) {
+            return Input.GetButtonDown(code.ToString());
+        }
+
+        /// <summary>
+        /// Gets whether a button is pressed. Accommodates for macOS trackpad right-clicking.
+        /// </summary>
+        /// <returns>Whether the button was pressed</returns>
+        /// <param name="button">The ID of the button to check for.</param>
+        public static bool GetButtonDownOrRightMouse(InputCode code) {
+            return GetButtonDown(code) || Input.GetMouseButtonDown(0) && GetKey(KeyCode.LeftControl, KeyCode.RightControl);
+        }
+
+        /// <summary>
+        /// Checks if a button is being pressed
+        /// </summary>
+        /// <returns>Whether the button is being pressed.</returns>
+        /// <param name="code">The ID of the button to check.</param>
+        public static bool GetButton(InputCode code) {
+            return Input.GetButton(code.ToString());
+        }
+
+        /// <summary>
+        /// Checks if all buttons in an array are pressed.
+        /// </summary>
+        /// <returns>Whether all given buttons are pressed.</returns>
+        /// <param name="buttons">The buttons to check for being pressed.</param>
+        public static bool GetButtons(params InputCode[] buttons) {
+            foreach (InputCode button in buttons) {
+                if (!GetButton(button)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Checks if any of the given keys are pressed.
         /// </summary>
         /// <returns>Whether any of the given keys are pressed.</returns>
@@ -37,43 +78,20 @@ namespace Lemmings.Util {
         }
 
         /// <summary>
+        /// Gets a numerical value for the specified axis.
+        /// </summary>
+        /// <returns>A numerical value for the specified axis.</returns>
+        /// <param name="code">The axis to get a value for.</param>
+        public static float GetAxis(InputCode code) {
+            return Input.GetAxis(code.ToString());
+        }
+
+        /// <summary>
         /// Gets the movement of the mouse in the current frame.
         /// </summary>
         /// <returns>The movement of the mouse in the current frame.</returns>
         public static Vector2 GetMouseMovement() {
-            return new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        }
-
-        /// <summary>
-        /// Checks if the left mouse button was pressed.
-        /// </summary>
-        /// <returns>Whether the left mouse button was pressed.</returns>
-        public static bool GetLeftMouseDown() {
-            return Input.GetButtonDown("Fire1");
-        }
-
-        /// <summary>
-        /// Checks if the left mouse button is held down.
-        /// </summary>
-        /// <returns>Whether the left mouse button is held down.</returns>
-        public static bool GetLeftMouse() {
-            return Input.GetButton("Fire1");
-        }
-
-        /// <summary>
-        /// Checks if the right mouse button was pressed.
-        /// </summary>
-        /// <returns>Whether the right mouse button was pressed.</returns>
-        public static bool GetRightMouseDown() {
-            return Input.GetButtonDown("Fire2") || Input.GetMouseButtonDown(0) && GetKey(KeyCode.LeftControl, KeyCode.RightControl);
-        }
-
-        /// <summary>
-        /// Checks if the right mouse button is held down.
-        /// </summary>
-        /// <returns>Whether the right mouse button is held down.</returns>
-        public static bool GetRightMouse() {
-            return Input.GetButton("Fire2") || Input.GetMouseButton(0) && GetKey(KeyCode.LeftControl, KeyCode.RightControl);
+            return new Vector2(GetAxis(InputCode.MouseX), GetAxis(InputCode.MouseY));
         }
 
         /// <summary>
@@ -81,7 +99,7 @@ namespace Lemmings.Util {
         /// </summary>
         /// <returns>The scroll wheel delta in this frame.</returns>
         public static float GetScrollWheel() {
-            return Input.GetAxis("Mouse ScrollWheel");
+            return GetAxis(InputCode.MouseScrollWheel);
         }
 
         /// <summary>

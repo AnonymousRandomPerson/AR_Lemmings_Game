@@ -460,6 +460,21 @@ MonoBehaviour:
   turnSpeed: 1
   noClip: 0
   playerCamera: {fileID: 0}
+--- !u!1 &1239859420 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 173130, guid: c5783fd4ec8ee4103a3e7b351f696aab, type: 2}
+  m_PrefabInternal: {fileID: 251415674}
+--- !u!114 &1239859421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1239859420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9aa9673d9b9a4e30b00379e22b42e9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1244447905
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +689,11 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 169271122}
+    - target: {fileID: 114939063741748684, guid: 1e513b3cce4dc4b5c87ac15830961889,
+        type: 2}
+      propertyPath: m_Text
+      value: 'Press #START_KEY to start!'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1e513b3cce4dc4b5c87ac15830961889, type: 2}
   m_IsPrefabParent: 0

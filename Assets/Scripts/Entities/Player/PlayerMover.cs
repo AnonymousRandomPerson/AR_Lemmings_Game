@@ -45,9 +45,6 @@ namespace Lemmings.Entities.Player {
         /// <summary> Whether the player started out in no-clip mode. </summary>
         private bool startNoClip;
 
-        /// <summary> Whether to use the Oculus camera controls. </summary>
-        private bool vrCamera;
-
         /// <summary> The first-person camera attached to the player. </summary>
         [SerializeField]
         [Tooltip("The first-person camera attached to the player.")]
@@ -86,7 +83,6 @@ namespace Lemmings.Entities.Player {
         /// Updates the player every physics tick.
         /// </summary>
         private void FixedUpdate() {
-            vrCamera = VRDevice.isPresent;
             gameObject.layer = LayerMask.NameToLayer(noClip ? "Player NoClip" : "Player");
             if (!GameManager.instance.isLoading) {
                 Move();
@@ -101,23 +97,21 @@ namespace Lemmings.Entities.Player {
         /// Moves the player around when keys are pressed.
         /// </summary>
         private void Move() {
-            if (!vrCamera) {
-                Vector2 mouseMovement = InputUtil.GetMouseMovement() * turnSpeed;
-                transform.Rotate(-mouseMovement.y, mouseMovement.x, 0);
-                Vector3 rotation = transform.eulerAngles;
-                rotation.z = 0;
-                if (rotation.x > 180) {
-                    rotation.x = Mathf.Max(rotation.x, 360 - maxPitch);
-                } else {
-                    rotation.x = Mathf.Min(rotation.x, maxPitch);
-                }
-                transform.eulerAngles = rotation;
+            Vector2 mouseMovement = InputUtil.GetMouseMovement() * turnSpeed;
+            transform.Rotate(-mouseMovement.y, mouseMovement.x, 0);
+            Vector3 rotation = transform.eulerAngles;
+            rotation.z = 0;
+            if (rotation.x > 180) {
+                rotation.x = Mathf.Max(rotation.x, 360 - maxPitch);
+            } else {
+                rotation.x = Mathf.Min(rotation.x, maxPitch);
             }
+            transform.eulerAngles = rotation;
 
             Vector3 targetDirection = Vector3.zero;
 
-            targetDirection += Vector3.right * Input.GetAxis("Horizontal");
-            targetDirection += Vector3.forward * Input.GetAxis("Vertical");
+            targetDirection += Vector3.right * InputUtil.GetAxis(InputCode.Horizontal);
+            targetDirection += Vector3.forward * InputUtil.GetAxis(InputCode.Vertical);
 
             float speedScale = Mathf.Min(1, Vector3.Magnitude(targetDirection));
 
@@ -127,10 +121,10 @@ namespace Lemmings.Entities.Player {
             targetDirection *= speedScale;
 
             if (noClip) {
-                if (InputUtil.GetKey(KeyCode.LeftShift, KeyCode.RightShift, KeyCode.PageDown)) {
+                if (InputUtil.GetButtonDown(InputCode.MoveDown)) {
                     targetDirection += Vector3.down;
                 }
-                if (InputUtil.GetKey(KeyCode.Space, KeyCode.PageUp)) {
+                if (InputUtil.GetButtonDown(InputCode.MoveUp)) {
                     targetDirection += Vector3.up;
                 }
                 targetDirection.Normalize();

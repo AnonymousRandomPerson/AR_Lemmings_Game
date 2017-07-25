@@ -18,6 +18,9 @@ namespace Lemmings.UI {
             }
         }
 
+        /// <summary> Text substituted for the appropriate key combination for starting a level. </summary>
+        public const string START_KEY = "#START_KEY";
+
         /// <summary> The amount of time to count down for. </summary>
         [SerializeField]
         [Tooltip("The amount of time to count down for.")]
@@ -33,6 +36,9 @@ namespace Lemmings.UI {
         [Tooltip("The text displaying any level loading errors that occur.")]
         private Text errorText;
 
+        /// <summary> The text currently on the screen, with a possible replacement for the starting key combination. </summary>
+        private string templateText = "";
+
         /// <summary> The amount of time remaining in the countdown. </summary>
         private float timeLeft = 1;
         /// <summary> Whether to show the starting key combination prompt. </summary>
@@ -46,11 +52,34 @@ namespace Lemmings.UI {
         }
 
         /// <summary>
+        /// Does initial text replacement for the starting prompt.
+        /// </summary>
+        private void Start() {
+            SetText(text.text);
+        }
+
+        /// <summary>
+        /// Adds the controller change event listener.
+        /// </summary>
+        private void OnEnable() {
+            InputDetector.OnInputChanged += ChangeController;
+        }
+
+
+        /// <summary>
+        /// Removes the controller change event listener.
+        /// </summary>
+        private void OnDisable() {
+            InputDetector.OnInputChanged -= ChangeController;
+        }
+
+        /// <summary>
         /// Sets the message on the countdown screen.
         /// </summary>
         /// <param name="message">The message on the countdown screen.</param>
         public void SetText(string message) {
-            text.text = message;
+            templateText = message;
+            ChangeController();
         }
 
         /// <summary>
@@ -78,7 +107,7 @@ namespace Lemmings.UI {
         private void Update() {
             if (!showStart) {
                 int secondsLeft = (int) timeLeft + 1;
-                text.text = secondsLeft.ToString();
+                SetText(secondsLeft.ToString());
                 Color textColor = text.color;
                 textColor.a = timeLeft - (float) secondsLeft + 1;
                 text.color = textColor;
@@ -88,6 +117,22 @@ namespace Lemmings.UI {
                     GameManager.instance.StartLevel();
                 }
             }
+        }
+
+        /// <summary>
+        /// Forces the text on the screen to update for controllers changes.
+        /// </summary>
+        private void ChangeController() {
+            ChangeController(InputDetector.instance.numControllers);
+        }
+
+        /// <summary>
+        /// Changes the text on the screen when the number of connected controllers changes.
+        /// </summary>
+        /// <param name="numControllers">The new number of connected controllers.</param>
+        private void ChangeController(int numControllers) {
+            string replace = numControllers == 0 ? "Left Shift + G" : "PS + R2";
+            text.text = templateText.Replace(START_KEY, replace);
         }
     }
 }

@@ -16,13 +16,6 @@ namespace Lemmings.Graphics {
         /// <summary> Whether or not the environment mesh is visible. </summary>
         private bool meshVisible;
 
-        /// <summary> Timer to prevent input from occurring too fast. </summary>
-        private LimitTimerCallback keyTimer;
-        /// <summary> The time to wait before the visibility key can be pressed again. </summary>
-        [SerializeField]
-        [Tooltip("The time to wait before the visibility key can be pressed again.")]
-        private float keyCooldown;
-
         /// <summary> Possible visibility settings. </summary>
         private enum Settings {Mesh = 1, Surface, Both};
         /// <summary> The current visibility setting. </summary>
@@ -35,7 +28,6 @@ namespace Lemmings.Graphics {
         /// Initializes the key timer.
         /// </summary>
         private void Start() {
-            keyTimer = new LimitTimerCallback(ChangeSetting, keyCooldown);
             surfaceManager = SurfaceManager.instance;
         }
 
@@ -43,8 +35,8 @@ namespace Lemmings.Graphics {
         /// Checks for input toggling visibility settings.
         /// </summary>
         private void Update() {
-            if (InputUtil.GetKey(KeyCode.Tab)) {
-                keyTimer.Run();
+            if (InputUtil.GetButtonDown(InputCode.ToggleVisibility)) {
+                ChangeSetting();
             }
         }
 

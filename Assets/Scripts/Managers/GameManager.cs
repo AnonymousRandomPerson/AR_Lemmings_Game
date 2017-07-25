@@ -126,7 +126,7 @@ namespace Lemmings.Managers {
         /// Checks for the user resetting the level.
         /// </summary>
         private void Update() {
-            if (!_levelRequested && InputUtil.GetKeyDown(KeyCode.G) && Input.GetKey(KeyCode.LeftShift)) {
+            if (!_levelRequested && InputUtil.GetButtons(InputCode.NewLevel, InputCode.RerollLevel)) {
                 GetComponent<LevelCreator>().RequestLevel();
                 CountdownScreen.instance.SetText("");
                 CountdownScreen.instance.SetError("");
@@ -137,8 +137,8 @@ namespace Lemmings.Managers {
                     _currentTime += Time.deltaTime;
                 }
 
-                if (Input.GetButton("Reset")) {
-                    if (InputUtil.GetKey(KeyCode.LeftShift)) {
+                if (InputUtil.GetButtonDown(InputCode.ResetLevel)) {
+                    if (InputUtil.GetButton(InputCode.RerollLevel)) {
                         RestartScene();
                     } else {
                         ResetLevel();
@@ -157,7 +157,7 @@ namespace Lemmings.Managers {
                     }
                 }
 
-                if (InputUtil.GetKeyDown(KeyCode.O)) {
+                if (InputUtil.GetButtonDown(InputCode.FreezeLemmings)) {
                     _freezeLemmings = !freezeLemmings;
                 }
             }
@@ -241,7 +241,7 @@ namespace Lemmings.Managers {
         public void FailLevelLoad(string errorMessage) {
             isLoading = false;
             _levelRequested = false;
-            CountdownScreen.instance.SetText("Error loading level; retry with Left Shift + G.");
+            CountdownScreen.instance.SetText("Error loading level; retry with " + CountdownScreen.START_KEY + ".");
             CountdownScreen.instance.SetError(errorMessage);
         }
     }

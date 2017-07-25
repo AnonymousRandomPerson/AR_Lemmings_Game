@@ -75,11 +75,7 @@ namespace Lemmings.Entities.Player {
         protected override void Start() {
             base.Start();
             blockManager = BlockManager.instance;
-            if (VRDevice.isPresent) {
-                playerCamera = transform.Find("TrackingSpace").Find("CenterEyeAnchor");
-            } else {
-                playerCamera = transform.Find("Main Camera");
-            }
+            playerCamera = transform.Find("Main Camera");
             numBlockTypes = blockManager.numTypes;
             if (numBlockTypes >= 9) {
                 keyLimit = KeyCode.Alpha9;
@@ -107,9 +103,9 @@ namespace Lemmings.Entities.Player {
             placeTimer -= Time.deltaTime;
             if (!PauseHandler.instance.paused && !GameManager.instance.isCountingDown) {
                 SwitchBlock();
-                if (InputUtil.GetLeftMouse()) {
+                if (InputUtil.GetButtonDown(InputCode.PlaceBlock)) {
                     PlaceBlock();
-                } else if (InputUtil.GetRightMouseDown()) {
+                } else if (InputUtil.GetButtonDownOrRightMouse(InputCode.RemoveBlock)) {
                     RemoveBlock();
                 }
             }
@@ -205,7 +201,7 @@ namespace Lemmings.Entities.Player {
                         _selectedBlock = 0;
                     }
                 }
-            } else if (Input.GetButtonDown("Fire3")) {
+            } else if (InputUtil.GetButtonDown(InputCode.SwitchBlock)) {
                 _selectedBlock++;
                 if ((int)_selectedBlock >= numBlockTypes) {
                     _selectedBlock = 0;
