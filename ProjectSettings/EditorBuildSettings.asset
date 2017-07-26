@@ -7,5 +7,10 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/Settings.unity
+    guid: 52c92b820bd324beda15e4d648bb4057
   - enabled: 1
-    path: Assets/Scenes/Full Room.unity
+    path: Assets/Scenes/Desktop Level.unity
+    guid: 50a59932acf384058844a9eb2b8865cc
+  - enabled: 1
+    path: Assets/Scenes/HoloLens Level.unity
+    guid: dbf8db1c5bf744438a511f2db7d28f0e

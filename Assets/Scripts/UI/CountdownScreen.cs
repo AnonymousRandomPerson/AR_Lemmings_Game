@@ -55,22 +55,8 @@ namespace Lemmings.UI {
         /// Does initial text replacement for the starting prompt.
         /// </summary>
         private void Start() {
-            SetText(text.text);
-        }
-
-        /// <summary>
-        /// Adds the controller change event listener.
-        /// </summary>
-        private void OnEnable() {
             InputDetector.OnInputChanged += ChangeController;
-        }
-
-
-        /// <summary>
-        /// Removes the controller change event listener.
-        /// </summary>
-        private void OnDisable() {
-            InputDetector.OnInputChanged -= ChangeController;
+            SetText(text.text);
         }
 
         /// <summary>
@@ -105,6 +91,7 @@ namespace Lemmings.UI {
         /// Updates the countdown.
         /// </summary>
         private void Update() {
+            text.gameObject.SetActive(!PauseHandler.instance.paused);
             if (!showStart) {
                 int secondsLeft = (int) timeLeft + 1;
                 SetText(secondsLeft.ToString());
@@ -131,7 +118,7 @@ namespace Lemmings.UI {
         /// </summary>
         /// <param name="numControllers">The new number of connected controllers.</param>
         private void ChangeController(int numControllers) {
-            string replace = numControllers == 0 ? "Left Shift + G" : "PS + R2";
+            string replace = numControllers == 0 ? "G" : "PS";
             text.text = templateText.Replace(START_KEY, replace);
         }
     }

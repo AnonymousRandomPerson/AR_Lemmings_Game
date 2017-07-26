@@ -8,6 +8,13 @@ namespace Lemmings.UI {
     /// Changes the pause UI based on game state.
     /// </summary>
     class PauseScreen : MonoBehaviour {
+
+        /// <summary> The singleton pause screen instance. </summary>
+        private static PauseScreen pauseScreen;
+        /// <summary> The singleton pause screen instance. </summary>
+        public static PauseScreen instance {
+            get { return pauseScreen; }
+        }
         
         /// <summary> Objects to show only before loading a level. </summary>
         [SerializeField]
@@ -17,6 +24,13 @@ namespace Lemmings.UI {
         [SerializeField]
         [Tooltip("Objects to show only after loading a level.")]
         private GameObject[] objectsAfterLoad;
+
+        /// <summary>
+        /// Initializes the singleton pause handler instance.
+        /// </summary>
+        private void Awake() {
+            pauseScreen = this;
+        }
 
         /// <summary>
         /// Disables objects visible after loading.

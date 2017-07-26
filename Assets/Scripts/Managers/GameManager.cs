@@ -126,7 +126,7 @@ namespace Lemmings.Managers {
         /// Checks for the user resetting the level.
         /// </summary>
         private void Update() {
-            if (!_levelRequested && InputUtil.GetButtons(InputCode.NewLevel, InputCode.RerollLevel)) {
+            if (!_levelRequested && InputUtil.GetButtonDown(InputCode.NewLevel)) {
                 GetComponent<LevelCreator>().RequestLevel();
                 CountdownScreen.instance.SetText("");
                 CountdownScreen.instance.SetError("");
@@ -161,6 +161,15 @@ namespace Lemmings.Managers {
                     _freezeLemmings = !freezeLemmings;
                 }
             }
+        }
+
+        /// <summary>
+        /// Requests a new generated level from the server.
+        /// </summary>
+        public void RequestLevel() {
+            GetComponent<LevelCreator>().RequestLevel();
+            CountdownScreen.instance.SetText("");
+            CountdownScreen.instance.SetError("");
         }
 
         /// <summary>
@@ -224,6 +233,7 @@ namespace Lemmings.Managers {
             GetComponent<Visibility>().ApplySetting();
 
             PauseHandler.instance.SetGamePanelVisibility(false);
+            PauseScreen.instance.SwitchAfterLoad();
         }
 
         /// <summary>

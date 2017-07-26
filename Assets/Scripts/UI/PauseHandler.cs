@@ -65,7 +65,7 @@ namespace Lemmings.UI {
         /// Checks for the pause hotkey.
         /// </summary>
         private void Update() {
-            if (!GameManager.instance.isCountingDown && GameManager.instance.isPlaying && InputUtil.GetButtonDown(InputCode.Pause)) {
+            if (!GameManager.instance.isCountingDown && InputUtil.GetButtonDown(InputCode.Pause)) {
                 paused = !paused;
             }
         }
@@ -84,7 +84,7 @@ namespace Lemmings.UI {
         public void SetGamePanelVisibility(bool visible) {
             if (GameManager.instance.HideGameUI) {
                 gamePanel.SetActive(false);
-            } else {
+            } else if (GameManager.instance.isPlaying) {
                 gamePanel.SetActive(visible);
             }
         }
