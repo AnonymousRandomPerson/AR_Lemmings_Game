@@ -233,6 +233,7 @@ namespace Lemmings.Entities {
             mainCollider.enabled = false;
             animator.speed = 0;
             _body.useGravity = false;
+            GetComponent<AudioSource>().Play();
         }
 
         /// <summary>

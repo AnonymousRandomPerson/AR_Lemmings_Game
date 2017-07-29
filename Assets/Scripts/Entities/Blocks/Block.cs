@@ -39,6 +39,7 @@ namespace Lemmings.Entities.Blocks {
                 body = GetComponent<Rigidbody>();
             }
             body.velocity = Vector3.zero;
+            GetComponent<AudioSource>().Play();
         }
 
         /// <summary>

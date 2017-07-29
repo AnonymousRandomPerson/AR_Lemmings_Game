@@ -42,6 +42,7 @@ namespace Lemmings.Level {
         public void Win() {
             particleTimer = particleTime;
             particles.Play();
+            GetComponent<AudioSource>().Play();
         }
 
         /// <summary>

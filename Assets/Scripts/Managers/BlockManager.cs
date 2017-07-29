@@ -95,8 +95,8 @@ namespace Lemmings.Managers {
             if (HasBlock(type)) {
                 block = inactiveBlocks[typeInt].Dequeue();
                 MoveBlock(block.gameObject, position, rotation, normal, type);
-                block.Init();
                 block.gameObject.SetActive(true);
+                block.Init();
             }
             return block;
         }

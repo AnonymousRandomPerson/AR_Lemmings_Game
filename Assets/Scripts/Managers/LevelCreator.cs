@@ -84,6 +84,7 @@ namespace Lemmings.Managers {
             if (json == null) {
                 // Connect to the server to get a JSON file.
                 gameManager.isLoading = true;
+                GetComponent<AudioSource>().Play();
                 networkingManager.GetLevel(CreateLevel, FailLevelLoad);
             } else {
                 // Hard-coded JSON resource for testing.

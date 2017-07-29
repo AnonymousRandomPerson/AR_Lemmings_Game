@@ -44,6 +44,13 @@ namespace Lemmings.UI {
         /// <summary> Whether to show the starting key combination prompt. </summary>
         private bool showStart = true;
 
+        /// <summary> Plays countdown decrement sounds. </summary>
+        private AudioSource audioSource;
+        /// <summary> The sound to play when the countdown ends. </summary>
+        [SerializeField]
+        [Tooltip("The sound to play when the countdown ends.")]
+        private AudioClip countdownEndSound;
+
         /// <summary>
         /// Sets the singleton instance of the countdown screen.
         /// </summary>
@@ -57,6 +64,7 @@ namespace Lemmings.UI {
         private void Start() {
             InputDetector.OnInputChanged += ChangeController;
             SetText(text.text);
+            audioSource = GetComponent<AudioSource>();
         }
 
         /// <summary>
@@ -96,14 +104,19 @@ namespace Lemmings.UI {
             }
             if (!showStart) {
                 int secondsLeft = (int) timeLeft + 1;
-                SetText(secondsLeft.ToString());
+                string secondsString = secondsLeft.ToString();
+                string prevText = text.text;
+                SetText(secondsString);
                 Color textColor = text.color;
                 textColor.a = timeLeft - (float) secondsLeft + 1;
                 text.color = textColor;
                 timeLeft -= Time.deltaTime;
                 if (timeLeft <= 0) {
+                    gameObject.GetComponentInParent<AudioSource>().PlayOneShot(countdownEndSound);
                     gameObject.SetActive(false);
                     GameManager.instance.StartLevel();
+                } else if (prevText != secondsString) {
+                    audioSource.Play();
                 }
             }
         }

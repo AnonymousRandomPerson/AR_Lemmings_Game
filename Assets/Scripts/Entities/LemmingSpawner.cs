@@ -48,6 +48,9 @@ namespace Lemmings.Entities {
         /// <summary> The visible portal of the spawner. </summary>
         private Portal portal;
 
+        /// <summary> The audio source to play spawner sounds with. </summary>
+        private AudioSource audioSource;
+
         /// <summary>
         /// Initializes the spawner.
         /// </summary>
@@ -55,6 +58,7 @@ namespace Lemmings.Entities {
             base.Start();
             spawnTimer = new LimitTimerCallback(SpawnLemming, spawnInterval);
             portal = transform.GetComponentInChildren<Portal>();
+            audioSource = GetComponent<AudioSource>();
         }
         
         /// <summary>
@@ -88,6 +92,7 @@ namespace Lemmings.Entities {
                 currentLemming.transform.position = transform.position + Vector3.up * spawnOffset * 1.5f;
                 currentLemming.transform.rotation = transform.rotation;
                 currentLemming.Spawn(this, lemmingIndex);
+                audioSource.Play();
             }
         }
 

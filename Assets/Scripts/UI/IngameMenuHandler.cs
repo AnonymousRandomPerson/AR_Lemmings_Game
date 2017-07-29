@@ -65,6 +65,7 @@ namespace Lemmings.UI {
         private void Update() {
             if (!GameManager.instance.isCountingDown && !GameManager.instance.isLoading && InputUtil.GetButtonDown(InputCode.MenuToggle)) {
                 open = !open;
+                GetComponentInParent<AudioSource>().Play();
             }
         }
 
