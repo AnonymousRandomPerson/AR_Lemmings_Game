@@ -102,9 +102,14 @@ namespace Lemmings.Managers {
             get { return _levelRequested; }
         }
 
-        /// <summary> Whether the game UI should be hidden outside of pause mode. </summary>
+        /// <summary> Whether the game UI should be hidden outside of in-game menu mode. </summary>
         public bool HideGameUI {
             get { return pictureMode || disableUI || !_levelRequested; }
+        }
+
+        /// <summary> Whether the in-game menu is open. </summary>
+        public bool menuOpen {
+            get { return IngameMenuHandler.instance.open; }
         }
 
         /// <summary>
@@ -132,18 +137,23 @@ namespace Lemmings.Managers {
                 CountdownScreen.instance.SetError("");
             }
 
-            if (isPlaying && !PauseHandler.instance.paused) {
+            if (isPlaying) {
                 if (!_isCountingDown) {
                     _currentTime += Time.deltaTime;
                 }
 
-                if (InputUtil.GetButtonDown(InputCode.ResetLevel)) {
+                if (!menuOpen && InputUtil.GetButtonDown(InputCode.ResetLevel)) {
                     if (InputUtil.GetButton(InputCode.RerollLevel)) {
                         RestartScene();
                     } else {
                         ResetLevel();
                     }
-                } else if (CountLemmings() == 0 &&
+
+                    if (InputUtil.GetButtonDown(InputCode.FreezeLemmings)) {
+                        _freezeLemmings = !freezeLemmings;
+                    }
+                }
+                if (CountLemmings() == 0 &&
                     lemmingSpawner != null &&
                     lemmingSpawner.IsFinished() &&
                     !pathRenderer.visible) {
@@ -155,10 +165,6 @@ namespace Lemmings.Managers {
                     } else {
                         ResetLevel();
                     }
-                }
-
-                if (InputUtil.GetButtonDown(InputCode.FreezeLemmings)) {
-                    _freezeLemmings = !freezeLemmings;
                 }
             }
         }
@@ -232,8 +238,8 @@ namespace Lemmings.Managers {
             isPlaying = true;
             GetComponent<Visibility>().ApplySetting();
 
-            PauseHandler.instance.SetGamePanelVisibility(false);
-            PauseScreen.instance.SwitchAfterLoad();
+            IngameMenuHandler.instance.SetGamePanelVisibility(false);
+            IngameMenuScreen.instance.SwitchAfterLoad();
         }
 
         /// <summary>
@@ -241,7 +247,7 @@ namespace Lemmings.Managers {
         /// </summary>
         public void StartLevel() {
             _isCountingDown = false;
-            PauseHandler.instance.SetGamePanelVisibility(true);
+            IngameMenuHandler.instance.SetGamePanelVisibility(true);
         }
 
         /// <summary>

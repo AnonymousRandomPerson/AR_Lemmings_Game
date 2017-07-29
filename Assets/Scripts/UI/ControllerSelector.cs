@@ -25,13 +25,32 @@ namespace Lemmings.UI {
         }
 
         /// <summary>
+        /// Listens to input to enable key selection if no button is selected.
+        /// </summary>
+        private void Update() {
+            StandaloneInputModule module = eventSystem.GetComponent<StandaloneInputModule>();
+            if (Input.GetAxis(module.horizontalAxis) != 0 || Input.GetAxis(module.verticalAxis) != 0) {
+                selectFromNone();
+            }
+        }
+
+        /// <summary>
         /// Selects or deselects the UI when a controller is connected or disconnected.
         /// </summary>
         /// <param name="numControllers">The current number of connected controllers</param>
         private void UpdateSelected(int numControllers) {
             if (numControllers == 0) {
                 eventSystem.SetSelectedGameObject(null);
-            } else if (eventSystem.currentSelectedGameObject == null) {
+            } else {
+                selectFromNone();
+            }
+        }
+
+        /// <summary>
+        /// Selects the default select object if no objects are selected.
+        /// </summary>
+        private void selectFromNone() {
+            if (eventSystem.currentSelectedGameObject == null) {
                 eventSystem.SetSelectedGameObject(defaultSelected);
             }
         }

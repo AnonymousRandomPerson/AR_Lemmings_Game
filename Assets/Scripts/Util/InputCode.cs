@@ -12,7 +12,7 @@
         MoveDown,
         MoveUp,
         NewLevel,
-        Pause,
+        MenuToggle,
         PlaceBlock,
         RemoveBlock,
         RerollLevel,

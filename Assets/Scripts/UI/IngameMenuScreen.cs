@@ -5,15 +5,15 @@ using Lemmings.Managers;
 namespace Lemmings.UI {
 
     /// <summary>
-    /// Changes the pause UI based on game state.
+    /// Changes the in-game menu UI based on game state.
     /// </summary>
-    class PauseScreen : MonoBehaviour {
+    class IngameMenuScreen : MonoBehaviour {
 
-        /// <summary> The singleton pause screen instance. </summary>
-        private static PauseScreen pauseScreen;
-        /// <summary> The singleton pause screen instance. </summary>
-        public static PauseScreen instance {
-            get { return pauseScreen; }
+        /// <summary> The singleton in-game menu screen instance. </summary>
+        private static IngameMenuScreen ingameMenuScreen;
+        /// <summary> The singleton in-game menu screen instance. </summary>
+        public static IngameMenuScreen instance {
+            get { return ingameMenuScreen; }
         }
         
         /// <summary> Objects to show only before loading a level. </summary>
@@ -26,10 +26,10 @@ namespace Lemmings.UI {
         private GameObject[] objectsAfterLoad;
 
         /// <summary>
-        /// Initializes the singleton pause handler instance.
+        /// Initializes the singleton in-game menu handler instance.
         /// </summary>
         private void Awake() {
-            pauseScreen = this;
+            ingameMenuScreen = this;
         }
 
         /// <summary>
@@ -44,15 +44,15 @@ namespace Lemmings.UI {
         /// </summary>
         public void Restart() {
             GameManager.instance.ResetLevel();
-            PauseHandler.instance.Unpause();
+            IngameMenuHandler.instance.CloseMenu();
         }
 
         /// <summary>
-        /// Switches the pause screen to objects visible after loading.
+        /// Switches the in-game menu screen to objects visible after loading.
         /// </summary>
         public void SwitchAfterLoad() {
             SetAfterLoad(true);
-            PauseHandler.instance.Unpause();
+            IngameMenuHandler.instance.CloseMenu();
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Lemmings.UI {
         /// <summary>
         /// Sets the objects that should be visible.
         /// </summary>
-        /// <param name="afterLoad">Whether to set the pause screen objects to after loading.</param>
+        /// <param name="afterLoad">Whether to set the in-game menu screen objects to after loading.</param>
         private void SetAfterLoad(bool afterLoad) {
             foreach (GameObject objectBeforeLoad in objectsBeforeLoad) {
                 objectBeforeLoad.SetActive(!afterLoad);

@@ -3,7 +3,6 @@ using UnityEngine.VR;
 using Lemmings.Entities.Blocks;
 using Lemmings.Enums;
 using Lemmings.Managers;
-using Lemmings.UI;
 using Lemmings.Util;
 
 namespace Lemmings.Entities.Player {
@@ -101,13 +100,15 @@ namespace Lemmings.Entities.Player {
         /// </summary>
         private void Update() {
             placeTimer -= Time.deltaTime;
-            if (!PauseHandler.instance.paused && !GameManager.instance.isCountingDown) {
+            if (!GameManager.instance.menuOpen && !GameManager.instance.isCountingDown) {
                 SwitchBlock();
                 if (InputUtil.GetButtonDown(InputCode.PlaceBlock)) {
                     PlaceBlock();
                 } else if (InputUtil.GetButtonDownOrRightMouse(InputCode.RemoveBlock)) {
                     RemoveBlock();
                 }
+            } else {
+                SetGhostBlockVisibility(false);
             }
         }
 

@@ -91,7 +91,9 @@ namespace Lemmings.UI {
         /// Updates the countdown.
         /// </summary>
         private void Update() {
-            text.gameObject.SetActive(!PauseHandler.instance.paused);
+            foreach (Text textObject in new Text[]{text, errorText}) {
+                textObject.gameObject.SetActive(!IngameMenuHandler.instance.open);
+            }
             if (!showStart) {
                 int secondsLeft = (int) timeLeft + 1;
                 SetText(secondsLeft.ToString());

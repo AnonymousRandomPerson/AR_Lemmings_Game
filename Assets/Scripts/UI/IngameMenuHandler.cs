@@ -5,76 +5,74 @@ using Lemmings.Util;
 
 namespace Lemmings.UI {
     /// <summary>
-    /// Handles pausing the game.
+    /// Handles display of the in-game menu.
     /// </summary>
-    class PauseHandler : MonoBehaviour {
+    class IngameMenuHandler : MonoBehaviour {
 
-        /// <summary> The singleton pause handler instance. </summary>
-        private static PauseHandler pauseHandler;
-        /// <summary> The singleton pause handler instance. </summary>
-        public static PauseHandler instance {
-            get { return pauseHandler; }
+        /// <summary> The singleton in-game menu handler instance. </summary>
+        private static IngameMenuHandler ingameMenuHandler;
+        /// <summary> The singleton in-game menu handler instance. </summary>
+        public static IngameMenuHandler instance {
+            get { return ingameMenuHandler; }
         }
 
-        /// <summary> Whether the game is paused. </summary>
-        private bool _paused;
-        /// <summary> Whether the game is paused. </summary>
-        public bool paused {
+        /// <summary> Whether the menu is open. </summary>
+        private bool _open;
+        /// <summary> Whether the menu is open. </summary>
+        public bool open {
             get {
-                return _paused;
+                return _open;
             }
             internal set {
-                _paused = value;
+                _open = value;
                 Cursor.visible = value;
-                SetGamePanelVisibility(!_paused);
-                pausePanel.SetActive(_paused);
-                if (_paused) {
-                    Time.timeScale = 0;
+                SetGamePanelVisibility(!_open);
+                ingameMenuPanel.SetActive(_open);
+                if (_open) {
                     Cursor.lockState = CursorLockMode.None;
                 } else {
-                    Time.timeScale = 1;
                     Cursor.lockState = CursorLockMode.Locked;
                 }
             }
         }
 
-        /// <summary> The pause menu. </summary>
+        /// <summary> The in-game menu. </summary>
         [SerializeField]
-        [Tooltip("The pause menu.")]
-        private GameObject pausePanel;
+        [Tooltip("The in-game menu.")]
+        private GameObject ingameMenuPanel;
         /// <summary> The in-game UI. </summary>
         [SerializeField]
         [Tooltip("The in-game UI.")]
         private GameObject gamePanel;
 
         /// <summary>
-        /// Initializes the singleton pause handler instance.
+        /// Initializes the singleton in-game menu handler instance.
         /// </summary>
         private void Awake() {
-            pauseHandler = this;
+            ingameMenuHandler = this;
         }
 
         /// <summary>
         /// Sets up the UI.
         /// </summary>
         private void Start() {
-            paused = false;
+            open = false;
         }
 
         /// <summary>
-        /// Checks for the pause hotkey.
+        /// Checks for the in-game menu hotkey.
         /// </summary>
         private void Update() {
-            if (!GameManager.instance.isCountingDown && InputUtil.GetButtonDown(InputCode.Pause)) {
-                paused = !paused;
+            if (!GameManager.instance.isCountingDown && !GameManager.instance.isLoading && InputUtil.GetButtonDown(InputCode.MenuToggle)) {
+                open = !open;
             }
         }
 
         /// <summary>
-        /// Unpause the game.
+        /// Closes the menu.
         /// </summary>
-        public void Unpause() {
-            paused = false;
+        public void CloseMenu() {
+            open = false;
         }
 
         /// <summary>
