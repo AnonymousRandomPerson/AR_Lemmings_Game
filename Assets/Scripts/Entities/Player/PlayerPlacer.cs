@@ -102,8 +102,8 @@ namespace Lemmings.Entities.Player {
             placeTimer -= Time.deltaTime;
             if (!GameManager.instance.menuOpen && !GameManager.instance.isCountingDown) {
                 SwitchBlock();
-                if (InputUtil.GetButtonDown(InputCode.PlaceBlock)) {
-                    PlaceBlock();
+                if (InputUtil.GetButton(InputCode.PlaceBlock)) {
+                    PlaceBlock(InputUtil.GetButtonDown(InputCode.PlaceBlock));
                 } else if (InputUtil.GetButtonDownOrRightMouse(InputCode.RemoveBlock)) {
                     RemoveBlock();
                 }
@@ -153,9 +153,10 @@ namespace Lemmings.Entities.Player {
         }
 
         /// <summary>
-        /// Places a block where the player is looking at.
+        /// Places a block where the player is looking at. Rotates an existing block if the player is looking at one.
         /// </summary>
-        private void PlaceBlock() {
+        /// <param name="justPressed">Whether the block place hotkey was just pressed. If false, it is held down.</param>
+        private void PlaceBlock(bool justPressed) {
             RaycastHit point;
             if (GetTarget(out point) && point.collider.tag != "Lemming") {
                 if (point.collider.tag == "Block") {
@@ -163,7 +164,7 @@ namespace Lemmings.Entities.Player {
                         Block block = point.collider.GetComponent<Block>();
                         block.Rotate();
                     }
-                } else {
+                } else if (justPressed) {
                     blockManager.SpawnBlock(point.point, playerCamera.eulerAngles, point.normal, selectedBlock);
                     placeTimer = placeCooldown;
                 }

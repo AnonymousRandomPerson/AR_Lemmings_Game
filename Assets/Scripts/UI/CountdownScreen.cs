@@ -30,6 +30,8 @@ namespace Lemmings.UI {
         [SerializeField]
         [Tooltip("The text displaying the countdown.")]
         private Text text;
+        /// <summary> The background image behind the countdown screen. </summary>
+        private Image background;
 
         /// <summary> The text displaying any level loading errors that occur. </summary>
         [SerializeField]
@@ -41,8 +43,6 @@ namespace Lemmings.UI {
 
         /// <summary> The amount of time remaining in the countdown. </summary>
         private float timeLeft = 1;
-        /// <summary> Whether to show the starting key combination prompt. </summary>
-        private bool showStart = true;
 
         /// <summary> Plays countdown decrement sounds. </summary>
         private AudioSource audioSource;
@@ -63,6 +63,8 @@ namespace Lemmings.UI {
         /// </summary>
         private void Start() {
             InputDetector.OnInputChanged += ChangeController;
+            IngameMenuHandler.OnIngameMenuChanged += ToggleText;
+            background = GetComponent<Image>();
             SetText(text.text);
             audioSource = GetComponent<AudioSource>();
         }
@@ -89,8 +91,7 @@ namespace Lemmings.UI {
         /// </summary>
         public void StartCountdown() {
             timeLeft = (float) countDownTime;
-            gameObject.SetActive(true);
-            showStart = false;
+            background.enabled = true;
             SetError("");
             Update();
         }
@@ -99,10 +100,8 @@ namespace Lemmings.UI {
         /// Updates the countdown.
         /// </summary>
         private void Update() {
-            foreach (Text textObject in new Text[]{text, errorText}) {
-                textObject.gameObject.SetActive(!IngameMenuHandler.instance.open);
-            }
-            if (!showStart) {
+            bool isCountingDown = GameManager.instance.isCountingDown;
+            if (isCountingDown) {
                 int secondsLeft = (int) timeLeft + 1;
                 string secondsString = secondsLeft.ToString();
                 string prevText = text.text;
@@ -112,10 +111,11 @@ namespace Lemmings.UI {
                 text.color = textColor;
                 timeLeft -= Time.deltaTime;
                 if (timeLeft <= 0) {
-                    gameObject.GetComponentInParent<AudioSource>().PlayOneShot(countdownEndSound);
-                    gameObject.SetActive(false);
+                    SetText("");
+                    background.enabled = false;
+                    audioSource.PlayOneShot(countdownEndSound);
                     GameManager.instance.StartLevel();
-                } else if (prevText != secondsString) {
+                } else if (prevText != secondsString && prevText != "") {
                     audioSource.Play();
                 }
             }
@@ -135,6 +135,16 @@ namespace Lemmings.UI {
         private void ChangeController(int numControllers) {
             string replace = numControllers == 0 ? "G" : "PS";
             text.text = templateText.Replace(START_KEY, replace);
+        }
+
+        /// <summary>
+        /// Toggles the visibility of countdown text.
+        /// </summary>
+        /// <param name="open">Whether the in-game menu was opened.</param>
+        private void ToggleText(bool open) {
+            foreach (Text textObject in new Text[]{text, errorText}) {
+                textObject.gameObject.SetActive(!open);
+            }
         }
     }
 }

@@ -84,21 +84,27 @@ namespace Lemmings.Entities.Player {
         /// </summary>
         private void FixedUpdate() {
             gameObject.layer = LayerMask.NameToLayer(noClip ? "Player NoClip" : "Player");
-            if (!GameManager.instance.isLoading && !GameManager.instance.menuOpen) {
+            Turn();
+            if (!GameManager.instance.menuOpen) {
                 Move();
-
-                if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
-                    GameManager.instance.ResetLevel();
-                }
             }
+            if (transform.position.y < PhysicsUtil.DEATH_HEIGHT) {
+                GameManager.instance.ResetLevel();
+            }
+        }
+
+        /// <summary>
+        /// Turns the player's camera according to input.
+        /// </summary>
+        private void Turn() {
+            Vector2 mouseMovement = InputUtil.GetMouseMovement() * turnSpeed;
+            transform.Rotate(-mouseMovement.y, mouseMovement.x, 0);
         }
 
         /// <summary>
         /// Moves the player around when keys are pressed.
         /// </summary>
         private void Move() {
-            Vector2 mouseMovement = InputUtil.GetMouseMovement() * turnSpeed;
-            transform.Rotate(-mouseMovement.y, mouseMovement.x, 0);
             Vector3 rotation = transform.eulerAngles;
             rotation.z = 0;
             if (rotation.x > 180) {

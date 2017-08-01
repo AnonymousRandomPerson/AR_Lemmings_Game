@@ -14,9 +14,9 @@ namespace Lemmings.Managers {
         }
 
         /// <summary> Reacts to the number of controllers changing. </summary>
-        public delegate void InputChangedAction(int numControllers);
+        public delegate void ChangeControllers(int numControllers);
         /// <summary> Called whenever the number of connected controllers changes. </summary>
-        public static event InputChangedAction OnInputChanged;
+        public static event ChangeControllers OnInputChanged;
 
         /// <summary> The singleton instance of the object. </summary>
         public static InputDetector instance {

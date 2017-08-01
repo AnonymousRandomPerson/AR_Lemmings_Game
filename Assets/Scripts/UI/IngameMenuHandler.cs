@@ -9,6 +9,11 @@ namespace Lemmings.UI {
     /// </summary>
     class IngameMenuHandler : MonoBehaviour {
 
+        /// <summary> Called when the in-game menu is opened or closed. </summary>
+        public delegate void ToggleIngameMenu(bool open);
+        /// <summary> Called when the in-game menu is opened or closed. </summary>
+        public static event ToggleIngameMenu OnIngameMenuChanged;
+
         /// <summary> The singleton in-game menu handler instance. </summary>
         private static IngameMenuHandler ingameMenuHandler;
         /// <summary> The singleton in-game menu handler instance. </summary>
@@ -25,14 +30,11 @@ namespace Lemmings.UI {
             }
             internal set {
                 _open = value;
-                Cursor.visible = value;
                 SetGamePanelVisibility(!_open);
                 ingameMenuPanel.SetActive(_open);
-                if (_open) {
-                    Cursor.lockState = CursorLockMode.None;
-                } else {
-                    Cursor.lockState = CursorLockMode.Locked;
-                }
+                Cursor.visible = value;
+                Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
+                OnIngameMenuChanged(value);
             }
         }
 
@@ -44,6 +46,11 @@ namespace Lemmings.UI {
         [SerializeField]
         [Tooltip("The in-game UI.")]
         private GameObject gamePanel;
+
+        /// <summary> The sound to play when displaying the menu. </summary>
+        [SerializeField]
+        [Tooltip("The sound to play when displaying the menu.")]
+        private AudioClip displayMenuSound;
 
         /// <summary>
         /// Initializes the singleton in-game menu handler instance.
@@ -65,7 +72,12 @@ namespace Lemmings.UI {
         private void Update() {
             if (!GameManager.instance.isCountingDown && !GameManager.instance.isLoading && InputUtil.GetButtonDown(InputCode.MenuToggle)) {
                 open = !open;
-                GetComponentInParent<AudioSource>().Play();
+                AudioSource audioSource = GetComponentInParent<AudioSource>();
+                if (open) {
+                    audioSource.PlayOneShot(displayMenuSound);
+                } else {
+                    audioSource.Play();
+                }
             }
         }
 
