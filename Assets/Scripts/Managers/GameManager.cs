@@ -236,7 +236,7 @@ namespace Lemmings.Managers {
             CountdownScreen.instance.StartCountdown();
             PlayerPlacer.instance.enabled = true;
             isPlaying = true;
-            GetComponent<Visibility>().ApplySetting();
+            GetComponent<Visibility>()?.ApplySetting();
 
             IngameMenuHandler.instance.SetGamePanelVisibility(false);
             IngameMenuScreen.instance.SwitchAfterLoad();

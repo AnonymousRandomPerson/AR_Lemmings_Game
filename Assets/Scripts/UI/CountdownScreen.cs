@@ -51,6 +51,9 @@ namespace Lemmings.UI {
         [Tooltip("The sound to play when the countdown ends.")]
         private AudioClip countdownEndSound;
 
+        /// <summary> Whether the countdown screen background will display when counting down. </summary>
+        private bool backgroundEnabled;
+
         /// <summary>
         /// Sets the singleton instance of the countdown screen.
         /// </summary>
@@ -65,6 +68,7 @@ namespace Lemmings.UI {
             InputDetector.OnInputChanged += ChangeController;
             IngameMenuHandler.OnIngameMenuChanged += ToggleText;
             background = GetComponent<Image>();
+            backgroundEnabled = background.enabled;
             SetText(text.text);
             audioSource = GetComponent<AudioSource>();
         }
@@ -91,7 +95,7 @@ namespace Lemmings.UI {
         /// </summary>
         public void StartCountdown() {
             timeLeft = (float) countDownTime;
-            background.enabled = true;
+            background.enabled = backgroundEnabled;
             SetError("");
             Update();
         }
