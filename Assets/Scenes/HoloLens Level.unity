@@ -531,7 +531,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Regenerate
+  m_Text: Rescan
 --- !u!222 &455782358
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3388,6 +3388,7 @@ MonoBehaviour:
   objectsAfterLoad:
   - {fileID: 1591685247}
   - {fileID: 2020046266}
+  settingsScene: HoloLens Settings
 --- !u!114 &1771866007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3622,7 +3623,7 @@ GameObject:
   - component: {fileID: 2020046268}
   - component: {fileID: 2020046267}
   m_Layer: 5
-  m_Name: Regenerate Button
+  m_Name: Rescan Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3668,8 +3669,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RestartScene
+      - m_Target: {fileID: 1771866006}
+        m_MethodName: Rescan
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

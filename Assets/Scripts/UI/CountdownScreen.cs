@@ -74,6 +74,13 @@ namespace Lemmings.UI {
         }
 
         /// <summary>
+        /// Remove event listeners when the event is destroyed.
+        /// </summary>
+        private void OnDestroy() {
+            IngameMenuHandler.OnIngameMenuChanged -= ToggleText;
+        }
+
+        /// <summary>
         /// Sets the message on the countdown screen.
         /// </summary>
         /// <param name="message">The message on the countdown screen.</param>

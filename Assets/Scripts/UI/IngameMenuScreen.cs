@@ -25,6 +25,11 @@ namespace Lemmings.UI {
         [Tooltip("Objects to show only after loading a level.")]
         private GameObject[] objectsAfterLoad;
 
+        /// <summary> The name of the settings scene. </summary>
+        [SerializeField]
+        [Tooltip("The name of the settings scene.")]
+        private string settingsScene;
+
         /// <summary>
         /// Initializes the singleton in-game menu handler instance.
         /// </summary>
@@ -48,6 +53,13 @@ namespace Lemmings.UI {
         }
 
         /// <summary>
+        /// Restarts the scene to rescan.
+        /// </summary>
+        public void Rescan() {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        /// <summary>
         /// Switches the in-game menu screen to objects visible after loading.
         /// </summary>
         public void SwitchAfterLoad() {
@@ -59,7 +71,7 @@ namespace Lemmings.UI {
         /// Goes back to the settings menu.
         /// </summary>
         public void ChooseSettings() {
-            SceneManager.LoadScene("Settings");
+            SceneManager.LoadScene(settingsScene);
         }
 
         /// <summary>

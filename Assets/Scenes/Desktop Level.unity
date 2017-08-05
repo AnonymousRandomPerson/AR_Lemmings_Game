@@ -3274,6 +3274,7 @@ MonoBehaviour:
   objectsAfterLoad:
   - {fileID: 1268573489}
   - {fileID: 753576382}
+  settingsScene: Desktop Settings
 --- !u!114 &1664301139
 MonoBehaviour:
   m_ObjectHideFlags: 0
