@@ -203,7 +203,7 @@ MonoBehaviour:
     type: 2}
   surfaceMaterial: {fileID: 2100000, guid: c9744b0f76a6e4922bf32b992ff9ecbb, type: 2}
   wallMaterial: {fileID: 2100000, guid: e509bceb27aca4a92a43493fbb5cd3aa, type: 2}
-  json: {fileID: 4900000, guid: 7cffda5470eaf4f47af9498257d29bec, type: 3}
+  json: {fileID: 0}
   surfaceHeight: 0.01
   wallHeight: 1
   wallThickness: 0.01
@@ -686,7 +686,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Press #START_KEY to start!'
+  m_Text: 'Scanning environment...
+
+    Press #START_KEY to start!'
 --- !u!222 &504143094
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2837,7 +2839,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1515899063}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eae555d4ec85f468dbfe293f2b92944a, type: 3}
   m_Name: 
