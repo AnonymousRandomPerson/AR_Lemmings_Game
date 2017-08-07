@@ -89,30 +89,28 @@ namespace Lemmings.Managers {
         /// <summary>
         /// Writes text to the current log file.
         /// </summary>
-        /// <param name="text">The text to log.</param>
         private void WriteToFile() {
             if (loggingEnabled && json != null && !stopped) {
                 // Create the log file.
                 System.IO.Directory.CreateDirectory(filePath);
                 string date = DateTime.Now.ToString().Replace(":", "").Replace("/", "").Replace(" ", "_");
-                file = File.CreateText(filePath + "log_" + date + ".txt");
+                using (file = File.CreateText(filePath + "log_" + date + ".txt")) {
+                    // Write the JSON data to the file.
+                    file.WriteLine(json);
 
-                // Write the JSON data to the file.
-                file.WriteLine(json);
+                    // Write player data to the file.
+                    file.WriteLine("Player:");
+                    WriteVectorList(playerPositions);
 
-                // Write player data to the file.
-                file.WriteLine("Player:");
-                WriteVectorList(playerPositions);
-
-                // Write lemming data to the file.
-                for (int i = 0; i < lemmingPositions.Length; i++) {
-                    List<Vector3> lemmingList = lemmingPositions[i];
-                    if (lemmingList.Count > 0) {
-                        file.WriteLine("Lemming" + i);
-                        WriteVectorList(lemmingList);
+                    // Write lemming data to the file.
+                    for (int i = 0; i < lemmingPositions.Length; i++) {
+                        List<Vector3> lemmingList = lemmingPositions[i];
+                        if (lemmingList.Count > 0) {
+                            file.WriteLine("Lemming" + i);
+                            WriteVectorList(lemmingList);
+                        }
                     }
                 }
-                file.Close();
             }
         }
 

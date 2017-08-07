@@ -5,15 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Desktop Settings.unity
     guid: 52c92b820bd324beda15e4d648bb4057
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Desktop Level.unity
     guid: 50a59932acf384058844a9eb2b8865cc
   - enabled: 1
-    path: Assets/Scenes/HoloLens Level.unity
-    guid: dbf8db1c5bf744438a511f2db7d28f0e
-  - enabled: 1
     path: Assets/Scenes/HoloLens Settings.unity
     guid: bf6cfe00313c544b59ea6a1b7a41cc4f
+  - enabled: 1
+    path: Assets/Scenes/HoloLens Level.unity
+    guid: dbf8db1c5bf744438a511f2db7d28f0e
