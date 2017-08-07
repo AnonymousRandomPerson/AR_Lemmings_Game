@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
-using System.Net;
 using Lemmings.Entities.Player;
 using Lemmings.Util;
-using Lemmings.Util.Timers;
+using Lemmings.Util.Enums;
 
 namespace Lemmings.Managers {
 
@@ -75,9 +74,9 @@ namespace Lemmings.Managers {
 
             WWWForm settingsForm = new WWWForm();
             settingsForm.AddField("surfaces", json.text);
-            settingsForm.AddField(Settings.PATH_KEY, settings.pathSetting.ToString());
-            settingsForm.AddField(Settings.MOVEMENT_KEY, settings.movementSetting.ToString());
-            settingsForm.AddField(Settings.DIFFICULTY_KEY, settings.difficultySetting.ToString());
+            settingsForm.AddField(Settings.GetKeyString(Enums.PlayerPrefsKey.Path), settings.pathSetting.ToString());
+            settingsForm.AddField(Settings.GetKeyString(Enums.PlayerPrefsKey.Movement), settings.movementSetting.ToString());
+            settingsForm.AddField(Settings.GetKeyString(Enums.PlayerPrefsKey.Difficulty), settings.difficultySetting.ToString());
             settingsForm.AddField(PlayerMover.POSITION_KEY, InputUtil.ConvertVectorToPOST(player.transform.position));
             settingsForm.AddField("num_deaths", GameManager.numDeaths);
 
