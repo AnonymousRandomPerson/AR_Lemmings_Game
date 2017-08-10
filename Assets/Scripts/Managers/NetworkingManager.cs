@@ -2,8 +2,8 @@
 using System;
 using System.Collections;
 using Lemmings.Entities.Player;
+using Lemmings.Enums;
 using Lemmings.Util;
-using Lemmings.Util.Enums;
 
 namespace Lemmings.Managers {
 
@@ -15,10 +15,6 @@ namespace Lemmings.Managers {
     /// </summary>
     class NetworkingManager : MonoBehaviour {
         
-        /// <summary> The host of the level generation service. </summary>
-        [SerializeField]
-        [Tooltip("The host of the level generation service.")]
-        private string host;
         /// <summary> The base URL of the server. </summary>
         [SerializeField]
         [Tooltip("The base URL of the server.")]
@@ -74,9 +70,9 @@ namespace Lemmings.Managers {
 
             WWWForm settingsForm = new WWWForm();
             settingsForm.AddField("surfaces", json.text);
-            settingsForm.AddField(Settings.GetKeyString(Enums.PlayerPrefsKey.Path), settings.pathSetting.ToString());
-            settingsForm.AddField(Settings.GetKeyString(Enums.PlayerPrefsKey.Movement), settings.movementSetting.ToString());
-            settingsForm.AddField(Settings.GetKeyString(Enums.PlayerPrefsKey.Difficulty), settings.difficultySetting.ToString());
+            settingsForm.AddField(Settings.GetKeyString(PlayerPrefsKey.Path), settings.pathSetting.ToString());
+            settingsForm.AddField(Settings.GetKeyString(PlayerPrefsKey.Movement), settings.movementSetting.ToString());
+            settingsForm.AddField(Settings.GetKeyString(PlayerPrefsKey.Difficulty), settings.difficultySetting.ToString());
             settingsForm.AddField(PlayerMover.POSITION_KEY, InputUtil.ConvertVectorToPOST(player.transform.position));
             settingsForm.AddField("num_deaths", GameManager.numDeaths);
 
@@ -112,7 +108,7 @@ namespace Lemmings.Managers {
             if (form == null) {
                 form = new WWWForm();
             }
-            WWW www = new WWW(host + baseURL + url, form);
+            WWW www = new WWW(Settings.instance.serverURL + "/" + baseURL + "/" + url + "/", form);
             yield return www;
 
             if (www.error == null || www.error == "") {

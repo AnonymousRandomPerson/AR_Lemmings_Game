@@ -26,6 +26,10 @@ namespace Lemmings.UI {
         [SerializeField]
         [Tooltip("Slider for the difficulty setting.")]
         private Slider difficultySlider;
+        /// <summary> Input field for setting the server URL. </summary>
+        [SerializeField]
+        [Tooltip("Input field for setting the server URL.")]
+        private InputField serverField;
 
         /// <summary> The settings instance. </summary>
         Settings settings;
@@ -39,6 +43,7 @@ namespace Lemmings.UI {
             pathSlider.value = settings.pathSetting;
             movementSlider.value = settings.movementSetting;
             difficultySlider.value = settings.difficultySetting;
+            serverField.text = settings.serverURL;
         }
 
         /// <summary>

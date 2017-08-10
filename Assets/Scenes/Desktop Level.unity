@@ -1151,9 +1151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0104ca9214e294a529094bebdf1dda14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  host: http://127.0.0.1:8000/
-  baseURL: api/generate/
-  levelURL: level/
+  baseURL: api/generate
+  levelURL: level
   dirtyURL: 
   refreshURL: 
   json: {fileID: 4900000, guid: 7cffda5470eaf4f47af9498257d29bec, type: 3}
@@ -1174,7 +1173,7 @@ MonoBehaviour:
     type: 2}
   surfaceMaterial: {fileID: 2100000, guid: c9744b0f76a6e4922bf32b992ff9ecbb, type: 2}
   wallMaterial: {fileID: 2100000, guid: e509bceb27aca4a92a43493fbb5cd3aa, type: 2}
-  json: {fileID: 4900000, guid: 7cffda5470eaf4f47af9498257d29bec, type: 3}
+  json: {fileID: 0}
   surfaceHeight: 0.01
   wallHeight: 1
   wallThickness: 0.01

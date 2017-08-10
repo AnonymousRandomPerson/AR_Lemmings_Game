@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using Lemmings.Enums
+using Lemmings.Enums;
 
 namespace Lemmings.Managers {
     /// <summary>
-    /// 
+    /// Settings for tweaking level generation.
     /// </summary>
     class Settings : MonoBehaviour {
 
@@ -45,6 +45,16 @@ namespace Lemmings.Managers {
             }
         }
 
+        /// <summary> The base URL of the PCG server. </summary>
+        private string _serverURL = "http://127.0.0.1:8000";
+        public string serverURL {
+            get { return _serverURL; }
+            set {
+                _serverURL = value;
+                SetSetting(PlayerPrefsKey.Server, value);
+            }
+        }
+
         /// <summary>
         /// Sets the settings instance.
         /// </summary>
@@ -59,6 +69,7 @@ namespace Lemmings.Managers {
             LoadSetting(PlayerPrefsKey.Path, ref _pathSetting);
             LoadSetting(PlayerPrefsKey.Movement, ref _movementSetting);
             LoadSetting(PlayerPrefsKey.Difficulty, ref _difficultySetting);
+            LoadSetting(PlayerPrefsKey.Server, ref _serverURL);
         }
 
         /// <summary>
@@ -74,12 +85,33 @@ namespace Lemmings.Managers {
         }
 
         /// <summary>
+        /// Loads a setting if it exists.
+        /// </summary>
+        /// <param name="key">The key of the setting.</param>
+        /// <param name="setting">The setting variable to set.</param>
+        private void LoadSetting(PlayerPrefsKey key, ref string setting) {
+            string keyString = GetKeyString(key);
+            if (PlayerPrefs.HasKey(keyString)) {
+                setting = PlayerPrefs.GetString(keyString);
+            }
+        }
+
+        /// <summary>
         /// Sets the value of a PlayerPrefs field to a float.
         /// </summary>
         /// <param name="key">The key of the field to set.</param>
         /// <param name="floatValue">The float value to set the key to.</param>
         private void SetSetting(PlayerPrefsKey key, float floatValue) {
             PlayerPrefs.SetFloat(GetKeyString(key), floatValue);
+        }
+
+        /// <summary>
+        /// Sets the value of a PlayerPrefs field to a string.
+        /// </summary>
+        /// <param name="key">The key of the field to set.</param>
+        /// <param name="stringValue">The string value to set the key to.</param>
+        private void SetSetting(PlayerPrefsKey key, string stringValue) {
+            PlayerPrefs.SetString(GetKeyString(key), stringValue);
         }
 
         /// <summary>

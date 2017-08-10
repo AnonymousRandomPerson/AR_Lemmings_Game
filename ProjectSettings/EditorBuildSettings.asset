@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Desktop Settings.unity
     guid: 52c92b820bd324beda15e4d648bb4057
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Desktop Level.unity
     guid: 50a59932acf384058844a9eb2b8865cc
   - enabled: 1

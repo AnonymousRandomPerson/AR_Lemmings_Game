@@ -8,6 +8,7 @@ namespace Lemmings.Enums {
     public enum PlayerPrefsKey {
         Path,
         Movement,
-        Difficulty
+        Difficulty,
+        Server
     }
 }
