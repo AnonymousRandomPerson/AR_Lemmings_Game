@@ -77,6 +77,7 @@ namespace Lemmings.UI {
         /// Remove event listeners when the event is destroyed.
         /// </summary>
         private void OnDestroy() {
+            InputDetector.OnInputChanged -= ChangeController;
             IngameMenuHandler.OnIngameMenuChanged -= ToggleText;
         }
 

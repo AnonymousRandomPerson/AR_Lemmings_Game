@@ -25,11 +25,18 @@ namespace Lemmings.UI {
         }
 
         /// <summary>
+        /// Remove event listeners when the event is destroyed.
+        /// </summary>
+        private void OnDestroy() {
+        	InputDetector.OnInputChanged -= UpdateSelected;
+        }
+
+        /// <summary>
         /// Listens to input to enable key selection if no button is selected.
         /// </summary>
         private void Update() {
             StandaloneInputModule module = eventSystem.GetComponent<StandaloneInputModule>();
-            if (Input.GetAxis(module.horizontalAxis) != 0 || Input.GetAxis(module.verticalAxis) != 0) {
+            if (Mathf.Abs(Input.GetAxis(module.horizontalAxis)) > Mathf.Epsilon || Mathf.Abs(Input.GetAxis(module.verticalAxis)) > Mathf.Epsilon) {
                 selectFromNone();
             }
         }
