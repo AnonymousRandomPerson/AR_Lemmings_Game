@@ -64,12 +64,21 @@ namespace Lemmings.Managers {
         /// <param name="OnGet">The process to run on the level JSON.</param>
         /// <param name="OnError">The process to run if the server query returns an error.</param>
         public void GetLevel(HandleResponse OnGet, HandleResponse OnError) {
+            GetLevel(OnGet, OnError, json.text);
+        }
+
+        /// <summary>
+        /// Gets a level from the server.
+        /// </summary>
+        /// <param name="OnGet">The process to run on the level JSON.</param>
+        /// <param name="OnError">The process to run if the server query returns an error.</param>
+        public void GetLevel(HandleResponse OnGet, HandleResponse OnError, string surfaces) {
             Settings settings = Settings.instance;
             settings.LoadSettings();
             PlayerMover player = PlayerMover.instance;
 
             WWWForm settingsForm = new WWWForm();
-            settingsForm.AddField("surfaces", json.text);
+            settingsForm.AddField("surfaces", surfaces);
             settingsForm.AddField(Settings.GetKeyString(PlayerPrefsKey.Path), settings.pathSetting.ToString());
             settingsForm.AddField(Settings.GetKeyString(PlayerPrefsKey.Movement), settings.movementSetting.ToString());
             settingsForm.AddField(Settings.GetKeyString(PlayerPrefsKey.Difficulty), settings.difficultySetting.ToString());

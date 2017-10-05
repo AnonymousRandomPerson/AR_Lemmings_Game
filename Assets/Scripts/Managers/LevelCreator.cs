@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Net;
 using Lemmings.Entities;
 using Lemmings.Entities.Player;
 using Lemmings.Graphics;
 using Lemmings.Level;
 using Lemmings.Util;
 using Lemmings.Util.Timers;
+using HoloToolkit.Unity;
 
 namespace Lemmings.Managers {
     /// <summary>
@@ -85,7 +85,13 @@ namespace Lemmings.Managers {
                 // Connect to the server to get a JSON file.
                 gameManager.isLoading = true;
                 GetComponent<AudioSource>().Play();
-                networkingManager.GetLevel(CreateLevel, FailLevelLoad);
+                if (gameManager.isHololens) {
+                    SpatialUnderstanding.Instance.RequestFinishScan();
+                    string surfaceText = "";
+                    networkingManager.GetLevel(CreateLevel, FailLevelLoad, surfaceText);
+                } else {
+                    networkingManager.GetLevel(CreateLevel, FailLevelLoad);
+                }
             } else {
                 // Hard-coded JSON resource for testing.
                 CreateLevel(json.text);

@@ -47,6 +47,15 @@ namespace Lemmings.Managers {
             get { return _currentTime; }
         }
 
+        /// <summary> Whether the level is used for HoloLens. </summary>
+        [SerializeField]
+        [Tooltip("Whether the level is used for HoloLens")]
+        private bool IsHololens;
+        /// <summary> Whether the level is used for HoloLens. </summary>
+        public bool isHololens {
+            get { return IsHololens; }
+        }
+
         /// <summary> Whether to freeze objects in place. </summary>
         [SerializeField]
         [Tooltip("Whether to freeze objects in place.")]
