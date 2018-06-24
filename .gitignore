@@ -25,3 +25,5 @@ sysinfo.txt
 Assets/Logs*
 *Cube_Atlas*
 RunServer.command
+.vs/
+Assets/Scenes/SpatialUnderstandingExample.unity*
