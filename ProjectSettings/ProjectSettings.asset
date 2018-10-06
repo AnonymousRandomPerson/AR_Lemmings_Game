@@ -625,6 +625,7 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   platformArchitecture: {}
   scriptingBackend:
+    Metro: 2
     Standalone: 0
     WebGL: 1
     WebPlayer: 0
@@ -643,7 +644,7 @@ PlayerSettings:
   metroCertificateNotAfter: 805642821a2ed401
   metroApplicationDescription: AR_Lemmings_Game
   wsaImages: {}
-  metroTileShortName: AR_Lemmings_Game
+  metroTileShortName: MR Lemmings
   metroCommandLineArgsFile: 
   metroTileShowName: 0
   metroMediumTileShowName: 0
@@ -677,7 +678,7 @@ PlayerSettings:
       Proximity: False
       RemovableStorage: False
       SharedUserCertificates: False
-      SpatialPerception: False
+      SpatialPerception: True
       UserAccountInformation: False
       VideosLibrary: False
       VoipCall: False
