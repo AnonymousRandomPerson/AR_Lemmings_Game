@@ -513,6 +513,7 @@ GameObject:
   - component: {fileID: 264897041}
   - component: {fileID: 264897040}
   - component: {fileID: 264897039}
+  - component: {fileID: 264897043}
   m_Layer: 0
   m_Name: Difficulty Slider
   m_TagString: Untagged
@@ -641,6 +642,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.24, y: 0.05, z: 0.025}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &264897043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 264897037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a043f1e593b14ad3a9764bcec8acb55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &359503794
 Prefab:
   m_ObjectHideFlags: 0
@@ -1867,9 +1879,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelName: HoloLens Level
-  pathSlider: {fileID: 0}
-  movementSlider: {fileID: 0}
-  difficultySlider: {fileID: 0}
+  pathSlider: {fileID: 1501140010}
+  movementSlider: {fileID: 1309766261}
+  difficultySlider: {fileID: 264897043}
   serverField: {fileID: 1732064146}
 --- !u!114 &835273962
 MonoBehaviour:
@@ -2895,6 +2907,7 @@ GameObject:
   - component: {fileID: 1309766259}
   - component: {fileID: 1309766258}
   - component: {fileID: 1309766257}
+  - component: {fileID: 1309766261}
   m_Layer: 0
   m_Name: Movement Slider
   m_TagString: Untagged
@@ -3023,6 +3036,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.24, y: 0.05, z: 0.025}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1309766261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1309766255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a043f1e593b14ad3a9764bcec8acb55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1324459124
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3346,6 +3370,7 @@ GameObject:
   - component: {fileID: 1501140008}
   - component: {fileID: 1501140007}
   - component: {fileID: 1501140006}
+  - component: {fileID: 1501140010}
   m_Layer: 0
   m_Name: Path Slider
   m_TagString: Untagged
@@ -3474,6 +3499,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.24, y: 0.05, z: 0.025}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1501140010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1501140004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a043f1e593b14ad3a9764bcec8acb55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1501858962
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ namespace Lemmings.UI {
     /// Main menu UI event handler.
     /// </summary>
     class MainMenu : MonoBehaviour {
-        
+
         /// <summary> The level to load when starting the game. </summary>
         [SerializeField]
         [Tooltip("The level to load when starting the game.")]
@@ -17,15 +17,15 @@ namespace Lemmings.UI {
         /// <summary> Slider for the path setting. </summary>
         [SerializeField]
         [Tooltip("Slider for the path setting.")]
-        private Slider pathSlider;
+        private SliderBase pathSlider;
         /// <summary> Slider for the movement setting. </summary>
         [SerializeField]
         [Tooltip("Slider for the movement setting.")]
-        private Slider movementSlider;
+        private SliderBase movementSlider;
         /// <summary> Slider for the difficulty setting. </summary>
         [SerializeField]
         [Tooltip("Slider for the difficulty setting.")]
-        private Slider difficultySlider;
+        private SliderBase difficultySlider;
         /// <summary> Input field for setting the server URL. </summary>
         [SerializeField]
         [Tooltip("Input field for setting the server URL.")]
@@ -40,9 +40,9 @@ namespace Lemmings.UI {
         private void Start() {
             settings = Settings.instance;
             settings.LoadSettings();
-            pathSlider.value = settings.pathSetting;
-            movementSlider.value = settings.movementSetting;
-            difficultySlider.value = settings.difficultySetting;
+            pathSlider.sliderValue = settings.pathSetting;
+            movementSlider.sliderValue = settings.movementSetting;
+            difficultySlider.sliderValue = settings.difficultySetting;
             serverField.text = settings.serverURL;
         }
 
